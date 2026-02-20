@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 ARQUIVO = "logins.txt"
 
-# Garante que o arquivo exista
+# Garante que exista
 if not os.path.exists(ARQUIVO):
     open(ARQUIVO, "w", encoding="utf-8").close()
 
@@ -30,4 +32,4 @@ def buscar_logins():
     return jsonify(resultados)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
