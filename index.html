@@ -7,36 +7,72 @@
 
 </section>
 
+<section id="scripts">
+  <h2>Terminal de Busca</h2>
+
+  <div id="terminal" style="background:#000; color:#0f0; padding:15px; border-radius:10px; height:300px; overflow-y:auto; font-family:monospace; font-size:0.9rem;">
+    <div>> Bem-vindo ao Cyber Terminal</div>
+  </div>
+
+  <input type="text" id="cmdInput" placeholder="Digite /buscar <site>" 
+         style="width:100%;background:#111;border:none;color:#0f0;padding:10px;font-family:monospace;" />
+
+</section>
+
 <script>
-function buscarServidor() {
-  const termo = document.getElementById("searchLogs").value;
-  const container = document.getElementById("resultadosBusca");
-  container.innerHTML = "";
+// 👇 Conteúdo do logins.txt transformado em JS
+const LOGINS = [
+  "netflix:www.netflix.com:usuario1:senha123",
+  "netflix:www.netflix.com:teste:senha456",
+  "spotify:www.spotify.com:meuuser:senha789",
+  "gmail:www.gmail.com:email:senha321"
+];
 
-  if (termo.trim().length === 0) {
-    return;
-  }
+const terminal = document.getElementById("terminal");
+const input = document.getElementById("cmdInput");
 
-  fetch(`http://localhost:5000/buscar?termo=${encodeURIComponent(termo)}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.length === 0) {
-        container.innerHTML = "<p>Nenhum login encontrado.</p>";
-        return;
-      }
-
-      data.forEach(item => {
-        container.innerHTML += `
-          <div style="padding:10px; background:rgba(255,255,255,0.05); border-radius:8px; margin-bottom:10px;">
-            <p><strong>Login:</strong> ${item.login}</p>
-            <p><strong>Senha:</strong> ${item.senha}</p>
-          </div>
-        `;
-      });
-    })
-    .catch(err => {
-      container.innerHTML = "<p>Erro ao buscar dados.</p>";
-      console.error(err);
-    });
+function appendTerminal(text) {
+  terminal.innerHTML += "<div>> " + text + "</div>";
+  terminal.scrollTop = terminal.scrollHeight;
 }
+
+function buscarLogs(termo) {
+  const encontrados = [];
+
+  LOGINS.forEach(linha => {
+    const partes = linha.split(":");
+    let url, login, senha;
+    if (partes.length === 3) {
+      [url, login, senha] = partes;
+    } else if (partes.length === 4) {
+      [, url, login, senha] = partes;
+    }
+    if (url.toLowerCase().includes(termo.toLowerCase())) {
+      encontrados.push(`${login}:${senha}`);
+    }
+  });
+
+  if (encontrados.length === 0) {
+    appendTerminal("Nenhum login encontrado para '" + termo + "'");
+  } else {
+    encontrados.forEach(item => appendTerminal(item));
+    appendTerminal(`Total: ${encontrados.length} resultado(s)`);
+  }
+}
+
+input.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    const cmd = input.value.trim();
+    appendTerminal(cmd);
+
+    if (cmd.startsWith("/buscar ")) {
+      const termo = cmd.replace("/buscar ", "").trim();
+      buscarLogs(termo);
+    } else {
+      appendTerminal("Comando inválido. Use /buscar <termo>");
+    }
+
+    input.value = "";
+  }
+});
 </script>
