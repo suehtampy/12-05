@@ -79,61 +79,46 @@ box-shadow: 0 0 10px rgba(168,85,247,0.5);
 <!-- SEU HTML EXISTENTE AQUI -->
 
 <section id="scripts">
-<h2>Scripts</h2>
+<h2>Buscar Logins</h2>
 
-<!-- NOVO CAMPO DE BUSCA -->
-<input type="search" id="searchScripts" placeholder="🔎 Buscar scripts..." oninput="filterScripts()" />
+<input type="search" id="searchLogs" placeholder="🔎 Digite o site..." oninput="buscarServidor()" />
 
-<div class="cards" id="scriptsContainer">
+<div id="resultadosBusca" style="margin-top:20px;"></div>
 
-<div class="card">
-<h3>Scroll Suave</h3>
-<pre><code id="code1">
-document.querySelectorAll('a').forEach(anchor => {
-anchor.addEventListener('click', function(e) {
-e.preventDefault();
-document.querySelector(this.getAttribute('href'))
-.scrollIntoView({ behavior: 'smooth' });
-});
-});
-</code></pre>
-<button onclick="copyCode('code1')">Copiar</button>
-</div>
-
-<div class="card">
-<h3>Efeito Neon Hover</h3>
-<pre><code id="code2">
-.element:hover {
-box-shadow: 0 0 20px #9333ea;
-transform: scale(1.05);
-}
-</code></pre>
-<button onclick="copyCode('code2')">Copiar</button>
-</div>
-
-<div class="card">
-<h3>Partículas JS</h3>
-<pre><code id="code3">
-for(let i=0;i<100;i++){
-particles.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height
-});
-}
-</code></pre>
-<button onclick="copyCode('code3')">Copiar</button>
-</div>
-
-</div>
 </section>
 
-<!-- RESTANTE DO SEU HTML AQUI -->
-
-<footer>
-© 2026 Matheus | Cyber Dev
-</footer>
-
 <script>
+function buscarServidor() {
+  const termo = document.getElementById("searchLogs").value;
+  const resultadosContainer = document.getElementById("resultadosBusca");
+
+  if (termo.trim().length === 0) {
+    resultadosContainer.innerHTML = "";
+    return;
+  }
+
+  fetch(`/buscar?termo=${encodeURIComponent(termo)}`)
+    .then(res => res.json())
+    .then(data => {
+      resultadosContainer.innerHTML = "";
+
+      if (data.length === 0) {
+        resultadosContainer.innerHTML = "<p>Nenhum login encontrado.</p>";
+        return;
+      }
+
+      data.forEach(item => {
+        resultadosContainer.innerHTML += `
+          <div style="padding:10px; background:rgba(255,255,255,0.05); margin-bottom:10px; border-radius:8px;">
+            <p><strong>Login:</strong> ${item.login}</p>
+            <p><strong>Senha:</strong> ${item.senha}</p>
+          </div>
+        `;
+      });
+    });
+}
+</script>
+  
 /* FUNÇÃO COPIAR CÓDIGO */
 function copyCode(id){
 const code = document.getElementById(id).innerText;
