@@ -19,60 +19,97 @@
 
 </section>
 
+<section id="scripts">
+  <h2>Terminal de Busca de Logins</h2>
+
+  <!-- Terminal -->
+  <div id="terminal" style="
+      background:#000;
+      color:#0f0;
+      padding:15px;
+      border-radius:10px;
+      height:300px;
+      overflow-y:auto;
+      font-family:monospace;
+      font-size:0.9rem;
+      margin-bottom:10px;
+  ">
+    <div>> Conectado ao Terminal de Logins</div>
+  </div>
+
+  <input type="text" id="cmdInput"
+         placeholder="Digite: /buscar <termo>"
+         style="
+            width:100%;
+            background:#111;
+            border:none;
+            color:#0f0;
+            padding:10px;
+            font-family:monospace;
+         "/>
+</section>
+
 <script>
-// 👇 Conteúdo do logins.txt transformado em JS
-const LOGINS = [
-  "netflix:www.netflix.com:usuario1:senha123",
-  "netflix:www.netflix.com:teste:senha456",
-  "spotify:www.spotify.com:meuuser:senha789",
-  "gmail:www.gmail.com:email:senha321"
-];
-
-const terminal = document.getElementById("terminal");
-const input = document.getElementById("cmdInput");
-
-function appendTerminal(text) {
-  terminal.innerHTML += "<div>> " + text + "</div>";
+// Função para escrever no terminal
+function appendTerminal(texto) {
+  const terminal = document.getElementById("terminal");
+  terminal.innerHTML += "<div>> " + texto + "</div>";
   terminal.scrollTop = terminal.scrollHeight;
 }
 
-function buscarLogs(termo) {
-  const encontrados = [];
-
-  LOGINS.forEach(linha => {
-    const partes = linha.split(":");
-    let url, login, senha;
-    if (partes.length === 3) {
-      [url, login, senha] = partes;
-    } else if (partes.length === 4) {
-      [, url, login, senha] = partes;
-    }
-    if (url.toLowerCase().includes(termo.toLowerCase())) {
-      encontrados.push(`${login}:${senha}`);
-    }
-  });
-
-  if (encontrados.length === 0) {
-    appendTerminal("Nenhum login encontrado para '" + termo + "'");
-  } else {
-    encontrados.forEach(item => appendTerminal(item));
-    appendTerminal(`Total: ${encontrados.length} resultado(s)`);
+// Função pra carregar o logins.txt
+async function carregarLogins() {
+  try {
+    const res = await fetch("logins.txt");
+    const txt = await res.text();
+    return txt.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+  } catch (e) {
+    appendTerminal("Erro ao carregar logins.txt");
+    return [];
   }
 }
 
-input.addEventListener("keydown", function(e) {
+// Quando o usuário apertar ENTER
+document.getElementById("cmdInput").addEventListener("keydown", async (e) => {
   if (e.key === "Enter") {
-    const cmd = input.value.trim();
+    const cmd = document.getElementById("cmdInput").value.trim();
     appendTerminal(cmd);
 
     if (cmd.startsWith("/buscar ")) {
       const termo = cmd.replace("/buscar ", "").trim();
-      buscarLogs(termo);
+      appendTerminal("Buscando por: " + termo);
+
+      const linhas = await carregarLogins();
+      const encontrados = [];
+
+      linhas.forEach(linha => {
+        const partes = linha.split(":");
+        let url, login, senha;
+        if (partes.length === 3) {
+          [url, login, senha] = partes;
+        } else if (partes.length === 4) {
+          [, url, login, senha] = partes;
+        } else return;
+
+        if (url.toLowerCase().includes(termo.toLowerCase())) {
+          encontrados.push({login, senha});
+        }
+      });
+
+      if (encontrados.length === 0) {
+        appendTerminal("Nenhum login encontrado.");
+      } else {
+        encontrados.forEach(item => {
+          appendTerminal(item.login + ":" + item.senha);
+        });
+        appendTerminal("Total: " + encontrados.length + " resultado(s).");
+      }
+
     } else {
       appendTerminal("Comando inválido. Use /buscar <termo>");
     }
 
-    input.value = "";
+    document.getElementById("cmdInput").value = "";
   }
 });
 </script>
