@@ -1,85 +1,68 @@
 <section id="scripts">
-<h2>Buscar Logins</h2>
+  <h2 style="font-family: 'Orbitron',sans-serif; color:#a855f7; margin-bottom:20px;">Terminal de Busca de Logins</h2>
 
-<input type="search" id="searchLogs" placeholder="🔎 Digite o site..." oninput="buscarServidor()" />
-
-<div id="resultadosBusca" style="margin-top:20px;"></div>
-
-</section>
-
-<section id="scripts">
-  <h2>Terminal de Busca</h2>
-
-  <div id="terminal" style="background:#000; color:#0f0; padding:15px; border-radius:10px; height:300px; overflow-y:auto; font-family:monospace; font-size:0.9rem;">
-    <div>> Bem-vindo ao Cyber Terminal</div>
-  </div>
-
-  <input type="text" id="cmdInput" placeholder="Digite /buscar <site>" 
-         style="width:100%;background:#111;border:none;color:#0f0;padding:10px;font-family:monospace;" />
-
-</section>
-
-<section id="scripts">
-  <h2>Terminal de Busca de Logins</h2>
-
-  <!-- Terminal -->
+  <!-- Terminal container -->
   <div id="terminal" style="
       background:#000;
-      color:#0f0;
-      padding:15px;
+      color:#00FF00;
+      padding:20px;
       border-radius:10px;
       height:300px;
       overflow-y:auto;
-      font-family:monospace;
-      font-size:0.9rem;
-      margin-bottom:10px;
+      font-family: 'Courier New', monospace;
+      font-size:0.85rem;
+      line-height:1.25em;
+      border: 2px solid #2563eb;
   ">
-    <div>> Conectado ao Terminal de Logins</div>
+    <div>> Conectado ao terminal</div>
+    <div>> Digite /buscar &lt;termo&gt; e pressione ENTER</div>
   </div>
 
-  <input type="text" id="cmdInput"
-         placeholder="Digite: /buscar <termo>"
-         style="
-            width:100%;
-            background:#111;
-            border:none;
-            color:#0f0;
-            padding:10px;
-            font-family:monospace;
-         "/>
+  <!-- Input do usuário -->
+  <input type="text" id="cmdInput" placeholder="Digite aqui..." style="
+      width:100%;
+      margin-top:10px;
+      background:#111;
+      border: 2px solid #2563eb;
+      padding:10px;
+      font-family:'Courier New',monospace;
+      color:#0f0;
+      outline:none;
+      border-radius:8px;
+  "/>
 </section>
 
 <script>
-// Função para escrever no terminal
-function appendTerminal(texto) {
+// Função para “printar” no terminal
+function appendTerminal(text) {
   const terminal = document.getElementById("terminal");
-  terminal.innerHTML += "<div>> " + texto + "</div>";
+  terminal.innerHTML += "<div>> " + text + "</div>";
   terminal.scrollTop = terminal.scrollHeight;
 }
 
-// Função pra carregar o logins.txt
-async function carregarLogins() {
+// Carrega o arquivo logins.txt
+async function carregarLoginsTxt() {
   try {
     const res = await fetch("logins.txt");
     const txt = await res.text();
     return txt.split("\n").map(l => l.trim()).filter(l => l.length > 0);
-  } catch (e) {
-    appendTerminal("Erro ao carregar logins.txt");
+  } catch {
+    appendTerminal("❌ Erro ao carregar logins.txt");
     return [];
   }
 }
 
-// Quando o usuário apertar ENTER
+// Quando apertar ENTER...
 document.getElementById("cmdInput").addEventListener("keydown", async (e) => {
   if (e.key === "Enter") {
-    const cmd = document.getElementById("cmdInput").value.trim();
+    const cmd = e.target.value.trim();
     appendTerminal(cmd);
 
     if (cmd.startsWith("/buscar ")) {
       const termo = cmd.replace("/buscar ", "").trim();
-      appendTerminal("Buscando por: " + termo);
 
-      const linhas = await carregarLogins();
+      appendTerminal(`🔍 Buscando por "${termo}"...`);
+      const linhas = await carregarLoginsTxt();
       const encontrados = [];
 
       linhas.forEach(linha => {
@@ -89,24 +72,20 @@ document.getElementById("cmdInput").addEventListener("keydown", async (e) => {
           [url, login, senha] = partes;
         } else if (partes.length === 4) {
           [, url, login, senha] = partes;
-        } else return;
-
+        }
         if (url.toLowerCase().includes(termo.toLowerCase())) {
-          encontrados.push({login, senha});
+          encontrados.push(`${login}:${senha}`);
         }
       });
 
       if (encontrados.length === 0) {
-        appendTerminal("Nenhum login encontrado.");
+        appendTerminal("⚠ Nenhum login encontrado.");
       } else {
-        encontrados.forEach(item => {
-          appendTerminal(item.login + ":" + item.senha);
-        });
-        appendTerminal("Total: " + encontrados.length + " resultado(s).");
+        appendTerminal(`✔ Resultados: ${encontrados.length}`);
+        encontrados.forEach(item => appendTerminal(item));
       }
-
     } else {
-      appendTerminal("Comando inválido. Use /buscar <termo>");
+      appendTerminal('❗ Comando inválido — use: /buscar <termo>');
     }
 
     document.getElementById("cmdInput").value = "";
