@@ -1,177 +1,210 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matheus | Portfólio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matheus | Dev Futurista</title>
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: white;
-            overflow-x: hidden;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        header {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
-            background: radial-gradient(circle at center, rgba(138,43,226,0.2), transparent);
-        }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
 
-        header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            background: linear-gradient(90deg, #a855f7, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+body{
+font-family:'Poppins',sans-serif;
+background:#0f0f1b;
+color:white;
+overflow-x:hidden;
+}
 
-        header p {
-            margin-top: 15px;
-            font-size: 1.2rem;
-            color: #cbd5e1;
-        }
+/* GRID ANIMADO FUNDO */
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:
+linear-gradient(rgba(138,43,226,0.1) 1px, transparent 1px),
+linear-gradient(90deg, rgba(59,130,246,0.1) 1px, transparent 1px);
+background-size:50px 50px;
+z-index:-1;
+animation:moveGrid 20s linear infinite;
+}
 
-        .btn {
-            margin-top: 25px;
-            padding: 12px 30px;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            background: linear-gradient(90deg, #9333ea, #2563eb);
-            color: white;
-            transition: 0.4s;
-        }
+@keyframes moveGrid{
+0%{background-position:0 0;}
+100%{background-position:50px 50px;}
+}
 
-        .btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #9333ea;
-        }
+/* NAVBAR */
+nav{
+position:fixed;
+width:100%;
+top:0;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 8%;
+background:rgba(15,15,27,0.7);
+backdrop-filter:blur(10px);
+border-bottom:1px solid rgba(138,43,226,0.3);
+z-index:1000;
+}
 
-        section {
-            padding: 80px 10%;
-        }
+nav h1{
+font-family:'Orbitron',sans-serif;
+background:linear-gradient(90deg,#a855f7,#3b82f6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
 
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            margin-bottom: 40px;
-            text-align: center;
-            color: #a855f7;
-        }
+nav ul{
+list-style:none;
+display:flex;
+gap:25px;
+}
 
-        .sobre {
-            text-align: center;
-            max-width: 800px;
-            margin: auto;
-            line-height: 1.7;
-            color: #cbd5e1;
-        }
+nav ul li a{
+text-decoration:none;
+color:#cbd5e1;
+transition:0.3s;
+}
 
-        .projetos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
+nav ul li a:hover{
+color:#a855f7;
+text-shadow:0 0 10px #a855f7;
+}
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 15px;
-            transition: 0.4s;
-            border: 1px solid rgba(168,85,247,0.2);
-        }
+/* HERO */
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 25px rgba(59,130,246,0.4);
-        }
+.hero h2{
+font-family:'Orbitron',sans-serif;
+font-size:3rem;
+background:linear-gradient(90deg,#9333ea,#2563eb);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
 
-        .card h3 {
-            color: #3b82f6;
-            margin-bottom: 10px;
-        }
+.hero p{
+margin-top:20px;
+color:#94a3b8;
+}
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: #111827;
-            color: #94a3b8;
-        }
+.btn{
+margin-top:30px;
+padding:12px 30px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#9333ea,#2563eb);
+color:white;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
 
-        @media(max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
-            }
-        }
+.btn:hover{
+transform:scale(1.1);
+box-shadow:0 0 25px #9333ea;
+}
 
-    </style>
+/* SEÇÕES */
+section{
+padding:100px 10%;
+}
+
+h3.section-title{
+text-align:center;
+font-family:'Orbitron',sans-serif;
+color:#a855f7;
+margin-bottom:50px;
+}
+
+/* HABILIDADES */
+.skills{
+max-width:600px;
+margin:auto;
+}
+
+.skill{
+margin-bottom:25px;
+}
+
+.skill span{
+display:block;
+margin-bottom:5px;
+}
+
+.bar{
+width:100%;
+height:8px;
+background:#1e1e30;
+border-radius:10px;
+overflow:hidden;
+}
+
+.bar div{
+height:100%;
+background:linear-gradient(90deg,#9333ea,#2563eb);
+width:0;
+transition:2s;
+}
+
+/* PROJETOS */
+.projects{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(8px);
+padding:30px;
+border-radius:20px;
+transition:0.4s;
+transform-style:preserve-3d;
+}
+
+.card:hover{
+transform:rotateY(10deg) rotateX(5deg) scale(1.05);
+box-shadow:0 0 30px rgba(59,130,246,0.4);
+}
+
+.card h4{
+color:#3b82f6;
+margin-bottom:10px;
+}
+
+/* FOOTER */
+footer{
+text-align:center;
+padding:40px;
+background:#111827;
+color:#94a3b8;
+}
+
+/* RESPONSIVO */
+@media(max-width:768px){
+.hero h2{
+font-size:2.2rem;
+}
+nav ul{
+display:none;
+}
+}
+</style>
 </head>
 <body>
-
-    <header>
-        <h1>Matheus.dev</h1>
-        <p>Desenvolvedor Criativo | 15 anos | Construindo o Futuro com Código</p>
-        <a href="#projetos"><button class="btn">Ver Projetos</button></a>
-    </header>
-
-    <section id="sobre">
-        <h2>Sobre Mim</h2>
-        <div class="sobre">
-            <p>
-                Olá! Eu sou Matheus, um desenvolvedor apaixonado por tecnologia, inovação e design moderno.
-                Desde cedo venho explorando o mundo da programação, criando projetos únicos e aprendendo
-                novas tecnologias todos os dias. Meu objetivo é transformar ideias em experiências digitais.
-            </p>
-        </div>
-    </section>
-
-    <section id="projetos">
-        <h2>Projetos</h2>
-        <div class="projetos">
-            <div class="card">
-                <h3>Projeto 01</h3>
-                <p>Descrição breve do seu projeto. Explique a tecnologia usada e o objetivo.</p>
-            </div>
-
-            <div class="card">
-                <h3>Projeto 02</h3>
-                <p>Descrição breve do seu projeto. Mostre o impacto ou funcionalidade principal.</p>
-            </div>
-
-            <div class="card">
-                <h3>Projeto 03</h3>
-                <p>Descrição breve do seu projeto. Destaque diferenciais e aprendizados.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="contato">
-        <h2>Contato</h2>
-        <div class="sobre">
-            <p>Email: seuemail@email.com</p>
-            <p>GitHub: github.com/seuusuario</p>
-        </div>
-    </section>
-
-    <footer>
-        © 2026 Matheus | Desenvolvido com 💜 e 💻
-    </footer>
-
-</body>
-</html>
