@@ -299,6 +299,13 @@ if(p.y<0||p.y>canvas.height)p.dy*=-1;
 requestAnimationFrame(animate);
 }
 animate();
+
+  <script>
+function copyCode(id){
+const code = document.getElementById(id).innerText;
+navigator.clipboard.writeText(code);
+alert("Código copiado 🚀");
+}
 </script>
 
 </body>
