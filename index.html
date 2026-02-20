@@ -207,6 +207,52 @@ Busco sempre criar experiências digitais únicas e evoluir minhas habilidades c
 </div>
 </section>
 
+  <section id="scripts">
+<h2>Scripts</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Scroll Suave</h3>
+<pre><code id="code1">
+document.querySelectorAll('a').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+document.querySelector(this.getAttribute('href'))
+.scrollIntoView({ behavior: 'smooth' });
+});
+});
+</code></pre>
+<button onclick="copyCode('code1')">Copiar</button>
+</div>
+
+<div class="card">
+<h3>Efeito Neon Hover</h3>
+<pre><code id="code2">
+.element:hover {
+box-shadow: 0 0 20px #9333ea;
+transform: scale(1.05);
+}
+</code></pre>
+<button onclick="copyCode('code2')">Copiar</button>
+</div>
+
+<div class="card">
+<h3>Partículas JS</h3>
+<pre><code id="code3">
+for(let i=0;i<100;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height
+});
+}
+</code></pre>
+<button onclick="copyCode('code3')">Copiar</button>
+</div>
+
+</div>
+</section>
+
 <section id="contato">
 <h2>Contato</h2>
 <p>Email: theusxzmattos@email.com</p>
