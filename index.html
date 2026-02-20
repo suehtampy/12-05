@@ -1,83 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matheus | Cyber Dev</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-/* === SUA EXISTENTE STYLES === */
-pre{
-background:#111827;
-padding:15px;
-border-radius:10px;
-overflow:auto;
-color:#a855f7;
-font-size:0.8rem;
-margin:15px 0;
-}
-button{
-background:linear-gradient(90deg,#9333ea,#2563eb);
-border:none;
-padding:8px 15px;
-border-radius:20px;
-color:white;
-cursor:pointer;
-transition:0.3s;
-}
-button:hover{
-box-shadow:0 0 15px #9333ea;
-}
-body{
-font-family:'Poppins',sans-serif;
-background:#0a0a15;
-color:white;
-overflow-x:hidden;
-}
-/* MENU LATERAL */
-.sidebar{position:fixed;left:0;top:0;height:100%;width:80px;background:rgba(15,15,30,0.9);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;padding-top:40px;transition:0.4s;border-right:1px solid rgba(138,43,226,0.3);}
-.sidebar:hover{width:200px;}
-.sidebar a{text-decoration:none;color:#aaa;margin:20px 0;transition:0.3s;white-space:nowrap;}
-.sidebar a:hover{color:#a855f7;text-shadow:0 0 10px #a855f7;}
-/* HERO */
-.hero{margin-left:80px;height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;background:radial-gradient(circle at center, rgba(138,43,226,0.2), transparent);}
-.hero h1{font-family:'Orbitron',sans-serif;font-size:3rem;background:linear-gradient(90deg,#9333ea,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.typing{margin-top:20px;font-size:1.2rem;color:#94a3b8;border-right:2px solid #a855f7;white-space:nowrap;overflow:hidden;width:0;animation:typing 4s steps(40,end) forwards, blink 0.8s infinite;}
-@keyframes typing{to{width:320px;}} @keyframes blink{50%{border-color:transparent;}}
-section{margin-left:80px;padding:100px 10%;}
-h2{font-family:'Orbitron',sans-serif;color:#a855f7;margin-bottom:40px;}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
-.card{background:rgba(255,255,255,0.05);padding:30px;border-radius:20px;transition:0.4s;position:relative;overflow:hidden;}
-.card::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg, transparent, rgba(168,85,247,0.3), transparent);transform:rotate(25deg);transition:0.6s;}
-.card:hover::before{animation:shine 1s linear;}
-@keyframes shine{0%{transform:translateX(-100%) rotate(25deg);}100%{transform:translateX(100%) rotate(25deg);}}
-.card:hover{transform:translateY(-10px);box-shadow:0 0 30px rgba(59,130,246,0.4);}
-footer{margin-left:80px;padding:40px;text-align:center;background:#111827;color:#94a3b8;}
-/* ========= NOVO ESTILO DA BARRA DE BUSCA ========== */
-#searchScripts {
-width: 100%;
-padding: 12px 15px;
-margin-bottom: 20px;
-border-radius: 10px;
-border: 2px solid #2563eb;
-background:#111827;
-color:white;
-font-size:1rem;
-outline:none;
-transition:0.3s;
-}
-#searchScripts:focus{
-border-color:#a855f7;
-box-shadow: 0 0 10px rgba(168,85,247,0.5);
-}
-</style>
-</head>
-<body>
-
-<!-- SEU HTML EXISTENTE AQUI -->
-
 <section id="scripts">
 <h2>Buscar Logins</h2>
 
@@ -90,58 +10,33 @@ box-shadow: 0 0 10px rgba(168,85,247,0.5);
 <script>
 function buscarServidor() {
   const termo = document.getElementById("searchLogs").value;
-  const resultadosContainer = document.getElementById("resultadosBusca");
+  const container = document.getElementById("resultadosBusca");
+  container.innerHTML = "";
 
   if (termo.trim().length === 0) {
-    resultadosContainer.innerHTML = "";
     return;
   }
 
-  fetch(`/buscar?termo=${encodeURIComponent(termo)}`)
+  fetch(`http://localhost:5000/buscar?termo=${encodeURIComponent(termo)}`)
     .then(res => res.json())
     .then(data => {
-      resultadosContainer.innerHTML = "";
-
       if (data.length === 0) {
-        resultadosContainer.innerHTML = "<p>Nenhum login encontrado.</p>";
+        container.innerHTML = "<p>Nenhum login encontrado.</p>";
         return;
       }
 
       data.forEach(item => {
-        resultadosContainer.innerHTML += `
-          <div style="padding:10px; background:rgba(255,255,255,0.05); margin-bottom:10px; border-radius:8px;">
+        container.innerHTML += `
+          <div style="padding:10px; background:rgba(255,255,255,0.05); border-radius:8px; margin-bottom:10px;">
             <p><strong>Login:</strong> ${item.login}</p>
             <p><strong>Senha:</strong> ${item.senha}</p>
           </div>
         `;
       });
+    })
+    .catch(err => {
+      container.innerHTML = "<p>Erro ao buscar dados.</p>";
+      console.error(err);
     });
 }
 </script>
-  
-/* FUNÇÃO COPIAR CÓDIGO */
-function copyCode(id){
-const code = document.getElementById(id).innerText;
-navigator.clipboard.writeText(code);
-alert("Código copiado 🚀");
-}
-
-/* FUNÇÃO DE FILTRO */
-function filterScripts(){
-  const query = document.getElementById("searchScripts").value.toLowerCase();
-  const cards = document.querySelectorAll("#scriptsContainer .card");
-  cards.forEach(card => {
-    const title = card.querySelector("h3").innerText.toLowerCase();
-    const codeText = card.querySelector("pre code").innerText.toLowerCase();
-    // Se corresponder ao termo, mostra, senão esconde
-    if(title.includes(query) || codeText.includes(query)){
-      card.style.display = "";
-    } else {
-      card.style.display = "none";
-    }
-  });
-}
-</script>
-
-</body>
-</html>
