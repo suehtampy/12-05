@@ -7,7 +7,7 @@ document.getElementById('inputText').addEventListener('input', (e) => {
 
 // Função principal que roda ao clicar no botão
 window.processar = async function() {
-    const key = document.getElementById('apiKey').value;
+    const key = document.getElementById('AIzaSyAPi1-sZfA_Ilp2qVqkvQ5mgk7yvfe8g_E').value;
     const text = document.getElementById('inputText').value;
     const btn = document.getElementById('btnGo');
     const outputDiv = document.getElementById('resultContainer');
