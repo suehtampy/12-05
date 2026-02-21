@@ -74,6 +74,27 @@ h2{font-family:'Orbitron',sans-serif; font-size:2rem; color:#00f0ff; margin-bott
 #cmdInput{width:100%; margin-top:8px; background:#111; border:2px solid #00f0ff; padding:10px; font-family:monospace; font-size:0.9rem; color:#0FFF92; border-radius:8px; outline:none; transition:0.3s;}
 #cmdInput:focus{border-color:#ff00d4; box-shadow:0 0 15px #ff00d4;}
 
+/* ================= BOT INTERATIVO ================= */
+#botContainer{
+  position:fixed; bottom:50px; right:50px; width:300px; max-height:400px;
+  background:rgba(0,0,0,0.9); border:2px solid #00f0ff; border-radius:15px; padding:15px; display:none;
+  flex-direction:column; z-index:999;
+}
+#botHeader{
+  font-family:'Orbitron',sans-serif; font-weight:700; font-size:1.1rem; margin-bottom:10px; color:#00f0ff;
+}
+#botMessages{
+  flex:1; overflow-y:auto; background:#01010a; padding:10px; border-radius:10px; margin-bottom:10px; font-family:monospace; font-size:0.85rem; color:#0FFF92;
+}
+#botInput{
+  width:100%; padding:8px; background:#111; border:2px solid #00f0ff; color:#0FFF92; border-radius:8px; outline:none;
+}
+#botToggle{
+  cursor:pointer; color:#00f0ff; font-family:'Orbitron',sans-serif; position:fixed; bottom:20px; right:50px; z-index:999; padding:10px; border:1px solid #00f0ff; border-radius:10px; background:#05050d; transition:0.3s;
+}
+#botToggle:hover{background:#00f0ff22;}
+
+/* ================= FOOTER ================= */
 footer{text-align:center; padding:40px; color:#00f0ff44;}
 </style>
 </head>
@@ -107,13 +128,21 @@ footer{text-align:center; padding:40px; color:#00f0ff44;}
 </section>
 
 <section id="scripts">
-<h2>Terminal</h2>
+<h2>Terminal / Bot de Busca</h2>
 <div id="terminalSection">
-<div id="terminalOutput">
-  <div>> Sistema conectado 🚀</div>
-  <div>> Use /buscar &lt;termo&gt;</div>
+  <div id="terminalOutput">
+    <div>> Sistema conectado 🚀</div>
+    <div>> Use /buscar &lt;termo&gt;</div>
+  </div>
+  <input type="text" id="cmdInput" placeholder="/buscar exemplo"/>
 </div>
-<input type="text" id="cmdInput" placeholder="/buscar exemplo"/>
+<div id="botToggle">💬 Abrir Bot de Busca</div>
+<div id="botContainer">
+  <div id="botHeader">Bot de Busca</div>
+  <div id="botMessages">
+    <div>> Olá! Digite um comando ou termo para pesquisar.</div>
+  </div>
+  <input type="text" id="botInput" placeholder="Digite aqui..."/>
 </div>
 </section>
 
@@ -140,7 +169,7 @@ document.addEventListener("mousemove",e=>{
   cursor.style.top=e.clientY+"px";
 });
 
-/* HERO 3D INTERAÇÃO */
+/* HERO INTERAÇÃO */
 const hero=document.querySelector(".hero h1");
 document.addEventListener("mousemove",e=>{
   const x=(window.innerWidth/2-e.clientX)/25;
@@ -196,7 +225,7 @@ function animate(){
 }
 animate();
 
-/* TERMINAL ORIGINAL MANTIDO */
+/* TERMINAL ORIGINAL */
 function appendTerminal(text){
   const term=document.getElementById("terminalOutput");
   term.innerHTML+="<div>> "+text+"</div>";
@@ -228,12 +257,4 @@ document.getElementById("cmdInput").addEventListener("keydown", async(e)=>{
         else if(partes.length===4)[,url,login,senha]=partes;
         if(url.toLowerCase().includes(termo.toLowerCase())) encontrados.push(login+":"+senha);
       });
-      if(!encontrados.length) appendTerminal("⚠ Nenhum login encontrado");
-      else { appendTerminal(`✔ ${encontrados.length} resultado(s):`); encontrados.forEach(item=>appendTerminal(item));}
-    }else{ appendTerminal("❗ Comando inválido — use /buscar <termo>");}
-    document.getElementById("cmdInput").value="";
-  }
-});
-</script>
-</body>
-</html>
+      if(!en
