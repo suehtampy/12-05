@@ -102,63 +102,6 @@ footer{text-align:center;padding:40px;color:#00f0ff44;}
   </div>
 </section>
 
-<script>
-const apiKey = "AIzaSyAPi1-sZfA_Ilp2qVqkvQ5mgk7yvfe8g_E"; // 🔹 sua API ativa, visível para qualquer usuário
-
-const inputText = document.getElementById("inputText");
-const charCount = document.getElementById("charCount");
-const btnGo = document.getElementById("btnGo");
-const loading = document.getElementById("loading");
-const resultContainer = document.getElementById("resultContainer");
-const outputText = document.getElementById("outputText");
-const copyBtn = document.getElementById("copyBtn");
-
-inputText.addEventListener("input", () => {
-  charCount.textContent = inputText.value.length + " caracteres";
-});
-
-async function processar() {
-  const texto = inputText.value.trim();
-  if (!texto) return alert("Cole algum texto para destilar!");
-
-  loading.classList.remove("hidden");
-  resultContainer.classList.add("hidden");
-  outputText.textContent = "";
-
-  try {
-    const res = await fetch("https://api.generative.ai/v1/models/text-bison-001:generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        prompt: `Resuma o seguinte texto em poucas linhas mantendo a essência:\n\n${texto}`,
-        temperature: 0.5,
-        max_output_tokens: 300
-      })
-    });
-
-    const data = await res.json();
-    const resumo = data?.candidates?.[0]?.content || "❌ Não foi possível gerar resumo";
-    outputText.textContent = resumo;
-    resultContainer.classList.remove("hidden");
-  } catch (err) {
-    console.error(err);
-    outputText.textContent = "❌ Erro ao processar o resumo.";
-    resultContainer.classList.remove("hidden");
-  } finally {
-    loading.classList.add("hidden");
-  }
-}
-
-btnGo.addEventListener("click", processar);
-copyBtn.addEventListener("click", () => {
-  navigator.clipboard.writeText(outputText.textContent);
-  alert("Resumo copiado!");
-});
-</script>
-
 <section id="contato" class="tab-content">
   <h2>Contato</h2>
   <p>Email: theusxzmattos@email.com</p>
@@ -251,6 +194,7 @@ document.getElementById("cmdInput").addEventListener("keydown", async(e)=>{
 });
 
 // ================= DESTILADOR =================
+const apiKey = "AIzaSyAPi1-sZfA_Ilp2qVqkvQ5mgk7yvfe8g_E"; // 🔹 sua chave já embutida
 const inputText = document.getElementById("inputText");
 const charCount = document.getElementById("charCount");
 const btnGo = document.getElementById("btnGo");
@@ -264,9 +208,8 @@ inputText.addEventListener("input", () => {
 });
 
 async function processar() {
-  const apiKey = document.getElementById("apiKey").value.trim();
   const texto = inputText.value.trim();
-  if (!apiKey || !texto) return alert("Insira sua API key e o texto!");
+  if (!texto) return alert("Cole algum texto para destilar!");
 
   loading.classList.remove("hidden");
   resultContainer.classList.add("hidden");
