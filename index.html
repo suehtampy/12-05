@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matheus | Futuristic Personal UI</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 <style>
 /* ================= GLOBAL ================= */
 * {margin:0; padding:0; box-sizing:border-box;}
@@ -21,27 +20,14 @@ body {font-family:'Poppins',sans-serif; color:#fff; background:#05050d; overflow
   box-shadow:0 0 15px #00f0ff, 0 0 25px #00f0ff44;
 }
 
-/* ================= PARTICLES + NEURAL GRID ================= */
-canvas#particles {
-  position:fixed; top:0; left:0; z-index:-1;
-}
+/* ================= PARTICLES ================= */
+canvas#particles { position:fixed; top:0; left:0; z-index:-1; }
 
 /* ================= HERO ================= */
-.hero{
-  height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column;
-  text-align:center; position:relative;
-}
-.hero h1{
-  font-family:'Orbitron',sans-serif; font-size:5rem; background:linear-gradient(90deg,#00f0ff,#ff00d4);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 20px #00f0ff77;
-  transition:0.3s;
-}
-.hero .typing{
-  margin-top:20px; font-size:1.5rem; color:#aaa; border-right:2px solid #00f0ff;
-  white-space:nowrap; overflow:hidden; width:0;
-  animation:typing 4s steps(40,end) forwards, blink 0.8s infinite;
-}
-@keyframes typing {to{width:320px;}} @keyframes blink{50%{border-color:transparent;}}
+.hero{ height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center; }
+.hero h1{ font-family:'Orbitron',sans-serif; font-size:5rem; background:linear-gradient(90deg,#00f0ff,#ff00d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 20px #00f0ff77; transition:0.3s; }
+.hero .typing{ margin-top:20px; font-size:1.5rem; color:#aaa; border-right:2px solid #00f0ff; white-space:nowrap; overflow:hidden; width:0; animation:typing 4s steps(40,end) forwards, blink 0.8s infinite; }
+@keyframes typing { to{width:320px;} } @keyframes blink{50%{border-color:transparent;}}
 
 /* ================= HUD ================= */
 .hud{position:fixed; top:20px; right:20px; font-family:monospace; font-size:0.85rem; text-align:right;}
@@ -54,47 +40,25 @@ h2{font-family:'Orbitron',sans-serif; font-size:2rem; color:#00f0ff; margin-bott
 
 /* ================= CARDS ================= */
 .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px;}
-.card{
-  background:rgba(255,255,255,0.05); padding:30px; border-radius:20px; transition:0.4s; position:relative; overflow:hidden;
-}
-.card::before{
-  content:""; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
-  background:linear-gradient(45deg, transparent, rgba(0,255,255,0.2), transparent);
-  transform:rotate(25deg); transition:0.6s;
-}
-.card:hover::before{animation:shine 1s linear;}
+.card{ background:rgba(255,255,255,0.05); padding:30px; border-radius:20px; transition:0.4s; position:relative; overflow:hidden; }
+.card::before{ content:""; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:linear-gradient(45deg, transparent, rgba(0,255,255,0.2), transparent); transform:rotate(25deg); transition:0.6s; }
+.card:hover::before{ animation:shine 1s linear; }
 @keyframes shine{0%{transform:translateX(-100%) rotate(25deg);}100%{transform:translateX(100%) rotate(25deg);}}
 .card:hover{transform:translateY(-10px); box-shadow:0 0 30px #00f0ff44;}
 
 /* ================= TERMINAL ================= */
-#terminalSection{
-  background:#01010A; border:2px solid #00f0ff; border-radius:12px; padding:15px; margin-top:30px; font-family:monospace;
-}
-#terminalOutput{background:#000; color:#0FFF92; height:280px; overflow-y:auto; padding:12px 10px; font-size:0.9rem; line-height:1.3em;}
-#cmdInput{width:100%; margin-top:8px; background:#111; border:2px solid #00f0ff; padding:10px; font-family:monospace; font-size:0.9rem; color:#0FFF92; border-radius:8px; outline:none; transition:0.3s;}
-#cmdInput:focus{border-color:#ff00d4; box-shadow:0 0 15px #ff00d4;}
+#terminalSection{ background:#01010A; border:2px solid #00f0ff; border-radius:12px; padding:15px; margin-top:30px; font-family:monospace; }
+#terminalOutput{ background:#000; color:#0FFF92; height:280px; overflow-y:auto; padding:12px 10px; font-size:0.9rem; line-height:1.3em; }
+#cmdInput{ width:100%; margin-top:8px; background:#111; border:2px solid #00f0ff; padding:10px; font-family:monospace; font-size:0.9rem; color:#0FFF92; border-radius:8px; outline:none; transition:0.3s; }
+#cmdInput:focus{ border-color:#ff00d4; box-shadow:0 0 15px #ff00d4; }
 
-/* ================= BOT INTERATIVO ================= */
-#botContainer{
-  position:fixed; bottom:50px; right:50px; width:300px; max-height:400px;
-  background:rgba(0,0,0,0.9); border:2px solid #00f0ff; border-radius:15px; padding:15px; display:none;
-  flex-direction:column; z-index:999;
-}
-#botHeader{
-  font-family:'Orbitron',sans-serif; font-weight:700; font-size:1.1rem; margin-bottom:10px; color:#00f0ff;
-}
-#botMessages{
-  flex:1; overflow-y:auto; background:#01010a; padding:10px; border-radius:10px; margin-bottom:10px; font-family:monospace; font-size:0.85rem; color:#0FFF92;
-}
-#botInput{
-  width:100%; padding:8px; background:#111; border:2px solid #00f0ff; color:#0FFF92; border-radius:8px; outline:none;
-}
-#botToggle{
-  cursor:pointer; color:#00f0ff; font-family:'Orbitron',sans-serif; position:fixed; bottom:20px; right:50px; z-index:999; padding:10px; border:1px solid #00f0ff; border-radius:10px; background:#05050d; transition:0.3s;
-}
-#botToggle:hover{background:#00f0ff22;}
-
-/* ================= FOOTER ================= */
+/* ================= BOT ================= */
+#botToggle{ cursor:pointer; color:#00f0ff; font-family:'Orbitron',sans-serif; position:fixed; bottom:20px; right:50px; z-index:999; padding:10px; border:1px solid #00f0ff; border-radius:10px; background:#05050d; transition:0.3s; }
+#botToggle:hover{ background:#00f0ff22; }
+#botContainer{ display:none; position:fixed; bottom:80px; right:50px; width:300px; max-height:400px; background:rgba(0,0,0,0.9); border:2px solid #00f0ff; border-radius:15px; padding:15px; flex-direction:column; z-index:999; }
+#botHeader{ font-family:'Orbitron',sans-serif; font-weight:700; font-size:1.1rem; margin-bottom:10px; color:#00f0ff; }
+#botMessages{ flex:1; overflow-y:auto; background:#01010a; padding:10px; border-radius:10px; margin-bottom:10px; font-family:monospace; font-size:0.85rem; color:#0FFF92; }
+#botInput{ width:100%; padding:8px; background:#111; border:2px solid #00f0ff; color:#0FFF92; border-radius:8px; outline:none; }
 footer{text-align:center; padding:40px; color:#00f0ff44;}
 </style>
 </head>
@@ -136,6 +100,7 @@ footer{text-align:center; padding:40px; color:#00f0ff44;}
   </div>
   <input type="text" id="cmdInput" placeholder="/buscar exemplo"/>
 </div>
+
 <div id="botToggle">💬 Abrir Bot de Busca</div>
 <div id="botContainer">
   <div id="botHeader">Bot de Busca</div>
@@ -144,6 +109,7 @@ footer{text-align:center; padding:40px; color:#00f0ff44;}
   </div>
   <input type="text" id="botInput" placeholder="Digite aqui..."/>
 </div>
+
 </section>
 
 <section id="contato">
@@ -158,8 +124,8 @@ footer{text-align:center; padding:40px; color:#00f0ff44;}
 <script>
 /* CLOCK + CPU */
 setInterval(()=>{
-document.getElementById("clock").textContent=new Date().toLocaleTimeString();
-document.getElementById("cpu").textContent=Math.floor(Math.random()*60+20);
+  document.getElementById("clock").textContent=new Date().toLocaleTimeString();
+  document.getElementById("cpu").textContent=Math.floor(Math.random()*60+20);
 },1000);
 
 /* CURSOR */
@@ -180,9 +146,7 @@ document.addEventListener("mousemove",e=>{
 /* SECTION REVEAL */
 const observer=new IntersectionObserver(entries=>{
 entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("visible");
-}
+if(entry.isIntersecting){ entry.target.classList.add("visible"); }
 });
 },{threshold:0.2});
 document.querySelectorAll("section").forEach(sec=>observer.observe(sec));
@@ -200,8 +164,7 @@ function animate(){
   particles.forEach(p=>{
     ctx.beginPath();
     ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle="#00f0ff";
-    ctx.fill();
+    ctx.fillStyle="#00f0ff"; ctx.fill();
     p.x+=p.dx; p.y+=p.dy;
     if(p.x<0||p.x>canvas.width)p.dx*=-1;
     if(p.y<0||p.y>canvas.height)p.dy*=-1;
@@ -225,7 +188,7 @@ function animate(){
 }
 animate();
 
-/* TERMINAL ORIGINAL */
+/* TERMINAL */
 function appendTerminal(text){
   const term=document.getElementById("terminalOutput");
   term.innerHTML+="<div>> "+text+"</div>";
@@ -257,4 +220,42 @@ document.getElementById("cmdInput").addEventListener("keydown", async(e)=>{
         else if(partes.length===4)[,url,login,senha]=partes;
         if(url.toLowerCase().includes(termo.toLowerCase())) encontrados.push(login+":"+senha);
       });
-      if(!en
+      if(!encontrados.length) appendTerminal("⚠ Nenhum login encontrado");
+      else { appendTerminal(`✔ ${encontrados.length} resultado(s):`); encontrados.forEach(item=>appendTerminal(item));}
+    }else{ appendTerminal("❗ Comando inválido — use /buscar <termo>");}
+    document.getElementById("cmdInput").value="";
+  }
+});
+
+/* BOT INTERATIVO */
+const botToggle=document.getElementById("botToggle");
+const botContainer=document.getElementById("botContainer");
+const botMessages=document.getElementById("botMessages");
+const botInput=document.getElementById("botInput");
+
+botToggle.addEventListener("click",()=>{
+  botContainer.style.display=botContainer.style.display==='flex'?'none':'flex';
+  botInput.focus();
+});
+
+botInput.addEventListener("keydown", e=>{
+  if(e.key==="Enter"){
+    const cmd=e.target.value.trim();
+    if(!cmd) return;
+    botMessages.innerHTML+=`<div>> ${cmd}</div>`;
+    botMessages.scrollTop=botMessages.scrollHeight;
+
+    if(cmd.toLowerCase().includes("projeto")){
+      botMessages.innerHTML+=`<div>🔹 Resultados: Neural Interface, Cyber Hub, Digital Lab</div>`;
+    } else if(cmd.toLowerCase().includes("contato")){
+      botMessages.innerHTML+=`<div>📧 Email: theusxzmattos@email.com | GitHub: github.com/suehtampy</div>`;
+    } else {
+      botMessages.innerHTML+=`<div>❌ Nenhum resultado encontrado para "${cmd}"</div>`;
+    }
+    botInput.value="";
+    botMessages.scrollTop=botMessages.scrollHeight;
+  }
+});
+</script>
+</body>
+</html>
