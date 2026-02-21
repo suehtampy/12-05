@@ -3,35 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matheus | Futuristic Personal UI</title>
+<title>Matheus | Futuristic UI</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-/* ================= GLOBAL ================= */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Poppins',sans-serif;color:#fff;background:#05050d;overflow-x:hidden;}
 canvas#particles{position:fixed;top:0;left:0;z-index:-1;}
-/* ================= SIDEBAR ================= */
 .sidebar{position:fixed;left:0;top:0;height:100%;width:80px;background:rgba(15,15,30,0.9);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;padding-top:40px;transition:0.4s;border-right:1px solid rgba(0,255,255,0.3);}
 .sidebar:hover{width:200px;}
 .sidebar button{background:none;border:none;color:#aaa;margin:20px 0;padding:10px;font-size:1rem;text-align:left;white-space:nowrap;cursor:pointer;transition:0.3s;font-family:'Orbitron',sans-serif;}
 .sidebar button:hover{color:#00f0ff;text-shadow:0 0 10px #00f0ff;}
-/* ================= SEÇÕES ================= */
 .tab-content{display:none; padding:100px 10%; max-width:1200px; margin-left:80px; transition:1s ease; opacity:0; transform:translateY(50px);}
 .tab-content.active{display:block;opacity:1;transform:translateY(0);}
 h2{font-family:'Orbitron',sans-serif;font-size:2rem;color:#00f0ff;margin-bottom:40px;}
 p{line-height:1.6;color:#aaa;font-size:1rem;}
-/* ================= HERO ================= */
 .hero h1{font-family:'Orbitron',sans-serif;font-size:4rem;background:linear-gradient(90deg,#00f0ff,#ff00d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px #00f0ff77;transition:0.3s;}
 .hero .typing{margin-top:20px;font-size:1.5rem;color:#aaa;border-right:2px solid #00f0ff;white-space:nowrap;overflow:hidden;width:0;animation:typing 4s steps(40,end) forwards, blink 0.8s infinite;}
 @keyframes typing{to{width:320px;}} @keyframes blink{50%{border-color:transparent;}}
-/* ================= CARDS ================= */
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
 .card{background:rgba(255,255,255,0.05);padding:30px;border-radius:20px;transition:0.4s;position:relative;overflow:hidden;cursor:pointer;}
 .card::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg, transparent, rgba(0,255,255,0.2), transparent);transform:rotate(25deg);transition:0.6s;}
 .card:hover::before{animation:shine 1s linear;}
-@keyframes shine{0%{transform:translateX(-100%) rotate(25deg);}100%{transform:translateX(100%) rotate(25deg);} }
+@keyframes shine{0%{transform:translateX(-100%) rotate(25deg);}100%{transform:translateX(100%) rotate(25deg);}}
 .card:hover{transform:translateY(-10px) scale(1.03);box-shadow:0 0 30px #00f0ff44;}
-/* ================= TERMINAL ================= */
 #terminalWrapper{display:flex;flex-direction:column;background:rgba(0,0,0,0.95);border:2px solid #00f0ff;border-radius:15px;padding:15px;margin-top:20px;max-width:500px;}
 #terminalOutput{flex:1;overflow-y:auto;background:#01010a;padding:12px;border-radius:12px;color:#0FFF92;font-family:monospace;font-size:0.9rem;height:250px;box-shadow:0 0 20px #00f0ff44 inset;}
 #cmdInput{width:100%;padding:10px;border:2px solid #00f0ff;border-radius:8px;background:#111;color:#0FFF92;font-family:monospace;font-size:0.9rem;outline:none;transition:0.3s;}
@@ -43,7 +37,6 @@ footer{text-align:center;padding:40px;color:#00f0ff44;}
 
 <canvas id="particles"></canvas>
 
-<!-- Sidebar -->
 <div class="sidebar">
   <button data-tab="home">Home</button>
   <button data-tab="sobre">Sobre</button>
@@ -52,7 +45,6 @@ footer{text-align:center;padding:40px;color:#00f0ff44;}
   <button data-tab="contato">Contato</button>
 </div>
 
-<!-- Seções -->
 <section id="home" class="tab-content active hero">
   <h1>Matheus</h1>
   <div class="typing">15 anos | Desenvolvedor Futurista</div>
@@ -93,7 +85,7 @@ footer{text-align:center;padding:40px;color:#00f0ff44;}
 <footer>© 2026 Matheus | Futuristic Personal UI</footer>
 
 <script>
-// ================= PARTICLES =================
+// PARTICLES
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth; canvas.height=window.innerHeight;
@@ -130,17 +122,15 @@ function animate(){
 }
 animate();
 
-// ================= ABAS =================
+// ABAS
 const tabs=document.querySelectorAll(".sidebar button");
 const contents=document.querySelectorAll(".tab-content");
 tabs.forEach(tab=>{
-  tab.addEventListener("click",()=>{ 
-    contents.forEach(c=>c.classList.remove("active"));
-    document.getElementById(tab.dataset.tab).classList.add("active"); 
-  });
+  tab.addEventListener("click",()=>{ contents.forEach(c=>c.classList.remove("active"));
+  document.getElementById(tab.dataset.tab).classList.add("active"); });
 });
 
-// ================= TERMINAL =================
+// TERMINAL / BUSCA
 function appendTerminal(text){
   const term=document.getElementById("terminalOutput");
   term.innerHTML+="<div>> "+text+"</div>";
@@ -151,10 +141,7 @@ async function carregarLoginsTxt(){
     const res=await fetch("logins.txt");
     const txt=await res.text();
     return txt.split("\n").map(l=>l.trim()).filter(l=>l.length>0);
-  }catch{
-    appendTerminal("❌ Erro ao carregar logins.txt");
-    return [];
-  }
+  }catch{ appendTerminal("❌ Erro ao carregar logins.txt"); return []; }
 }
 document.getElementById("cmdInput").addEventListener("keydown", async(e)=>{
   if(e.key==="Enter"){
