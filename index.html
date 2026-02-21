@@ -155,9 +155,33 @@ document.getElementById("cmdInput").addEventListener("keydown", async(e)=>{if(e.
 const apiKey="AQ.Ab8RN6IZW19NWxhH5yPt55RwTmWG2-v53v2sQSjCcNCGAYv-VQ";
 const inputText=document.getElementById("inputText"),charCount=document.getElementById("charCount"),btnGo=document.getElementById("btnGo"),loading=document.getElementById("loading"),resultContainer=document.getElementById("resultContainer"),outputText=document.getElementById("outputText"),copyBtn=document.getElementById("copyBtn");
 inputText.addEventListener("input",()=>{charCount.textContent=inputText.value.length+" caracteres";});
-async function processar(){const texto=inputText.value.trim();if(!texto)return alert("Cole algum texto para destilar!");loading.classList.remove("hidden");resultContainer.classList.add("hidden");outputText.textContent="";try{const res=await fetch("https://api.generative.ai/v1/models/text-bison-001:generate",{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${apiKey}`},body:JSON.stringify({prompt:`Resuma o seguinte texto em poucas linhas mantendo a essência:\n\n${texto}`,temperature:0.5,max_output_tokens:300})});const data=await res.json();const resumo=data?.candidates?.[0]?.content||"❌ Não foi possível gerar resumo";outputText.textContent=resumo;resultContainer.classList.remove("hidden");}catch(err){console.error(err);outputText.textContent="❌ Erro ao processar o resumo.";resultContainer.classList.remove("hidden");}finally{loading.classList.add("hidden");}}
-btnGo.addEventListener("click",processar);copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(outputText.textContent);alert("Resumo copiado!");});
+async function processar() {
+  const texto = inputText.value.trim();
+  if (!texto) return alert("Cole algum texto para destilar!");
 
+  loading.classList.remove("hidden");
+  resultContainer.classList.add("hidden");
+  outputText.textContent = "";
+
+  try {
+    const res = await fetch("/resumir", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ texto })
+    });
+
+    const data = await res.json();
+    outputText.textContent = data.resumo || "❌ Não foi possível gerar resumo";
+    resultContainer.classList.remove("hidden");
+
+  } catch (err) {
+    console.error(err);
+    outputText.textContent = "❌ Erro ao processar o resumo.";
+    resultContainer.classList.remove("hidden");
+  } finally {
+    loading.classList.add("hidden");
+  }
+}
 // ================= GETS =================
 function appendGetsTerminal(text){const term=document.getElementById("getsTerminalOutput");term.innerHTML+="<div>> "+text+"</div>";term.scrollTop=term.scrollHeight;}
 document.getElementById("getsCmdInput").addEventListener("keydown", e=>{if(e.key==="Enter"){const cmd=e.target.value.trim();appendGetsTerminal(cmd);if(cmd.startsWith("/abrir ")){const termo=cmd.replace("/abrir ","").trim().toLowerCase();if(termo==="template") window.open("https://exemplo.com/template","_blank");else if(termo==="link") window.open("https://exemplo.com/ferramenta","_blank");else if(termo==="github") window.open("https://github.com/seurepositorio","_blank");else appendGetsTerminal(`❌ Nenhum link encontrado para "${termo}"`);}else appendGetsTerminal("❗ Comando inválido — use /abrir <link>");e.target.value="";}});
