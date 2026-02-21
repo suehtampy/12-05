@@ -3,53 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matheus | Futuristic Personal UI</title>
+<title>Matheus | Futuristic UI</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-/* ================= GLOBAL ================= */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Poppins',sans-serif;color:#fff;background:#05050d;overflow-x:hidden;cursor:none;}
 .cursor{width:20px;height:20px;border:2px solid #00f0ff;border-radius:50%;position:fixed;pointer-events:none;transform:translate(-50%,-50%);transition:0.05s;z-index:9999;box-shadow:0 0 15px #00f0ff,0 0 25px #00f0ff44;}
-.cursor-trail{position:absolute;width:8px;height:8px;background:#00f0ff;border-radius:50%;pointer-events:none;opacity:0.7;z-index:9998;}
-
-/* ================= PARTICLES ================= */
 canvas#particles{position:fixed;top:0;left:0;z-index:-1;}
-
-/* ================= SIDEBAR / ABAS ================= */
 .sidebar{position:fixed;left:0;top:0;height:100%;width:80px;background:rgba(15,15,30,0.9);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;padding-top:40px;transition:0.4s;border-right:1px solid rgba(0,255,255,0.3);}
-.sidebar:hover{width:220px;}
-.sidebar button{background:none;border:none;color:#aaa;margin:20px 0;padding:10px;font-size:1rem;text-align:left;white-space:nowrap;cursor:pointer;transition:0.3s;font-family:'Orbitron',sans-serif;display:flex;align-items:center;gap:10px;}
+.sidebar:hover{width:200px;}
+.sidebar button{background:none;border:none;color:#aaa;margin:20px 0;padding:10px;font-size:1rem;text-align:left;white-space:nowrap;cursor:pointer;transition:0.3s;font-family:'Orbitron',sans-serif;}
 .sidebar button:hover{color:#00f0ff;text-shadow:0 0 10px #00f0ff;}
-.sidebar button::before{content:"💠";font-size:1.2rem;display:inline-block;transition:0.3s;}
-.sidebar:hover button::before{transform:translateX(10px);}
-
-/* ================= SEÇÕES ================= */
 .tab-content{display:none; padding:100px 10%; max-width:1200px; margin-left:80px; transition:1s ease; opacity:0; transform:translateY(50px);}
 .tab-content.active{display:block;opacity:1;transform:translateY(0);}
 h2{font-family:'Orbitron',sans-serif;font-size:2rem;color:#00f0ff;margin-bottom:40px;}
 p{line-height:1.6;color:#aaa;font-size:1rem;}
-
-/* ================= HERO ================= */
-.hero h1{font-family:'Orbitron',sans-serif;font-size:4rem;background:linear-gradient(270deg,#00f0ff,#ff00d4,#00f0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px #00f0ff77;animation:gradient 4s linear infinite;}
-@keyframes gradient{0%{background-position:0%}100%{background-position:200%}}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:4rem;background:linear-gradient(90deg,#00f0ff,#ff00d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px #00f0ff77;transition:0.3s;}
 .hero .typing{margin-top:20px;font-size:1.5rem;color:#aaa;border-right:2px solid #00f0ff;white-space:nowrap;overflow:hidden;width:0;animation:typing 4s steps(40,end) forwards, blink 0.8s infinite;}
-@keyframes typing{to{width:320px;}} 
-@keyframes blink{50%{border-color:transparent;}}
-
-/* ================= CARDS ================= */
+@keyframes typing{to{width:320px;}} @keyframes blink{50%{border-color:transparent;}}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
-.card{background:rgba(255,255,255,0.05);padding:30px;border-radius:20px;transition:0.4s;position:relative;overflow:hidden;transform-style:preserve-3d;}
+.card{background:rgba(255,255,255,0.05);padding:30px;border-radius:20px;transition:0.4s;position:relative;overflow:hidden;cursor:pointer;}
 .card::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg, transparent, rgba(0,255,255,0.2), transparent);transform:rotate(25deg);transition:0.6s;}
 .card:hover::before{animation:shine 1s linear;}
 @keyframes shine{0%{transform:translateX(-100%) rotate(25deg);}100%{transform:translateX(100%) rotate(25deg);}}
-.card:hover{transform:translateY(-10px) rotateX(5deg) rotateY(5deg);box-shadow:0 0 30px #00f0ff44;cursor:pointer;}
-
-/* ================= TERMINAL FUTURISTA ================= */
-#terminalWrapper{display:none;flex-direction:column;background:rgba(0,0,0,0.95);border:2px solid #00f0ff;border-radius:15px;padding:15px;max-width:500px;margin-top:20px;}
-#terminalOutput{flex:1;overflow-y:auto;background:#01010a;padding:12px 10px;border-radius:12px;color:#0FFF92;font-family:monospace;font-size:0.9rem;height:250px;box-shadow:0 0 20px #00f0ff44 inset;}
-#cmdInput{width:100%;padding:10px;border:2px solid #00f0ff;border-radius:8px;background:#111;color:#0FFF92;font-family:monospace;font-size:0.9rem;outline:none;transition:0.3s;}
-#cmdInput:focus{border-color:#ff00d4;box-shadow:0 0 15px #ff00d4;}
+.card:hover{transform:translateY(-10px) scale(1.03);box-shadow:0 0 30px #00f0ff44;}
+#terminalWrapper,#botContainer{display:none;flex-direction:column;background:rgba(0,0,0,0.95);border:2px solid #00f0ff;border-radius:15px;padding:15px;margin-top:20px;}
+#terminalOutput,#botMessages{flex:1;overflow-y:auto;background:#01010a;padding:12px;border-radius:12px;color:#0FFF92;font-family:monospace;font-size:0.9rem;height:250px;box-shadow:0 0 20px #00f0ff44 inset;}
+#cmdInput,#botInput{width:100%;padding:10px;border:2px solid #00f0ff;border-radius:8px;background:#111;color:#0FFF92;font-family:monospace;font-size:0.9rem;outline:none;transition:0.3s;}
+#cmdInput:focus,#botInput:focus{border-color:#ff00d4;box-shadow:0 0 15px #ff00d4;}
 #botToggle{cursor:pointer;color:#00f0ff;font-family:'Orbitron',sans-serif;padding:10px;border:1px solid #00f0ff;border-radius:10px;background:#05050d;transition:0.3s;width:max-content;margin-top:20px;}
 #botToggle:hover{background:#00f0ff22;}
+footer{text-align:center;padding:40px;color:#00f0ff44;}
+</style>
+</head>
+<body>
 
-/* ================= BOT ================= */
+<canvas id="particles"></canvas>
+<div class="cursor"></div>
+
+<div class="sidebar">
+  <button data-tab="home">Home</button>
+  <button data-tab="sobre">Sobre</button>
+  <button data-tab="projetos">Projetos</button>
+  <button data-tab="scripts">Scripts</button>
+  <button data-tab="contato">Contato</button>
+</div>
+
+<section id="home" class="tab-content active hero">
+  <h1>Matheus</h1>
+  <div class="typing">15 anos | Desenvolvedor Futurista</div>
+</section>
+
+<section id="sobre" class="tab-content">
+  <h2>Sobre Mim</h2>
+  <p>Sou apaixonado por tecnologia, design moderno e interfaces futuristas. Crio experiências digitais interativas e ousadas.</p>
+</section>
+
+<section id="projetos" class="tab-content">
+  <h2>Projetos</h2>
+  <div class="cards">
+    <div class="card"><h3>Neural Interface</h3><p>Interface futurista e responsiva.</p></div>
+    <div class="card"><h3>Cyber Hub</h3><p>Sistema interativo de monitoramento digital.</p></div>
+    <div class="card"><h3>Digital Lab</h3><p>Experiência imersiva em web futurista.</p></div>
+  </div>
+</section>
+
+<section id="scripts" class="tab-content">
+  <h2>Terminal / Bots Úteis</h2>
+  <div id="botToggle">💬 Abrir Bots / Terminal</div>
+
+  <div id="terminalWrapper">
+    <div id="terminalOutput">
+      <div>> Sistema conectado 🚀</div>
+      <div>> Use /buscar &lt;termo&gt;</div>
+    </div>
+    <input type="text" id="cmdInput" placeholder="/buscar exemplo"/>
+  </div>
+
+  <div id="botContainer">
+    <div id="botHeader">Bots Futuristas</div>
+    <div id="botMessages">
+      <div>> Olá! Use comandos: clima, info, conversão</div>
+    </div>
+    <input type="text" id="botInput" placeholder="Digite comando..."/>
+  </div>
+</section>
+
+<section id="contato" class="tab-content">
+  <h2>Contato</h2>
+  <p>Email: theusxzmattos@email.com</p>
+  <p>Telefone: +55 (16) 99640-6039</p>
+  <p>GitHub: github.com/suehtampy</p>
+</section>
+
+<footer>© 2026 Matheus | Futuristic Personal UI</footer>
+
+<script>
+// CURSOR NEON
+const cursor=document.querySelector(".cursor");
+document.addEventListener("mousemove",e=>{
+  cursor.style.left=e.clientX+"px";
+  cursor.style.top=e.clientY+"px";
+});
+
+// PARTICLES INTERATIVOS
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+let particles=[];
+for(let i=0;i<120;i++){
+  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.8,dy:(Math.random()-0.5)*0.8});
+}
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="#00f0ff"; ctx.fill();
+    p.x+=p.dx; p.y+=p.dy;
+    if(p.x<0||p.x>canvas.width)p.dx*=-1;
+    if(p.y<0||p.y>canvas.height)p.dy*=-1;
+  });
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      let dx=particles[i].x-particles[j].x;
+      let dy=particles[i].y-particles[j].y;
+      let dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){
+        ctx.strokeStyle="rgba(0,255,255,"+(1-dist/120)+")";
+        ctx.lineWidth=0.5;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ABAS
+const tabs=document.querySelectorAll(".sidebar button");
+const contents=document.querySelectorAll(".tab-content");
+tabs.forEach(tab=>{
+  tab.addEventListener("click",()=>{ contents.forEach(c=>c.classList.remove("active"));
+  document.getElementById(tab.dataset.tab).classList.add("active"); });
+});
+
+// BOT / TERMINAL
+const botToggle=document.getElementById("botToggle");
+const terminalWrapper=document.getElementById("terminalWrapper");
+const botContainer=document.getElementById("botContainer");
+const botMessages=document.getElementById("botMessages");
+const botInput=document.getElementById("botInput");
+
+botToggle.addEventListener("click",()=>{
+  terminalWrapper.style.display=terminalWrapper.style.display==='flex'?'none':'flex';
+  terminalWrapper.style.flexDirection='column';
+  botContainer.style.display='flex';
+  botInput.focus();
+});
+
+// TERMINAL BUSCA
+function appendTerminal(text){
+  const term=document.getElementById("terminalOutput");
+  term.innerHTML+="<div>> "+text+"</div>";
+  term.scrollTop=term.scrollHeight;
+}
+async function carregarLoginsTxt(){
+  try{
+    const res=await fetch("logins.txt");
+    const txt=await res.text();
+    return txt.split("\n").map(l=>l.trim()).filter(l=>l.length>0);
+  }catch{ appendTerminal("❌ Erro ao carregar logins.txt"); return []; }
+}
+document.getElementById("cmdInput").addEventListener("keydown", async(e)=>{
+  if(e.key==="Enter"){
+    const cmd=e.target.value.trim();
+    appendTerminal(cmd);
+    if(cmd.startsWith("/buscar ")){
+      appendTerminal("🔍 Buscando...");
+      const termo=cmd.replace("/buscar ","").trim();
+      const linhas=await carregarLoginsTxt();
+      const encontrados=[];
+      linhas.forEach(linha=>{
+        const partes=linha.split(":");
+        let url,login,senha;
+        if(partes.length===3)[url,login,senha]=partes;
+        else if(partes.length===4)[,url,login,senha]=partes;
+        if(url.toLowerCase().includes(termo.toLowerCase())) encontrados.push(login+":"+senha);
+      });
+      if(!encontrados.length) appendTerminal(`⚠ Nenhum login encontrado`);
+      else { appendTerminal(`✔ ${encontrados.length} resultado(s):`); encontrados.forEach(i=>appendTerminal(i));}
+    }else appendTerminal("❗ Comando inválido — use /buscar <termo>");
+    e.target.value="";
+  }
+});
+
+// BOT INTERATIVO FUNCIONAL
+botInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    const cmd=e.target.value.trim();
+    if(!cmd) return;
+    botMessages.innerHTML+=`<div>> ${cmd}</div>`;
+    botMessages.scrollTop=botMessages.scrollHeight;
+    const lower=cmd.toLowerCase();
+    if(lower.includes("clima")){
+      botMessages.innerHTML+=`<div>🌡 Clima simulado: 25°C | Céu limpo | Cidade: São Paulo</div>`;
+    } else if(lower.includes("info")){
+      botMessages.innerHTML+=`<div>💻 Info: ${navigator.userAgent} | Resolução: ${window.innerWidth}x${window.innerHeight}</div>`;
+    } else if(lower.includes("conversao")){
+      botMessages.innerHTML+=`<div>🔹 100°C → 212°F | 50 USD → 270 BRL (simulado)</div>`;
+    } else botMessages.innerHTML+=`<div>❌ Comando desconhecido</div>`;
+    e.target.value="";
+    botMessages.scrollTop=botMessages.scrollHeight;
+  }
+});
+</script>
+</body>
+</html>
