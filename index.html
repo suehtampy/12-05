@@ -3,255 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SUEHTAM — Living System</title>
+<title>SUEHTAM // FUTURE CORE</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= RESET ================= */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+/* ================= GLOBAL ================= */
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-  font-family:'Inter',sans-serif;
-  background:#050508;
-  color:#f1f1f1;
+  background:#050510;
+  color:#00f0ff;
+  font-family:'Orbitron',sans-serif;
   overflow-x:hidden;
-  cursor:none;
 }
 
-/* ================= ORGANIC BACKGROUND ================= */
-#bg{
+/* GRID FUNDO */
+body::before{
+  content:"";
   position:fixed;
-  width:100%;
-  height:100%;
+  inset:0;
+  background:
+  linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px);
+  background-size:50px 50px;
+  animation:gridMove 15s linear infinite;
   z-index:-2;
-  overflow:hidden;
 }
 
-.blob{
-  position:absolute;
-  width:600px;
-  height:600px;
-  background:radial-gradient(circle at 30% 30%, #00d4ff, #001a2e);
-  border-radius:50%;
-  filter:blur(120px);
-  animation:float 20s infinite alternate ease-in-out;
-  opacity:0.7;
+@keyframes gridMove{
+  from{background-position:0 0;}
+  to{background-position:0 50px;}
 }
 
-.blob:nth-child(2){
-  left:60%;
-  top:40%;
-  background:radial-gradient(circle at 70% 70%, #0066ff, #000814);
-  animation-duration:25s;
-}
-
-@keyframes float{
-  0%{transform:translate(-10%, -10%) scale(1);}
-  100%{transform:translate(10%, 10%) scale(1.2);}
-}
-
-/* ================= CUSTOM CURSOR ================= */
-.cursor{
-  width:20px;
-  height:20px;
-  border:1px solid white;
-  border-radius:50%;
+/* SCANLINES */
+body::after{
+  content:"";
   position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,255,0.05) 0px,
+    rgba(0,255,255,0.05) 2px,
+    transparent 2px,
+    transparent 4px
+  );
   pointer-events:none;
-  transform:translate(-50%,-50%);
-  transition:0.08s;
-  mix-blend-mode:difference;
-  z-index:999;
+  z-index:-1;
 }
 
-/* ================= HERO ================= */
-.hero{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
+/* HEADER */
+header{
+  padding:30px;
   text-align:center;
+  border-bottom:1px solid rgba(0,255,255,0.3);
 }
 
-.hero h1{
-  font-size:clamp(3rem, 8vw, 8rem);
-  font-weight:700;
-  letter-spacing:-3px;
-  transition:0.2s ease;
+header h1{
+  font-size:3rem;
+  text-shadow:0 0 20px #00f0ff;
 }
 
-.hero p{
-  margin-top:20px;
-  font-size:1.2rem;
-  opacity:0.6;
+/* HUD */
+.hud{
+  position:fixed;
+  top:20px;
+  right:20px;
+  font-size:0.8rem;
+  text-align:right;
 }
 
-/* ================= SECTIONS ================= */
-section{
-  padding:120px 10%;
-  max-width:1200px;
-  margin:auto;
-  opacity:0;
-  transform:translateY(50px);
-  transition:1s ease;
+.panel{
+  padding:100px 10%;
+  border-bottom:1px solid rgba(0,255,255,0.2);
 }
 
-section.visible{
-  opacity:1;
-  transform:translateY(0);
-}
-
-h2{
+.panel h2{
+  margin-bottom:30px;
   font-size:2rem;
-  margin-bottom:40px;
-  font-weight:300;
 }
 
-/* ================= GLASS CARDS ================= */
-.grid{
+/* CARDS */
+.cards{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:40px;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
 }
 
 .card{
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  backdrop-filter:blur(20px);
-  padding:40px;
-  border-radius:20px;
-  transition:0.4s ease;
+  border:1px solid rgba(0,255,255,0.4);
+  padding:30px;
+  position:relative;
+  transition:0.3s;
 }
 
 .card:hover{
+  box-shadow:0 0 30px #00f0ff;
   transform:translateY(-10px);
-  background:rgba(255,255,255,0.05);
 }
 
-/* ================= TERMINAL ================= */
+/* RADAR */
+.radar{
+  width:200px;
+  height:200px;
+  border:2px solid #00f0ff;
+  border-radius:50%;
+  position:relative;
+  margin:auto;
+}
+
+.radar::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:1px solid rgba(0,255,255,0.2);
+}
+
+.sweep{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:conic-gradient(rgba(0,255,255,0.4), transparent 60%);
+  border-radius:50%;
+  animation:rotate 3s linear infinite;
+}
+
+@keyframes rotate{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+/* TERMINAL */
 #terminalSection{
   margin-top:40px;
-  background:#000;
-  border-radius:15px;
+  background:black;
+  border:1px solid #00f0ff;
   padding:20px;
-  border:1px solid #111;
 }
 
 #terminalOutput{
   height:250px;
   overflow-y:auto;
   font-family:monospace;
-  font-size:0.9rem;
-  color:#00ff99;
+  color:#00ff88;
 }
 
 #cmdInput{
   width:100%;
+  padding:10px;
+  background:#000;
+  border:1px solid #00f0ff;
+  color:#00ff88;
   margin-top:10px;
-  padding:12px;
-  background:#050505;
-  border:1px solid #222;
-  color:#00ff99;
-  outline:none;
-  border-radius:8px;
 }
 
-/* ================= FOOTER ================= */
+/* FOOTER */
 footer{
   text-align:center;
   padding:40px;
-  opacity:0.4;
+  opacity:0.6;
 }
 
 </style>
 </head>
 <body>
 
-<div id="bg">
-  <div class="blob"></div>
-  <div class="blob"></div>
+<header>
+  <h1>SUEHTAM // FUTURE CORE</h1>
+</header>
+
+<div class="hud">
+  <div id="clock"></div>
+  <div>SYS STATUS: ACTIVE</div>
+  <div>CPU LOAD: <span id="cpu"></span>%</div>
 </div>
 
-<div class="cursor"></div>
-
-<div class="hero">
-  <h1 id="title">SUEHTAM</h1>
-  <p>digital organism evolving through code</p>
-</div>
-
-<section>
-  <h2>About</h2>
-  <p>Eu não construo apenas sites. Eu crio experiências digitais vivas.</p>
-</section>
-
-<section>
-  <h2>Projects</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Neural Interface</h3>
-      <p>Sistema visual interativo baseado em movimento.</p>
-    </div>
-    <div class="card">
-      <h3>Fluid Web</h3>
-      <p>Web como organismo dinâmico e responsivo.</p>
-    </div>
-    <div class="card">
-      <h3>Digital Presence</h3>
-      <p>Identidade digital minimalista e futurista.</p>
-    </div>
+<section class="panel">
+  <h2>MISSION CONTROL</h2>
+  <div class="radar">
+    <div class="sweep"></div>
   </div>
 </section>
 
-<section>
-  <h2>Terminal</h2>
+<section class="panel">
+  <h2>PROJECT MODULES</h2>
+  <div class="cards">
+    <div class="card">Neural Engine</div>
+    <div class="card">Quantum Interface</div>
+    <div class="card">Cyber Node</div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>TERMINAL ACCESS</h2>
 
   <div id="terminalSection">
     <div id="terminalOutput">
-      <div>> Sistema ativo</div>
+      <div>> Sistema conectado</div>
       <div>> Use /buscar &lt;termo&gt;</div>
     </div>
-    <input type="text" id="cmdInput" placeholder="/buscar exemplo">
+    <input type="text" id="cmdInput">
   </div>
 
 </section>
 
-<footer>© 2026 — SUEHTAM Living System</footer>
+<footer>© 2026 FUTURE CORE SYSTEM</footer>
 
 <script>
 
-/* CURSOR */
-const cursor = document.querySelector(".cursor");
-document.addEventListener("mousemove", e=>{
-  cursor.style.left = e.clientX+"px";
-  cursor.style.top = e.clientY+"px";
-});
-
-/* HERO INTERAÇÃO */
-const title = document.getElementById("title");
-document.addEventListener("mousemove", e=>{
-  const x = (window.innerWidth/2 - e.clientX)/40;
-  const y = (window.innerHeight/2 - e.clientY)/40;
-  title.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
-});
-
-/* SCROLL ANIMATION */
-const sections = document.querySelectorAll("section");
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add("visible");
-    }
-  });
-},{threshold:0.2});
-
-sections.forEach(sec=>observer.observe(sec));
+/* CLOCK + CPU */
+setInterval(()=>{
+  document.getElementById("clock").textContent =
+  new Date().toLocaleTimeString();
+  document.getElementById("cpu").textContent =
+  Math.floor(Math.random()*60+20);
+},1000);
 
 /* TERMINAL ORIGINAL */
 function appendTerminal(text){
