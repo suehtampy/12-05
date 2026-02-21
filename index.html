@@ -3,326 +3,257 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SUEHTAM // Digital Entity</title>
+<title>SUEHTAM — Living System</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= GLOBAL ================= */
-body{
+/* ================= RESET ================= */
+*{
   margin:0;
-  font-family:'Poppins',sans-serif;
-  color:white;
-  background:linear-gradient(-45deg,#0a0a15,#140022,#001a2e,#1a0033);
-  background-size:400% 400%;
-  animation:bgFlow 15s ease infinite;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:#050508;
+  color:#f1f1f1;
   overflow-x:hidden;
-  scroll-behavior:smooth;
   cursor:none;
 }
 
-@keyframes bgFlow{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+/* ================= ORGANIC BACKGROUND ================= */
+#bg{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-2;
+  overflow:hidden;
 }
 
-canvas#particles{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-1;
+.blob{
+  position:absolute;
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle at 30% 30%, #00d4ff, #001a2e);
+  border-radius:50%;
+  filter:blur(120px);
+  animation:float 20s infinite alternate ease-in-out;
+  opacity:0.7;
+}
+
+.blob:nth-child(2){
+  left:60%;
+  top:40%;
+  background:radial-gradient(circle at 70% 70%, #0066ff, #000814);
+  animation-duration:25s;
+}
+
+@keyframes float{
+  0%{transform:translate(-10%, -10%) scale(1);}
+  100%{transform:translate(10%, 10%) scale(1.2);}
 }
 
 /* ================= CUSTOM CURSOR ================= */
-.custom-cursor{
-  width:15px;
-  height:15px;
-  border:2px solid #9333ea;
+.cursor{
+  width:20px;
+  height:20px;
+  border:1px solid white;
   border-radius:50%;
   position:fixed;
   pointer-events:none;
   transform:translate(-50%,-50%);
-  transition:0.05s;
-  z-index:9999;
-  box-shadow:0 0 20px #9333ea;
-}
-
-/* ================= HUD ================= */
-.hud{
-  position:fixed;
-  top:15px;
-  right:20px;
-  font-family:monospace;
-  font-size:0.8rem;
-  color:#a855f7;
-  text-align:right;
-  z-index:1000;
-}
-
-/* ================= SIDEBAR ================= */
-.sidebar{
-  position:fixed;
-  left:0;
-  top:0;
-  height:100%;
-  width:80px;
-  background:rgba(15,15,30,0.7);
-  backdrop-filter:blur(10px);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding-top:40px;
-  transition:0.4s;
-  border-right:1px solid rgba(138,43,226,0.3);
-}
-.sidebar:hover{width:200px;}
-
-.logo{
-  font-family:'Orbitron',sans-serif;
-  color:#a855f7;
-  margin-bottom:40px;
-  font-size:1.5rem;
-}
-
-.sidebar a{
-  text-decoration:none;
-  color:#aaa;
-  margin:20px 0;
-  transition:0.3s;
-}
-.sidebar a:hover{
-  color:#a855f7;
+  transition:0.08s;
+  mix-blend-mode:difference;
+  z-index:999;
 }
 
 /* ================= HERO ================= */
 .hero{
-  margin-left:80px;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
   text-align:center;
-  perspective:1000px;
 }
 
 .hero h1{
-  font-family:'Orbitron',sans-serif;
-  font-size:4rem;
-  text-shadow:0 0 40px rgba(147,51,234,0.6);
-  transition:transform 0.2s ease;
+  font-size:clamp(3rem, 8vw, 8rem);
+  font-weight:700;
+  letter-spacing:-3px;
+  transition:0.2s ease;
+}
+
+.hero p{
+  margin-top:20px;
+  font-size:1.2rem;
+  opacity:0.6;
 }
 
 /* ================= SECTIONS ================= */
 section{
-  margin-left:80px;
-  padding:100px 10%;
+  padding:120px 10%;
+  max-width:1200px;
+  margin:auto;
   opacity:0;
-  transform:scale(0.9);
-  transition:0.8s cubic-bezier(.17,.67,.83,.67);
+  transform:translateY(50px);
+  transition:1s ease;
+}
+
+section.visible{
+  opacity:1;
+  transform:translateY(0);
 }
 
 h2{
-  font-family:'Orbitron',sans-serif;
-  color:#a855f7;
+  font-size:2rem;
+  margin-bottom:40px;
+  font-weight:300;
 }
 
-/* ================= CARDS ================= */
-.cards{
+/* ================= GLASS CARDS ================= */
+.grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:30px;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:40px;
 }
 
 .card{
-  background:rgba(255,255,255,0.05);
-  padding:30px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
+  padding:40px;
   border-radius:20px;
-  transition:transform 0.2s ease;
-  transform-style:preserve-3d;
+  transition:0.4s ease;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  background:rgba(255,255,255,0.05);
 }
 
 /* ================= TERMINAL ================= */
 #terminalSection{
-  background:#01010A;
-  border:3px solid #9333EA;
-  border-radius:12px;
-  padding:15px;
-  margin-top:30px;
-  font-family:"Courier New",monospace;
-}
-#terminalOutput{
+  margin-top:40px;
   background:#000;
-  color:#0FFF92;
-  height:280px;
-  overflow-y:auto;
-  padding:12px 10px;
-}
-#cmdInput{
-  width:100%;
-  margin-top:8px;
-  background:#111;
-  border:2px solid #2563eb;
-  padding:10px;
-  color:#0FFF92;
-  border-radius:8px;
-  outline:none;
+  border-radius:15px;
+  padding:20px;
+  border:1px solid #111;
 }
 
+#terminalOutput{
+  height:250px;
+  overflow-y:auto;
+  font-family:monospace;
+  font-size:0.9rem;
+  color:#00ff99;
+}
+
+#cmdInput{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+  background:#050505;
+  border:1px solid #222;
+  color:#00ff99;
+  outline:none;
+  border-radius:8px;
+}
+
+/* ================= FOOTER ================= */
 footer{
   text-align:center;
-  padding:20px;
+  padding:40px;
+  opacity:0.4;
 }
 
 </style>
 </head>
 <body>
 
-<canvas id="particles"></canvas>
-<div class="custom-cursor"></div>
-
-<div class="hud">
-<div>STATUS: ONLINE</div>
-<div id="clock"></div>
-<div>CPU: <span id="cpu"></span>%</div>
+<div id="bg">
+  <div class="blob"></div>
+  <div class="blob"></div>
 </div>
 
-<div class="sidebar">
-<h2 class="logo">SM</h2>
-<a href="#home">Home</a>
-<a href="#sobre">Sobre</a>
-<a href="#projetos">Projetos</a>
-<a href="#scripts">Scripts</a>
-<a href="#contato">Contato</a>
+<div class="cursor"></div>
+
+<div class="hero">
+  <h1 id="title">SUEHTAM</h1>
+  <p>digital organism evolving through code</p>
 </div>
 
-<section class="hero" id="home">
-<h1>SUEHTAM</h1>
+<section>
+  <h2>About</h2>
+  <p>Eu não construo apenas sites. Eu crio experiências digitais vivas.</p>
 </section>
 
-<section id="sobre">
-<h2>Sobre Mim</h2>
-<p>Explorando tecnologia como forma de arte digital interativa.</p>
+<section>
+  <h2>Projects</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Neural Interface</h3>
+      <p>Sistema visual interativo baseado em movimento.</p>
+    </div>
+    <div class="card">
+      <h3>Fluid Web</h3>
+      <p>Web como organismo dinâmico e responsivo.</p>
+    </div>
+    <div class="card">
+      <h3>Digital Presence</h3>
+      <p>Identidade digital minimalista e futurista.</p>
+    </div>
+  </div>
 </section>
 
-<section id="projetos">
-<h2>Projetos</h2>
-<div class="cards">
-<div class="card"><h3>Projeto Neural</h3><p>Sistema interativo visual.</p></div>
-<div class="card"><h3>Cyber Interface</h3><p>Experiência futurista dinâmica.</p></div>
-<div class="card"><h3>Digital Entity</h3><p>Web como organismo vivo.</p></div>
-</div>
+<section>
+  <h2>Terminal</h2>
+
+  <div id="terminalSection">
+    <div id="terminalOutput">
+      <div>> Sistema ativo</div>
+      <div>> Use /buscar &lt;termo&gt;</div>
+    </div>
+    <input type="text" id="cmdInput" placeholder="/buscar exemplo">
+  </div>
+
 </section>
 
-<section id="scripts">
-<h2>Terminal de Busca de Logins ✨</h2>
-<div id="terminalSection">
-<div id="terminalOutput">
-<div>> Conectado ao Terminal 🚀</div>
-<div>> Digite <strong>/buscar &lt;termo&gt;</strong> e pressione ENTER</div>
-</div>
-<input type="text" id="cmdInput">
-</div>
-</section>
-
-<section id="contato">
-<h2>Contato</h2>
-<p>Email: theusxzmattos@email.com</p>
-</section>
-
-<footer>© 2026 SUEHTAM</footer>
+<footer>© 2026 — SUEHTAM Living System</footer>
 
 <script>
 
-/* CLOCK */
-setInterval(()=>{
-document.getElementById("clock").textContent=new Date().toLocaleTimeString();
-document.getElementById("cpu").textContent=Math.floor(Math.random()*60+20);
-},1000);
-
 /* CURSOR */
-const cursor=document.querySelector(".custom-cursor");
-document.addEventListener("mousemove",e=>{
-cursor.style.left=e.clientX+"px";
-cursor.style.top=e.clientY+"px";
+const cursor = document.querySelector(".cursor");
+document.addEventListener("mousemove", e=>{
+  cursor.style.left = e.clientX+"px";
+  cursor.style.top = e.clientY+"px";
 });
 
-/* HERO 3D */
-const hero=document.querySelector(".hero h1");
-document.addEventListener("mousemove",e=>{
-const x=(window.innerWidth/2-e.clientX)/25;
-const y=(window.innerHeight/2-e.clientY)/25;
-hero.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`;
+/* HERO INTERAÇÃO */
+const title = document.getElementById("title");
+document.addEventListener("mousemove", e=>{
+  const x = (window.innerWidth/2 - e.clientX)/40;
+  const y = (window.innerHeight/2 - e.clientY)/40;
+  title.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
 });
 
-/* CARDS INTERAÇÃO */
-document.querySelectorAll(".card").forEach(card=>{
-card.addEventListener("mousemove",e=>{
-const rect=card.getBoundingClientRect();
-const x=e.clientX-rect.left;
-const y=e.clientY-rect.top;
-const rotateX=-(y-rect.height/2)/15;
-const rotateY=(x-rect.width/2)/15;
-card.style.transform=`rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-});
-card.addEventListener("mouseleave",()=>{
-card.style.transform="rotateX(0) rotateY(0)";
-});
-});
-
-/* SCROLL EFFECT */
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.style.opacity=1;
-entry.target.style.transform="scale(1)";
-}
-});
+/* SCROLL ANIMATION */
+const sections = document.querySelectorAll("section");
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+    }
+  });
 },{threshold:0.2});
-document.querySelectorAll("section").forEach(sec=>observer.observe(sec));
 
-/* PARTICULAS CONECTADAS */
-const canvas=document.getElementById("particles");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-let particles=[];
-for(let i=0;i<120;i++){
-particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,dx:(Math.random()-0.5)*0.8,dy:(Math.random()-0.5)*0.8});
-}
-function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-particles.forEach(p=>{
-p.x+=p.dx;p.y+=p.dy;
-if(p.x<0||p.x>canvas.width)p.dx*=-1;
-if(p.y<0||p.y>canvas.height)p.dy*=-1;
-ctx.beginPath();
-ctx.arc(p.x,p.y,2,0,Math.PI*2);
-ctx.fillStyle="#9333ea";
-ctx.fill();
-});
-for(let i=0;i<particles.length;i++){
-for(let j=i+1;j<particles.length;j++){
-let dx=particles[i].x-particles[j].x;
-let dy=particles[i].y-particles[j].y;
-let dist=Math.sqrt(dx*dx+dy*dy);
-if(dist<120){
-ctx.strokeStyle="rgba(147,51,234,"+(1-dist/120)+")";
-ctx.lineWidth=0.5;
-ctx.beginPath();
-ctx.moveTo(particles[i].x,particles[i].y);
-ctx.lineTo(particles[j].x,particles[j].y);
-ctx.stroke();
-}
-}
-}
-requestAnimationFrame(animate);
-}
-animate();
+sections.forEach(sec=>observer.observe(sec));
 
-/* ===== TERMINAL ORIGINAL MANTIDO ===== */
+/* TERMINAL ORIGINAL */
 function appendTerminal(text){
 const term=document.getElementById("terminalOutput");
 term.innerHTML+="<div>> "+text+"</div>";
@@ -334,7 +265,7 @@ const res=await fetch("logins.txt");
 const txt=await res.text();
 return txt.split("\n").map(l=>l.trim()).filter(l=>l.length>0);
 }catch{
-appendTerminal("❌ Erro ao carregar logins.txt");
+appendTerminal("Erro ao carregar logins.txt");
 return[];
 }
 }
@@ -343,7 +274,6 @@ if(e.key==="Enter"){
 const cmd=e.target.value.trim();
 appendTerminal(cmd);
 if(cmd.startsWith("/buscar ")){
-appendTerminal("🔍 Buscando...");
 const termo=cmd.replace("/buscar ","").trim();
 const linhas=await carregarLoginsTxt();
 const encontrados=[];
@@ -354,18 +284,16 @@ if(partes.length===3)[url,login,senha]=partes;
 else if(partes.length===4)[,url,login,senha]=partes;
 if(url&&url.toLowerCase().includes(termo.toLowerCase()))encontrados.push(login+":"+senha);
 });
-if(!encontrados.length)appendTerminal("⚠ Nenhum login encontrado");
-else{
-appendTerminal(`✔ ${encontrados.length} resultado(s):`);
-encontrados.forEach(item=>appendTerminal(item));
-}
+if(!encontrados.length)appendTerminal("Nenhum login encontrado");
+else encontrados.forEach(item=>appendTerminal(item));
 }else{
-appendTerminal("❗ Comando inválido — use /buscar <termo>");
+appendTerminal("Comando inválido");
 }
 document.getElementById("cmdInput").value="";
 }
 });
 
 </script>
+
 </body>
 </html>
