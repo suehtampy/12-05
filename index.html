@@ -3,349 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MATHEUS OS | Infinity Edition</title>
+<title>MATHEUS OS | Full Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
     --bg: #050505; --text: #ffffff; --accent: #3b82f6;
     --card: rgba(20, 20, 25, 0.7); --sidebar: #0a0a0c;
-    --border: rgba(255, 255, 255, 0.08);
-    --glass-grad: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+    --border: rgba(255, 255, 255, 0.1);
+    --success: #10b981; --error: #f43f5e;
 }
 .light-mode {
-    --bg: #f4f7fa; --text: #0f172a; --accent: #2563eb;
+    --bg: #f8fafc; --text: #0f172a; --accent: #2563eb;
     --card: #ffffff; --sidebar: #ffffff; --border: #e2e8f0;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body { 
     font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); 
-    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow-x: hidden;
+    transition: 0.5s; overflow-x: hidden;
 }
 
-/* BACKGROUND DINÂMICO */
-.mesh-bg {
+/* EFEITO DE FUNDO */
+.bg-glow {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-    background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
-    filter: blur(100px);
+    background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
 }
 
-/* SIDEBAR LUXO */
+/* SIDEBAR */
 .sidebar {
-    position: fixed; left: 20px; top: 20px; bottom: 20px; width: 280px;
+    position: fixed; left: 20px; top: 20px; bottom: 20px; width: 260px;
     background: var(--sidebar); border: 1px solid var(--border);
-    border-radius: 24px; padding: 40px 20px; z-index: 1000; box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    border-radius: 24px; padding: 40px 20px; z-index: 1000;
 }
-.brand { font-size: 1.8rem; font-weight: 800; margin-bottom: 50px; text-align: center; letter-spacing: -1.5px; }
-
 .nav-item {
-    width: 100%; padding: 16px 20px; margin-bottom: 12px; border-radius: 16px;
+    width: 100%; padding: 15px; margin-bottom: 8px; border-radius: 12px;
     background: transparent; border: none; color: var(--text); text-align: left;
-    font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px;
-    opacity: 0.5;
+    font-weight: 600; cursor: pointer; transition: 0.3s; opacity: 0.5;
 }
-.nav-item:hover, .nav-item.active { background: var(--accent); color: #fff; opacity: 1; transform: translateX(5px); }
+.nav-item.active, .nav-item:hover { background: var(--accent); color: white; opacity: 1; }
 
-/* CONTEÚDO */
-.content { margin-left: 340px; padding: 60px 50px 60px 0; max-width: 1300px; }
-.section { display: none; animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-.section.active { display: block; }
-
-@keyframes reveal { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
-/* CARDS GLASSMORPHISM */
+/* CONTENT */
+.content { margin-left: 320px; padding: 60px 40px; }
 .glass-card { 
     background: var(--card); border: 1px solid var(--border);
-    padding: 40px; border-radius: 32px; backdrop-filter: blur(20px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2); margin-bottom: 30px;
-    background-image: var(--glass-grad);
+    padding: 35px; border-radius: 30px; backdrop-filter: blur(20px);
+    margin-bottom: 30px;
 }
 
-h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -1px; }
+h2 { font-size: 2rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
 
-/* INPUTS ESTILIZADOS */
-.group { margin-bottom: 20px; }
-label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; opacity: 0.6; }
-input, select, textarea {
+/* INPUT & BUTTON */
+input {
     width: 100%; padding: 18px; border-radius: 16px; border: 1px solid var(--border);
-    background: rgba(0,0,0,0.2); color: var(--text); font-family: inherit; font-size: 1rem;
-    transition: 0.3s;
+    background: rgba(0,0,0,0.3); color: white; font-size: 1rem; margin-bottom: 20px;
 }
-input:focus { border-color: var(--accent); background: rgba(0,0,0,0.4); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); }
-
-.btn-elite {
-    background: var(--accent); color: white; border: none; padding: 20px;
-    border-radius: 18px; font-weight: 800; cursor: pointer; width: 100%; font-size: 1rem;
-    transition: 0.4s; text-transform: uppercase; letter-spacing: 1px;
+.btn-action {
+    background: var(--accent); color: white; border: none; padding: 18px;
+    border-radius: 16px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s;
 }
-.btn-elite:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4); }
+.btn-action:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
 
-/* TERMINAL CORE */
-#termBox {
-    background: #000; color: #3b82f6; font-family: 'JetBrains Mono';
-    padding: 30px; border-radius: 24px; height: 450px; overflow-y: auto; 
-    border: 1px solid var(--border); font-size: 0.9rem; line-height: 1.6;
+/* RESULTADOS API */
+.api-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;
+    display: none; /* Escondido até a busca */
 }
-
-#clock { font-size: 5rem; font-weight: 800; margin-bottom: 10px; color: var(--accent); }
-
-/* FEEDBACK DE ENTREVISTA */
-.feedback-box {
-    padding: 20px; border-radius: 16px; margin-top: 15px; font-weight: 500;
-    display: none; border-left: 5px solid;
+.data-box {
+    background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;
+    border: 1px solid var(--border);
 }
-.good { background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: #10b981; }
-.bad { background: rgba(244, 63, 94, 0.1); color: #f43f5e; border-color: #f43f5e; }
+.label { font-size: 0.7rem; text-transform: uppercase; opacity: 0.5; margin-bottom: 5px; display: block; }
+.val { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 600; color: var(--accent); }
 
+#status-indicator { margin-bottom: 15px; font-weight: 800; text-align: center; }
 </style>
 </head>
 <body>
 
-<div class="mesh-bg"></div>
+<div class="bg-glow"></div>
 
 <aside class="sidebar">
-    <div class="brand">MATHEUS<span style="color:var(--accent)">OS</span></div>
-    <button class="nav-item active" onclick="tab('home')">Dashboard</button>
-    <button class="nav-item" onclick="tab('entrevista')">Simulador de Elite</button>
-    <button class="nav-item" onclick="tab('curriculo')">Arquiteto de CV</button>
-    <button class="nav-item" onclick="tab('utilitarios')">Toolkit Completo</button>
-    <button class="nav-item" onclick="tab('terminal')">Terminal Search</button>
-    <button class="nav-item" onclick="toggleTheme()" style="margin-top: auto;">Alternar Visual 🌓</button>
+    <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 40px; text-align: center;">MATHEUS<span style="color:var(--accent)">.OS</span></div>
+    <button class="nav-item active">Inteligência Numérica</button>
+    <button class="nav-item">Outras Ferramentas</button>
+    <div style="position: absolute; bottom: 40px; width: 85%;">
+        <button class="btn-action" onclick="document.body.classList.toggle('light-mode')" style="background: var(--border); font-size: 0.8rem;">Alternar Tema</button>
+    </div>
 </aside>
 
 <main class="content">
     
-    <section id="home" class="section active">
-        <div id="clock">00:00:00</div>
-        <h2>Seja bem-vindo ao <span style="color:var(--accent)">Ápice.</span></h2>
-        <p style="font-size: 1.3rem; opacity: 0.5; max-width: 600px;">Sistemas de inteligência integrados para evolução profissional absoluta.</p>
-    </section>
+    <div class="glass-card">
+        <h2>Scanner de Inteligência Global</h2>
+        <p style="opacity: 0.6; margin-bottom: 20px;">Insira o número com DDI e DDD para uma extração completa de dados.</p>
+        
+        <input type="text" id="phoneInput" placeholder="Ex: 5511988887777">
+        <button class="btn-action" onclick="fullScan()">Realizar Varredura Completa</button>
 
-    <section id="entrevista" class="section">
-        <h2>Simulador de Impacto</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-            <div class="glass-card">
-                <label>Defina seu Alvo (Profissão)</label>
-                <input type="text" id="jobTarget" placeholder="Ex: Diretor de Tecnologia">
-                <button class="btn-elite" onclick="startSession()">Iniciar Protocolo</button>
-                
-                <div id="qaBox" style="display: none; margin-top: 40px;">
-                    <p id="qText" style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;"></p>
-                    <textarea id="uAns" placeholder="Sua resposta sem filtros..."></textarea>
-                    <button class="btn-elite" onclick="processAnswer()">Avaliar Resposta</button>
-                    <div id="feedback" class="feedback-box"></div>
-                </div>
-            </div>
-            <div class="glass-card">
-                <label>Relatório de Performance</label>
-                <div id="interviewLog" style="font-size: 0.9rem; overflow-y: auto; height: 400px;"></div>
-            </div>
-        </div>
-    </section>
+        <div id="status-indicator"></div>
 
-    <section id="curriculo" class="section">
-        <h2>Engenharia de Currículo</h2>
-        <div class="glass-card" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
-            <div>
-                <label>Nome Completo</label><input type="text" id="cvName">
-                <label>Objetivo Estratégico</label><input type="text" id="cvRole">
-                <label>LinkedIn / Portfólio</label><input type="text" id="cvLink">
-                <label>Resumo Executivo</label><textarea id="cvBio" style="height: 100px;"></textarea>
-            </div>
-            <div>
-                <label>Experiência e Realizações (Use Bullet Points)</label><textarea id="cvExp" style="height: 100px;"></textarea>
-                <label>Formação & Idiomas</label><textarea id="cvEdu" style="height: 60px;"></textarea>
-                <label>Stack Tecnológica / Skills</label><input type="text" id="cvSkills">
-                <button class="btn-elite" onclick="buildCV()">Exportar CV Premium</button>
-            </div>
+        <div id="apiResults" class="api-grid">
+            <div class="data-box"><span class="label">Status da Linha</span><span id="res-valid" class="val">--</span></div>
+            <div class="data-box"><span class="label">Formato Local</span><span id="res-local" class="val">--</span></div>
+            <div class="data-box"><span class="label">Formato Internacional</span><span id="res-intl" class="val">--</span></div>
+            <div class="data-box"><span class="label">País</span><span id="res-country" class="val">--</span></div>
+            <div class="data-box"><span class="label">Localização/Estado</span><span id="res-loc" class="val">--</span></div>
+            <div class="data-box"><span class="label">Operadora (Carrier)</span><span id="res-carrier" class="val">--</span></div>
+            <div class="data-box"><span class="label">Tipo de Linha</span><span id="res-type" class="val">--</span></div>
+            <div class="data-box"><span class="label">Código do País</span><span id="res-prefix" class="val">--</span></div>
         </div>
-    </section>
-
-    <section id="utilitarios" class="section">
-        <h2>Toolkit Profissional</h2>
-        <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-            <div class="glass-card">
-                <h3>Validação de ID</h3>
-                <input type="text" id="docIn" placeholder="CPF/CNPJ">
-                <button class="btn-elite" onclick="checkID()">Validar Documento</button>
-                <p id="docRes" style="margin-top: 15px; font-weight: 800;"></p>
-            </div>
-            <div class="glass-card">
-                <h3>Gerador de Bios</h3>
-                <select id="bioStyle">
-                    <option value="exec">Executivo Corporativo</option>
-                    <option value="tech">Tech & Inovação</option>
-                    <option value="minimal">Minimalista</option>
-                </select>
-                <button class="btn-elite" style="margin-top: 15px;" onclick="makeBio()">Gerar Bio Inteligente</button>
-                <textarea id="bioRes" style="margin-top: 15px; height: 80px;" readonly></textarea>
-            </div>
-            <div class="glass-card">
-                <h3>Cripto Analisador</h3>
-                <input type="password" id="passIn" oninput="passEval()" placeholder="Sua senha mestre">
-                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 10px;">
-                    <div id="passLevel" style="height: 100%; width: 0%; transition: 0.5s; border-radius: 3px;"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="terminal" class="section">
-        <h2>Data Terminal</h2>
-        <div id="termBox">
-            <div>> M_OS_CORE v5.0 // ONLINE</div>
-            <div>> Comando: /buscar [termo] // Retorno: LOGIN:PASS</div>
-        </div>
-        <input type="text" id="tInput" style="margin-top: 25px; border-color: var(--accent);" placeholder="Comando..." onkeydown="handleCmd(event)">
-    </section>
+    </div>
 
 </main>
 
 <script>
-// --- GLOBAL ---
-setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-function toggleTheme() { document.body.classList.toggle('light-mode'); }
-function tab(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    event.currentTarget.classList.add('active');
-}
+async function fullScan() {
+    const number = document.getElementById('phoneInput').value;
+    const status = document.getElementById('status-indicator');
+    const grid = document.getElementById('apiResults');
+    const apiKey = '95c79cb4a8841b8d8c24ed0db133f322';
 
-// --- ENTREVISTA COM AVALIAÇÃO SINCERA ---
-let qStep = 0;
-let job = "";
-const questions = [
-    "Por que você é a melhor escolha para ser [JOB] nesta empresa?",
-    "Como você lida com um erro que custou dinheiro para a organização?",
-    "Qual a sua maior fraqueza que impediria você de ser um excelente [JOB]?",
-    "Como você reage sob uma liderança que você não respeita?",
-    "O que você faria se um colega estivesse sabotando seu trabalho?"
-];
+    if(!number) return alert("Digite um número.");
 
-function startSession() {
-    job = document.getElementById('jobTarget').value;
-    if(!job) return;
-    qStep = 0;
-    document.getElementById('qaBox').style.display = 'block';
-    nextQuestion();
-}
+    status.innerHTML = "INICIANDO VARREDURA...";
+    status.style.color = "var(--accent)";
+    grid.style.display = "none";
 
-function nextQuestion() {
-    if(qStep < questions.length) {
-        document.getElementById('qText').innerText = questions[qStep].replace("[JOB]", job);
-        document.getElementById('feedback').style.display = 'none';
-    } else {
-        document.getElementById('qaBox').innerHTML = "<h3>Treinamento Encerrado.</h3>";
-    }
-}
-
-function processAnswer() {
-    const ans = document.getElementById('uAns').value;
-    const f = document.getElementById('feedback');
-    f.style.display = 'block';
-    
-    // AVALIAÇÃO SINCERA
-    if(ans.length < 20) {
-        f.className = "feedback-box bad";
-        f.innerText = "Sinceramente? Essa resposta foi preguiçosa. Um recrutador te eliminaria agora. Seja mais profundo.";
-    } else if(ans.includes("não sei") || ans.includes("acho que")) {
-        f.className = "feedback-box bad";
-        f.innerText = "Falta confiança. Pare de usar termos incertos. Tome as rédeas da resposta.";
-    } else {
-        f.className = "feedback-box good";
-        f.innerText = "Bom nível de argumentação. Você demonstrou clareza e autoridade.";
-        document.getElementById('interviewLog').innerHTML += `<p><b>P:</b> ${questions[qStep]}<br><b>R:</b> ${ans}</p><hr style="opacity:0.1; margin:10px 0;">`;
-        qStep++;
-        setTimeout(nextQuestion, 2000);
-    }
-    document.getElementById('uAns').value = "";
-}
-
-// --- CURRÍCULO PREMIUM ---
-function buildCV() {
-    const d = { n: document.getElementById('cvName').value, r: document.getElementById('cvRole').value, l: document.getElementById('cvLink').value, b: document.getElementById('cvBio').value, e: document.getElementById('cvExp').value, f: document.getElementById('cvEdu').value, s: document.getElementById('cvSkills').value };
-    const win = window.open('', '_blank');
-    win.document.write(`<html><head><title>CV Elite</title><style>
-        body { font-family: 'Inter', sans-serif; padding: 60px; color: #111; max-width: 850px; margin: auto; }
-        h1 { font-size: 35px; border-bottom: 4px solid #000; margin: 0; }
-        .role { font-size: 20px; font-weight: bold; color: #3b82f6; margin-bottom: 20px; }
-        h2 { font-size: 14px; text-transform: uppercase; border-bottom: 1px solid #ddd; margin-top: 30px; }
-        .text { font-size: 14px; white-space: pre-wrap; margin-top: 10px; line-height: 1.6; }
-    </style></head><body>
-        <h1>${d.n}</h1><div class="role">${d.r}</div><p>${d.l}</p>
-        <h2>Resumo Executivo</h2><div class="text">${d.b}</div>
-        <h2>Experiência Profissional</h2><div class="text">${d.e}</div>
-        <h2>Educação e Idiomas</h2><div class="text">${d.f}</div>
-        <h2>Habilidades Chave</h2><div class="text">${d.s}</div>
-        <script>window.print();<\/script></body></html>`);
-}
-
-// --- TOOLKIT LOGIC ---
-function checkID() {
-    let s = document.getElementById('docIn').value.replace(/\D/g,'');
-    const r = document.getElementById('docRes');
-    const v = (c) => {
-        if(c.length!==11 || !!c.match(/(\d)\1{10}/)) return false;
-        let s=0; for(let i=1;i<=9;i++) s+=parseInt(c[i-1])*(11-i);
-        let r=(s*10)%11; if(r===10||r===11) r=0; if(r!==parseInt(c[9])) return false;
-        s=0; for(let i=1;i<=10;i++) s+=parseInt(c[i-1])*(12-i);
-        r=(s*10)%11; if(r===10||r===11) r=0; return r===parseInt(c[10]);
-    };
-    if(v(s)) { r.innerText="AUTÊNTICO"; r.style.color="#10b981"; }
-    else { r.innerText="INVÁLIDO"; r.style.color="#f43f5e"; }
-}
-
-function makeBio() {
-    const style = document.getElementById('bioStyle').value;
-    const bios = {
-        exec: "Líder focado em resultados e eficiência operacional. Especialista em escalar negócios.",
-        tech: "Transformando café em código de alta performance. Apaixonado por arquitetura de sistemas.",
-        minimal: "Menos é mais. Foco total em execução e simplicidade."
-    };
-    document.getElementById('bioRes').value = bios[style];
-}
-
-function passEval() {
-    let v = document.getElementById('passIn').value;
-    let b = document.getElementById('passLevel');
-    let s = Math.min(v.length * 10, 100);
-    b.style.width = s + "%";
-    b.style.background = s < 50 ? "#f43f5e" : (s < 80 ? "#f59e0b" : "#10b981");
-}
-
-// --- TERMINAL ---
-function handleCmd(e) {
-    if(e.key === "Enter") {
-        const val = e.target.value.trim();
-        const box = document.getElementById('termBox');
-        box.innerHTML += `<div>> ${val}</div>`;
-        if(val.startsWith("/buscar ")) {
-            let t = val.replace("/buscar ", "").toLowerCase();
-            processSearch(t);
-        }
-        e.target.value = "";
-        box.scrollTop = box.scrollHeight;
-    }
-}
-
-async function processSearch(t) {
-    const box = document.getElementById('termBox');
     try {
-        const r = await fetch("logins.txt");
-        const txt = await r.text();
-        const lines = txt.split("\n");
-        lines.forEach(l => {
-            if(l.toLowerCase().includes(t)) {
-                const p = l.trim().split(":");
-                if(p.length >= 2) {
-                    const pass = p.pop();
-                    const user = p.pop();
-                    box.innerHTML += `<div style="color:#fff">${user}:${pass}</div>`;
-                }
-            }
-        });
-    } catch { box.innerHTML += `<div style="color:red">Erro ao acessar logins.txt</div>`; }
+        const response = await fetch(`https://apilayer.net/api/validate?access_key=${apiKey}&number=${number}&format=1`);
+        const data = await response.json();
+
+        if(data.valid) {
+            status.innerHTML = "✓ RESULTADOS EXTRAÍDOS COM SUCESSO";
+            status.style.color = "var(--success)";
+            grid.style.display = "grid";
+
+            // Preenchendo todos os campos que a API oferece
+            document.getElementById('res-valid').innerText = "ATIVA / VÁLIDA";
+            document.getElementById('res-local').innerText = data.local_format || "N/A";
+            document.getElementById('res-intl').innerText = data.international_format || "N/A";
+            document.getElementById('res-country').innerText = `${data.country_name} (${data.country_code})`;
+            document.getElementById('res-loc').innerText = data.location || "Não identificado";
+            document.getElementById('res-carrier').innerText = data.carrier || "Desconhecida";
+            document.getElementById('res-type').innerText = data.line_type || "N/A";
+            document.getElementById('res-prefix').innerText = "+" + data.country_prefix;
+        } else {
+            status.innerHTML = "✗ FALHA: NÚMERO INVÁLIDO OU INEXISTENTE";
+            status.style.color = "var(--error)";
+        }
+    } catch (e) {
+        status.innerHTML = "ERRO NA COMUNICAÇÃO COM O SERVIDOR";
+    }
 }
 </script>
 </body>
