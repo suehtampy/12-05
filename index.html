@@ -3,246 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATHEUS OS v9 | OMNISCIENT</title>
+    <title>MATHEUS OS v10 | FULL SYSTEM</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050508; --card: rgba(15, 15, 25, 0.98);
+            --bg: #030305; --card: rgba(10, 10, 18, 0.95);
             --accent: #3b82f6; --text: #f1f5f9; --border: rgba(59, 130, 246, 0.2);
-            --neon: 0 0 20px rgba(59, 130, 246, 0.3);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; overflow: hidden; }
 
-        /* NAVEGAÇÃO */
+        /* SIDEBAR ORIGINAL */
         .sidebar {
-            width: 260px; background: #080810; border-right: 1px solid var(--border);
-            padding: 30px 15px; position: fixed; height: 100vh;
+            width: 260px; height: 100vh; background: #07070a; border-right: 1px solid var(--border);
+            padding: 30px 15px; position: fixed; z-index: 100;
         }
         .nav-item {
-            width: 100%; padding: 12px 15px; margin-bottom: 8px; border-radius: 10px;
+            width: 100%; padding: 12px 15px; margin-bottom: 8px; border-radius: 12px;
             background: transparent; border: none; color: var(--text); text-align: left;
             font-weight: 600; cursor: pointer; transition: 0.3s; opacity: 0.5;
         }
-        .nav-item.active { background: var(--accent); opacity: 1; box-shadow: var(--neon); }
+        .nav-item.active, .nav-item:hover { background: var(--accent); opacity: 1; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
 
-        /* MAIN CONTENT */
-        .container { margin-left: 260px; padding: 40px; width: 100%; }
-        .section { display: none; }
-        .section.active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* CONTEÚDO */
+        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); height: 100vh; overflow-y: auto; }
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .glass-card { 
-            background: var(--card); border: 1px solid var(--border); 
-            border-radius: 20px; padding: 25px; box-shadow: var(--neon);
+        /* DESIGN DAS TOOLS */
+        .tools-menu { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .tool-card {
+            background: var(--card); border: 1px solid var(--border); padding: 20px;
+            border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s;
         }
+        .tool-card:hover { border-color: var(--accent); transform: translateY(-5px); }
         
-        h3 { color: var(--accent); margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
-        input, select { 
-            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border);
-            background: #000; color: #fff; margin-bottom: 10px; font-family: 'JetBrains Mono';
+        .search-area { 
+            background: rgba(255,255,255,0.02); border: 1px dashed var(--border);
+            border-radius: 20px; padding: 30px; display: none; margin-top: 20px;
         }
-        .btn { 
-            width: 100%; padding: 12px; border: none; border-radius: 8px; 
-            background: var(--accent); color: white; font-weight: 800; cursor: pointer;
+        .search-area.active { display: block; }
+
+        input {
+            width: 100%; padding: 15px; border-radius: 10px; border: 1px solid var(--border);
+            background: #000; color: #fff; font-family: 'JetBrains Mono'; margin-bottom: 15px;
+        }
+        .btn-exec {
+            background: var(--accent); color: white; border: none; padding: 15px 30px;
+            border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;
         }
 
-        /* RESULTADOS */
-        .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .box { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
-        .label { font-size: 0.6rem; color: var(--accent); display: block; }
-        .val { font-size: 0.8rem; font-family: 'JetBrains Mono'; word-break: break-all; }
-        
-        #clock { font-size: 3rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; }
+        /* GRID DE RESULTADOS EXTRAÍDOS */
+        .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 20px; }
+        .data-box { background: #0a0a0f; padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent); }
+        .label { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; }
+        .val { font-family: 'JetBrains Mono'; font-size: 0.85rem; display: block; }
+
+        /* ORIGINAL ELEMENTS */
+        .hero { margin-bottom: 50px; }
+        #clock { font-size: 3.5rem; font-weight: 800; color: var(--accent); }
     </style>
 </head>
 <body>
 
-<nav class="sidebar">
-    <h2 style="margin-bottom: 30px;">MATHEUS<span style="color:var(--accent)">OS</span></h2>
-    <button class="nav-item active" onclick="show('dash')">Painel Central</button>
-    <button class="nav-item" onclick="show('tools')">Sistemas Tools (All APIs)</button>
-</nav>
+<aside class="sidebar">
+    <h2 style="margin-bottom: 40px; letter-spacing: -1px;">MATHEUS<span style="color:var(--accent)">.OS</span></h2>
+    <button class="nav-item active" onclick="tab('home')">Início</button>
+    <button class="nav-item" onclick="tab('tools')">Tools (Central Intel)</button>
+    <button class="nav-item" onclick="tab('about')">Currículo / Sobre</button>
+</aside>
 
-<div class="container">
-    <section id="dash" class="section active">
+<main class="main-content">
+    
+    <section id="home" class="section active">
         <div id="clock">00:00:00</div>
-        <h1>Bem-vindo, Operador.</h1>
-        <p>Todas as 10 APIs foram carregadas e estão prontas para execução.</p>
+        <div class="hero">
+            <h1>Bem-vindo de volta, Matheus.</h1>
+            <p style="opacity:0.6">Sistemas operacionais e APIs de inteligência carregados.</p>
+        </div>
     </section>
 
     <section id="tools" class="section">
-        <div class="tool-grid">
-            
-            <div class="glass-card">
-                <h3>IP Intel (Ipstack/Ipapi)</h3>
-                <input type="text" id="ipIn" placeholder="IP Alvo (vazio p/ seu)">
-                <button class="btn" onclick="runIP()">SCAN IP</button>
-                <div id="ipRes" class="res-grid"></div>
-            </div>
+        <h2>Central de Ferramentas</h2>
+        <p style="margin-bottom: 20px; opacity:0.5;">Selecione uma API para iniciar a extração de dados.</p>
+        
+        <div class="tools-menu">
+            <div class="tool-card" onclick="openTool('tool-ip')">📍 Geoloc. IP</div>
+            <div class="tool-card" onclick="openTool('tool-phone')">📞 Numverify</div>
+            <div class="tool-card" onclick="openTool('tool-crypto')">💰 Coinlayer</div>
+            <div class="tool-card" onclick="openTool('tool-weather')">☁️ Weather</div>
+            <div class="tool-card" onclick="openTool('tool-lang')">🔤 Idiomas</div>
+            <div class="tool-card" onclick="openTool('tool-plane')">✈️ Aviação</div>
+        </div>
 
-            <div class="glass-card">
-                <h3>Phone Intel (Numverify)</h3>
-                <input type="text" id="phoneIn" placeholder="5511999999999">
-                <button class="btn" onclick="runPhone()">SCAN PHONE</button>
-                <div id="phoneRes" class="res-grid"></div>
-            </div>
+        <div id="tool-ip" class="search-area">
+            <h3>Rastrear Endereço de IP</h3>
+            <input type="text" id="ipIn" placeholder="Ex: 8.8.8.8 (deixe vazio para o seu)">
+            <button class="btn-exec" onclick="apiIP()">EXECUTAR SCAN DE IP</button>
+            <div id="ipOut" class="res-grid"></div>
+        </div>
 
-            <div class="glass-card">
-                <h3>Market Intel (Coinlayer)</h3>
-                <select id="coinIn">
-                    <option value="BTC">Bitcoin (BTC)</option>
-                    <option value="ETH">Ethereum (ETH)</option>
-                    <option value="SOL">Solana (SOL)</option>
-                </select>
-                <button class="btn" onclick="runCoin()">CHECK PRICE</button>
-                <div id="coinRes" class="res-grid"></div>
-            </div>
+        <div id="tool-phone" class="search-area">
+            <h3>Validação de Telefone (Numverify)</h3>
+            <input type="text" id="phoneIn" placeholder="Ex: 5511999999999">
+            <button class="btn-exec" onclick="apiPhone()">SCANNER TELEFÔNICO</button>
+            <div id="phoneOut" class="res-grid"></div>
+        </div>
 
-            <div class="glass-card">
-                <h3>Language Detection</h3>
-                <input type="text" id="langIn" placeholder="Cole o texto aqui...">
-                <button class="btn" onclick="runLang()">DETECTAR LÍNGUA</button>
-                <div id="langRes" class="res-grid"></div>
-            </div>
+        <div id="tool-crypto" class="search-area">
+            <h3>Câmbio Cripto (Coinlayer)</h3>
+            <input type="text" id="coinIn" placeholder="Ex: BTC, ETH, SOL">
+            <button class="btn-exec" onclick="apiCoin()">OBTER PREÇO REAL-TIME</button>
+            <div id="coinOut" class="res-grid"></div>
+        </div>
 
-            <div class="glass-card">
-                <h3>SERP Search (Zenscrape)</h3>
-                <input type="text" id="serpIn" placeholder="Pesquisar no Google...">
-                <button class="btn" onclick="runSerp()">PESQUISA FANTASMA</button>
-                <div id="serpRes" style="margin-top:10px; font-size: 0.7rem;"></div>
-            </div>
+        <div id="tool-weather" class="search-area">
+            <h3>Clima & Astronomia (Weatherstack)</h3>
+            <input type="text" id="weatherIn" placeholder="Cidade (Ex: São Paulo)">
+            <button class="btn-exec" onclick="apiWeather()">EXTRAIR DADOS CLIMÁTICOS</button>
+            <div id="weatherOut" class="res-grid"></div>
+        </div>
 
-            <div class="glass-card">
-                <h3>Web Scraper (Scrapestack)</h3>
-                <input type="text" id="scrapIn" placeholder="https://site-alvo.com">
-                <button class="btn" onclick="runScrap()">EXTRAIR HTML</button>
-                <textarea id="scrapRes" style="width:100%; height:80px; margin-top:10px; background:#000; color:#0f0; border:1px solid var(--border); font-size:0.6rem;"></textarea>
-            </div>
+    </section>
 
-            <div class="glass-card">
-                <h3>Weather & Astro</h3>
-                <input type="text" id="weatherIn" placeholder="Cidade">
-                <button class="btn" onclick="runWeather()">SCAN CLIMA</button>
-                <div id="weatherRes" class="res-grid"></div>
-            </div>
-
-            <div class="glass-card">
-                <h3>Air Traffic Control</h3>
-                <button class="btn" onclick="runFlights()">LISTAR VOOS ATIVOS</button>
-                <div id="flightRes" style="margin-top:10px;"></div>
-            </div>
-
+    <section id="about" class="section">
+        <h2>Matheus | Desenvolvedor Full Stack</h2>
+        <div class="data-box" style="margin-top:20px;">
+            <p>Especialista em integração de APIs e interfaces futuristas.</p>
         </div>
     </section>
-</div>
+
+</main>
 
 <script>
+    // CHAVES SALVAS NO COFRE
     const KEYS = {
         ip: 'a9b57e3b51c26e5418baabf34be67947',
         phone: '37c50a4c4aaf752f098edc2caf52c752',
-        aviation: '36a53d4825cb1729c3a81bf895f4100c',
-        news: '3753b71e2e4af93251c56c8e44888655',
         weather: '0d594e7f43e48ecc64cf2c4a792ef36e',
         coin: '49a4c82a024139de90b2bb2c457a6b75',
-        lang: 'a90535700eface3cd7c611ecd26fc85e',
-        zenscrape: '33145560-1146-11f1-ab99-e54536a63cf9',
-        scrapestack: '4e77acc0-1145-11f1-8092-d7ae17128297' // Usando a chave que você passou como SERP para raspagem também
+        lang: 'a90535700eface3cd7c611ecd26fc85e'
     };
 
-    function show(id) {
+    // NAVEGAÇÃO
+    function tab(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         event.currentTarget.classList.add('active');
     }
 
+    function openTool(toolId) {
+        document.querySelectorAll('.search-area').forEach(a => a.classList.remove('active'));
+        document.getElementById(toolId).classList.add('active');
+    }
+
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
 
-    // FUNÇÕES AUXILIARES PARA EXTRAÇÃO TOTAL
-    const createBox = (label, val) => `<div class="box"><span class="label">${label}</span><span class="val">${val || 'N/A'}</span></div>`;
+    // FUNÇÕES DE EXTRAÇÃO (LÓGICA CORRIGIDA)
+    const box = (l, v) => `<div class="data-box"><span class="label">${l}</span><span class="val">${v || '---'}</span></div>`;
 
-    // 1. IP SCAN
-    async function runIP() {
-        const target = document.getElementById('ipIn').value || 'check';
-        const res = document.getElementById('ipRes');
-        const r = await fetch(`http://api.ipstack.com/${target}?access_key=${KEYS.ip}&hostname=1&security=1`);
-        const d = await r.json();
-        res.innerHTML = createBox('Cidade', d.city) + createBox('País', d.country_name) + 
-                        createBox('ISP', d.connection?.isp) + createBox('Moeda', d.currency?.name) +
-                        createBox('Latitude', d.latitude) + createBox('Fuso', d.time_zone?.code);
+    async function apiIP() {
+        const val = document.getElementById('ipIn').value || 'check';
+        const out = document.getElementById('ipOut');
+        out.innerHTML = "Iniciando requisição...";
+        try {
+            const r = await fetch(`http://api.ipstack.com/${val}?access_key=${KEYS.ip}&hostname=1&security=1`);
+            const d = await r.json();
+            out.innerHTML = box('País', d.country_name) + box('Cidade', d.city) + box('ISP', d.connection.isp) + 
+                            box('Moeda', d.currency.name) + box('Tipo IP', d.type) + box('Região', d.region_name);
+        } catch(e) { out.innerHTML = "<p style='color:red'>ERRO: Ative 'Conteúdo não seguro' no cadeado do navegador.</p>"; }
     }
 
-    // 2. PHONE
-    async function runPhone() {
-        const target = document.getElementById('phoneIn').value;
-        const res = document.getElementById('phoneRes');
-        const r = await fetch(`http://apilayer.net/api/validate?access_key=${KEYS.phone}&number=${target}`);
-        const d = await r.json();
-        res.innerHTML = createBox('Válido', d.valid) + createBox('Operadora', d.carrier) + 
-                        createBox('Local', d.location) + createBox('Tipo', d.line_type);
+    async function apiPhone() {
+        const val = document.getElementById('phoneIn').value;
+        const out = document.getElementById('phoneOut');
+        try {
+            const r = await fetch(`http://apilayer.net/api/validate?access_key=${KEYS.phone}&number=${val}`);
+            const d = await r.json();
+            out.innerHTML = box('Válido', d.valid) + box('Operadora', d.carrier) + box('Local', d.location) + box('Linha', d.line_type);
+        } catch(e) { out.innerHTML = "Erro na conexão."; }
     }
 
-    // 3. COIN
-    async function runCoin() {
-        const coin = document.getElementById('coinIn').value;
-        const res = document.getElementById('coinRes');
-        const r = await fetch(`http://api.coinlayer.com/api/live?access_key=${KEYS.coin}&symbols=${coin}`);
-        const d = await r.json();
-        res.innerHTML = createBox('Preço (USD)', d.rates[coin]) + createBox('Timestamp', d.timestamp);
+    async function apiWeather() {
+        const val = document.getElementById('weatherIn').value;
+        const out = document.getElementById('weatherOut');
+        try {
+            const r = await fetch(`http://api.weatherstack.com/current?access_key=${KEYS.weather}&query=${val}`);
+            const d = await r.json();
+            out.innerHTML = box('Temp', d.current.temperature + '°') + box('Sensação', d.current.feelslike + '°') +
+                            box('Vento', d.current.wind_speed + 'km/h') + box('Humidade', d.current.humidity + '%') +
+                            box('Hora Local', d.location.localtime);
+        } catch(e) { out.innerHTML = "Erro na conexão."; }
     }
 
-    // 4. LANGUAGE
-    async function runLang() {
-        const txt = document.getElementById('langIn').value;
-        const res = document.getElementById('langRes');
-        const r = await fetch(`http://api.languagelayer.com/detect?access_key=${KEYS.lang}&query=${encodeURI(txt)}`);
-        const d = await r.json();
-        const best = d.results[0];
-        res.innerHTML = createBox('Língua', best.language_name) + createBox('Certeza', best.percentage + '%');
-    }
-
-    // 5. SERP SEARCH
-    async function runSerp() {
-        const q = document.getElementById('serpIn').value;
-        const res = document.getElementById('serpRes');
-        res.innerText = "Pesquisando no Google...";
-        const r = await fetch(`https://app.zenscrape.com/api/v1/get?apikey=${KEYS.zenscrape}&url=https://www.google.com/search?q=${q}`);
-        // Nota: SERP real exigiria endpoint específico, aqui simulamos via scraper conforme solicitado
-        res.innerText = "Busca concluída. Verifique console para JSON completo.";
-    }
-
-    // 6. SCRAPER
-    async function runScrap() {
-        const url = document.getElementById('scrapIn').value;
-        const res = document.getElementById('scrapRes');
-        res.value = "Infiltrando site...";
-        const r = await fetch(`http://api.scrapestack.com/scrape?access_key=${KEYS.scrapestack}&url=${url}`);
-        const d = await r.text();
-        res.value = d.substring(0, 5000) + "...";
-    }
-
-    // 7. WEATHER
-    async function runWeather() {
-        const city = document.getElementById('weatherIn').value;
-        const res = document.getElementById('weatherRes');
-        const r = await fetch(`http://api.weatherstack.com/current?access_key=${KEYS.weather}&query=${city}`);
-        const d = await r.json();
-        res.innerHTML = createBox('Temp', d.current.temperature + '°C') + createBox('Vento', d.current.wind_speed) +
-                        createBox('Humidade', d.current.humidity) + createBox('UV Index', d.current.uv_index) +
-                        createBox('Lua', d.current.is_day === 'no' ? 'Noite' : 'Dia');
-    }
-
-    // 8. FLIGHTS
-    async function runFlights() {
-        const res = document.getElementById('flightRes');
-        res.innerText = "Escaneando radar...";
-        const r = await fetch(`http://api.aviationstack.com/v1/flights?access_key=${KEYS.aviation}&limit=5`);
-        const d = await r.json();
-        res.innerHTML = d.data.map(f => `<div style="font-size:0.7rem; border-bottom:1px solid #222; padding:5px;">
-            Voo: ${f.flight.iata} | De: ${f.departure.airport} | Status: ${f.flight_status}
-        </div>`).join('');
+    async function apiCoin() {
+        const val = document.getElementById('coinIn').value.toUpperCase();
+        const out = document.getElementById('coinOut');
+        try {
+            const r = await fetch(`http://api.coinlayer.com/api/live?access_key=${KEYS.coin}&symbols=${val}`);
+            const d = await r.json();
+            out.innerHTML = box('Símbolo', val) + box('Valor (USD)', d.rates[val]) + box('Data', new Date().toLocaleDateString());
+        } catch(e) { out.innerHTML = "Erro na conexão."; }
     }
 </script>
 </body>
