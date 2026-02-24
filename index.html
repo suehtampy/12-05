@@ -3,200 +3,312 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matheus | Futuristic UI</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Matheus | OS Interface</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* SEUS ESTILOS ORIGINAIS */
+:root {
+    --bg-color: #05050d;
+    --sidebar-color: rgba(10, 10, 25, 0.9);
+    --accent-color: #00f0ff;
+    --secondary-accent: #ff00d4;
+    --text-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --border-color: rgba(0, 240, 255, 0.3);
+}
+
+.light-mode {
+    --bg-color: #f4f7f6;
+    --sidebar-color: rgba(230, 230, 240, 0.9);
+    --accent-color: #0072ff;
+    --secondary-accent: #e91e63;
+    --text-color: #1a1a1a;
+    --card-bg: rgba(0, 0, 0, 0.05);
+    --border-color: rgba(0, 114, 255, 0.3);
+}
+
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Poppins',sans-serif;color:#fff;background:#05050d;overflow-x:hidden;transition: background 0.5s;}
-body.light-mode {background: #e0e0e0; color: #111;} /* Estilo para o Modo Claro */
-canvas#particles{position:fixed;top:0;left:0;z-index:-1;}
-.sidebar{position:fixed;left:0;top:0;height:100%;width:80px;background:rgba(15,15,30,0.9);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;padding-top:40px;transition:0.4s;border-right:1px solid rgba(0,255,255,0.3);z-index: 10;}
-.sidebar:hover{width:200px;}
-.sidebar button{background:none;border:none;color:#aaa;margin:20px 0;padding:10px;font-size:1rem;text-align:left;white-space:nowrap;cursor:pointer;transition:0.3s;font-family:'Orbitron',sans-serif;width: 100%;}
-.sidebar button:hover{color:#00f0ff;text-shadow:0 0 10px #00f0ff;}
-.tab-content{display:none; padding:100px 10%; max-width:1200px; margin-left:80px; transition:1s ease; opacity:0; transform:translateY(50px);}
-.tab-content.active{display:block;opacity:1;transform:translateY(0);}
-h2{font-family:'Orbitron',sans-serif;font-size:2rem;color:#00f0ff;margin-bottom:40px;}
-p{line-height:1.6;color:#aaa;font-size:1rem;}
-.hero h1{font-family:'Orbitron',sans-serif;font-size:4rem;background:linear-gradient(90deg,#00f0ff,#ff00d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px #00f0ff77;transition:0.3s;}
-.hero .typing{margin-top:20px;font-size:1.5rem;color:#aaa;border-right:2px solid #00f0ff;white-space:nowrap;overflow:hidden;width:0;animation:typing 4s steps(40,end) forwards, blink 0.8s infinite;}
-@keyframes typing{to{width:320px;}} @keyframes blink{50%{border-color:transparent;}}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
-.card{background:rgba(255,255,255,0.05);padding:30px;border-radius:20px;transition:0.4s;position:relative;overflow:hidden;cursor:pointer;border: 1px solid rgba(0,255,255,0.1);}
-.card:hover{transform:translateY(-10px) scale(1.03);box-shadow:0 0 30px #00f0ff44; border-color: #00f0ff;}
+body{font-family:'Poppins',sans-serif; background: var(--bg-color); color: var(--text-color); overflow-x:hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);}
 
-/* ESTILOS PARA AS NOVAS FERRAMENTAS */
-.tool-box { background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px; border: 1px solid #00f0ff; margin-bottom: 20px;}
-input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; background: #111; border: 1px solid #00f0ff; color: #fff; border-radius: 5px; font-family: 'Poppins';}
-.btn-action { background: #00f0ff; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; border-radius: 5px; transition: 0.3s; font-family: 'Orbitron';}
-.btn-action:hover { background: #ff00d4; color: #fff; box-shadow: 0 0 15px #ff00d4; }
-#clock { font-family: 'Orbitron'; font-size: 2rem; color: #0fff92; text-shadow: 0 0 10px #0fff92; margin-bottom: 20px; }
-#result-box { margin-top: 15px; padding: 10px; border-left: 4px solid #ff00d4; background: rgba(255,0,212,0.1); display: none;}
+canvas#particles{position:fixed;top:0;left:0;z-index:-1; opacity: 0.6;}
 
-#terminalWrapper{display:flex;flex-direction:column;background:rgba(0,0,0,0.95);border:2px solid #00f0ff;border-radius:15px;padding:15px;margin-top:20px;max-width:500px;}
-#terminalOutput{flex:1;overflow-y:auto;background:#01010a;padding:12px;border-radius:12px;color:#0FFF92;font-family:monospace;font-size:0.9rem;height:250px;box-shadow:0 0 20px #00f0ff44 inset;}
-#cmdInput{width:100%;padding:10px;border:2px solid #00f0ff;border-radius:8px;background:#111;color:#0FFF92;font-family:monospace;font-size:0.9rem;outline:none;transition:0.3s;}
+/* SIDEBAR REFORMULADA */
+.sidebar{position:fixed;left:0;top:0;height:100%;width:80px;background: var(--sidebar-color); backdrop-filter:blur(15px); display:flex; flex-direction:column; align-items:center; padding: 30px 0; transition:0.4s; border-right:1px solid var(--border-color); z-index: 100;}
+.sidebar:hover{width:220px;}
+.sidebar button{background:none; border:none; color: var(--text-color); margin:15px 0; padding:12px 20px; font-size:0.9rem; text-align:left; width: 100%; cursor:pointer; transition:0.3s; font-family:'Orbitron',sans-serif; opacity: 0.6; display: flex; align-items: center; gap: 15px;}
+.sidebar button:hover, .sidebar button.active{opacity: 1; color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color);}
+.sidebar .btn-text { display: none; }
+.sidebar:hover .btn-text { display: inline; }
 
-footer{text-align:center;padding:40px;color:#00f0ff44;}
+/* CONTEÚDO */
+.tab-content{display:none; padding:80px 8%; max-width:1400px; margin-left:80px; animation: fadeIn 0.6s ease forwards;}
+.tab-content.active{display:block;}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+h2{font-family:'Orbitron',sans-serif; font-size:2.5rem; letter-spacing: 2px; margin-bottom:40px; border-bottom: 2px solid var(--accent-color); display: inline-block;}
+
+/* GRID DE FERRAMENTAS PROFISSIONAL */
+.tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
+.tool-card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 25px; border-radius: 12px; transition: 0.3s; }
+.tool-card:hover { border-color: var(--accent-color); box-shadow: 0 0 20px rgba(0, 240, 255, 0.15); }
+
+label { display: block; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: var(--accent-color); text-transform: uppercase; }
+input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 6px; font-family: 'JetBrains Mono', monospace; }
+.btn-main { background: var(--accent-color); color: #000; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: bold; width: 100%; transition: 0.3s; }
+.btn-main:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+/* STATUS DE SENHA */
+.password-strength { height: 4px; background: #333; margin-top: -10px; margin-bottom: 15px; border-radius: 2px; position: relative; }
+.strength-bar { height: 100%; width: 0%; transition: 0.5s; border-radius: 2px; }
+
+/* RELÓGIO E TERMINAL */
+#clock { font-family: 'Orbitron'; font-size: 1.2rem; color: var(--accent-color); margin-bottom: 10px; }
+#terminalOutput { height: 300px; background: #01010a; padding: 15px; color: #0fff92; font-family: 'JetBrains Mono'; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; }
+
+footer { margin-top: 100px; text-align: center; font-size: 0.8rem; opacity: 0.4; padding-bottom: 30px;}
+
+/* MODO CLARO AJUSTE */
+.light-mode input { background: #fff; color: #111; }
 </style>
 </head>
-<body>
+<body class="dark-mode">
 
 <canvas id="particles"></canvas>
 
 <div class="sidebar">
-  <button data-tab="home">Home</button>
-  <button data-tab="sobre">Sobre</button>
-  <button data-tab="projetos">Projetos</button>
-  <button data-tab="ferramentas">Ferramentas</button> <button data-tab="scripts">Scripts</button>
-  <button data-tab="contato">Contato</button>
-  <button onclick="toggleDarkMode()" style="margin-top: auto; font-size: 0.8rem;">🌓 Alternar Tema</button>
+    <div id="clock">00:00</div>
+    <button data-tab="home" class="active"><span class="btn-text">DASHBOARD</span></button>
+    <button data-tab="ferramentas"><span class="btn-text">LAB TOOLS</span></button>
+    <button data-tab="scripts"><span class="btn-text">TERMINAL</span></button>
+    <button data-tab="contato"><span class="btn-text">CONTATO</span></button>
+    <button onclick="toggleTheme()" style="margin-top: auto;"><span class="btn-text">THEME SWITCH</span></button>
 </div>
 
-<section id="home" class="tab-content active hero">
-  <div id="clock">00:00:00</div> <h1>Matheus</h1>
-  <div class="typing">15 anos | Desenvolvedor Futurista</div>
-</section>
-
-<section id="sobre" class="tab-content">
-  <h2>Sobre Mim</h2>
-  <p>Sou apaixonado por tecnologia, design moderno e interfaces futuristas. Crio experiências digitais interativas e ousadas.</p>
-</section>
-
-<section id="projetos" class="tab-content">
-  <h2>Projetos</h2>
-  <div class="cards">
-    <div class="card"><h3>Neural Interface</h3><p>Interface futurista e responsiva.</p></div>
-    <div class="card"><h3>Cyber Hub</h3><p>Sistema interativo de monitoramento digital.</p></div>
-    <div class="card"><h3>Digital Lab</h3><p>Experiência imersiva em web futurista.</p></div>
-  </div>
+<section id="home" class="tab-content active">
+    <div style="margin-top: 15vh;">
+        <h1 style="font-family:'Orbitron'; font-size: 5rem; line-height: 1;">MATHEUS</h1>
+        <p style="font-size: 1.5rem; letter-spacing: 5px;">SISTEMA OPERACIONAL V.2.0</p>
+        <div id="status-msg" style="margin-top: 20px; color: var(--accent-color); font-family: monospace;">> Todos os sistemas operacionais...</div>
+    </div>
 </section>
 
 <section id="ferramentas" class="tab-content">
-  <h2>Laboratório de Ferramentas</h2>
-  
-  <div class="cards">
-    <div class="tool-box">
-      <h3>1. Detector CPF/CNPJ</h3>
-      <input type="text" id="docInput" placeholder="Digite apenas números">
-      <button class="btn-action" onclick="validarDoc()">Validar</button>
-      <div id="resDoc"></div>
-    </div>
+    <h2>Core Modules</h2>
+    <div class="tool-grid">
+        
+        <div class="tool-card">
+            <label>Security / ID Validator</label>
+            <input type="text" id="docInput" placeholder="CPF ou CNPJ (somente números)" maxlength="14">
+            <button class="btn-main" onclick="validateDocument()">VERIFICAR INTEGRIDADE</button>
+            <p id="docRes" style="margin-top:10px; font-family: monospace;"></p>
+        </div>
 
-    <div class="tool-box">
-      <h3>2. Gerador de Bio (LinkedIn)</h3>
-      <input type="text" id="bioArea" placeholder="Sua área (ex: Dev Fullstack)">
-      <input type="text" id="bioObj" placeholder="Seu objetivo (ex: Estágio)">
-      <button class="btn-action" onclick="gerarBio()">Gerar Bio</button>
-      <div id="resBio"></div>
-    </div>
+        <div class="tool-card">
+            <label>Encryption Strength</label>
+            <input type="password" id="passInput" placeholder="Analise sua chave" oninput="checkPass()">
+            <div class="password-strength"><div id="strengthBar" class="strength-bar"></div></div>
+            <p id="passRes" style="font-size: 0.7rem; font-family: monospace;"></p>
+        </div>
 
-    <div class="tool-box">
-      <h3>3. Validador de Senha</h3>
-      <input type="password" id="passInput" placeholder="Digite sua senha" oninput="validarSenha()">
-      <div id="resPass">Força: -</div>
-    </div>
+        <div class="tool-card">
+            <label>Social Engineering (Bio)</label>
+            <input type="text" id="bioArea" placeholder="Sua Expertise (ex: Cybersecurity)">
+            <select id="bioStyle">
+                <option value="minimal">Minimalista & Dark</option>
+                <option value="exec">Executivo / High-End</option>
+                <option value="tech">Tech Evangelist</option>
+                <option value="creative">Criativo & Ousado</option>
+            </select>
+            <button class="btn-main" onclick="generateBio()">GERAR MATRIZ DE TEXTO</button>
+            <textarea id="bioOutput" style="margin-top:10px; height: 100px; font-size: 0.8rem;" readonly></textarea>
+        </div>
 
-    <div class="tool-box">
-      <h3>4. Simulador de Entrevista</h3>
-      <select id="entrevistaArea">
-        <option value="frontend">Front-end</option>
-        <option value="backend">Back-end</option>
-      </select>
-      <button class="btn-action" onclick="sortearPergunta()">Sortear Pergunta</button>
-      <div id="resPerg"></div>
-    </div>
+        <div class="tool-card">
+            <label>AI Interview Simulator</label>
+            <div id="interviewBox" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; margin-bottom: 10px; min-height: 60px;">
+                <p id="questionDisplay" style="font-size: 0.9rem;">Pronto para iniciar a simulação?</p>
+            </div>
+            <input type="text" id="answerInput" placeholder="Sua resposta...">
+            <button class="btn-main" onclick="handleInterview()">ENVIAR RESPOSTA</button>
+        </div>
 
-    <div class="tool-box">
-      <h3>5. Gerador de Currículo</h3>
-      <input type="text" id="cvNome" placeholder="Seu Nome Completo">
-      <button class="btn-action" onclick="gerarCV()">Gerar PDF Simulado</button>
+        <div class="tool-card">
+            <label>Career Architect (CV)</label>
+            <input type="text" id="cvName" placeholder="Nome Completo">
+            <input type="text" id="cvRole" placeholder="Cargo Desejado">
+            <textarea id="cvExp" placeholder="Resumo de Experiências..."></textarea>
+            <button class="btn-main" onclick="generateCV()">GERAR DOCUMENTO OFICIAL</button>
+        </div>
+
     </div>
-  </div>
 </section>
 
 <section id="scripts" class="tab-content">
-  <h2>Terminal / Scripts</h2>
-  <div id="terminalWrapper">
+    <h2>System Terminal</h2>
     <div id="terminalOutput">
-      <div>> Sistema conectado 🚀</div>
-      <div>> Use /buscar &lt;termo&gt;</div>
+        <div>[SYSTEM] Kernel iniciado...</div>
+        <div>[INFO] Aguardando comandos via /buscar ou logs de ferramentas...</div>
     </div>
-    <input type="text" id="cmdInput" placeholder="/buscar exemplo"/>
-  </div>
+    <input type="text" id="cmdInput" style="margin-top: 10px;" placeholder="Execute um comando ou apenas digite...">
 </section>
 
 <section id="contato" class="tab-content">
-  <h2>Contato</h2>
-  <p>Email: theusxzmattos@email.com</p>
-  <p>Telefone: +55 (16) 99640-6039</p>
-  <p>GitHub: github.com/suehtampy</p>
+    <h2>Protocolo de Contato</h2>
+    <div class="tool-card" style="max-width: 500px;">
+        <p>> ENCRYPTED EMAIL: theusxzmattos@email.com</p>
+        <p>> SECURE LINE: +55 (16) 99640-6039</p>
+        <p>> SOURCE CODE: github.com/suehtampy</p>
+    </div>
 </section>
 
-<footer>© 2026 Matheus | Futuristic Personal UI</footer>
+<footer>&copy; 2026 MATHEUS OS | ENCRYPTED INTERFACE</footer>
 
 <script>
-// RELÓGIO DIGITAL
-function updateClock() {
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString('pt-BR');
-    document.getElementById('clock').textContent = timeStr;
-}
-setInterval(updateClock, 1000);
-
-// MODO ESCURO / CLARO
-function toggleDarkMode() {
+// --- LÓGICA DE INTERFACE ---
+function toggleTheme() {
     document.body.classList.toggle('light-mode');
-    appendTerminal("Interface visual alterada.");
+    logTerminal("Tema alterado pelo usuário.");
 }
 
-// LOGICA DAS FERRAMENTAS
-function validarDoc() {
-    const val = document.getElementById('docInput').value;
-    const res = document.getElementById('resDoc');
-    if(val.length === 11 || val.length === 14) {
-        res.innerHTML = "✅ VÁLIDO (Formato reconhecido)";
-        res.style.color = "#0fff92";
+const tabs = document.querySelectorAll('.sidebar button[data-tab]');
+tabs.forEach(t => {
+    t.addEventListener('click', () => {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tabs.forEach(btn => btn.classList.remove('active'));
+        document.getElementById(t.dataset.tab).classList.add('active');
+        t.classList.add('active');
+    });
+});
+
+function logTerminal(msg) {
+    const out = document.getElementById('terminalOutput');
+    out.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+    out.scrollTop = out.scrollHeight;
+}
+
+setInterval(() => {
+    document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+}, 1000);
+
+// --- VALIDOR DE DOCUMENTO REAL (Algoritmo de verdade) ---
+function validateDocument() {
+    let val = document.getElementById('docInput').value.replace(/\D/g,'');
+    let res = document.getElementById('docRes');
+    
+    const isValidCPF = (cpf) => {
+        if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+        let s = 0;
+        for (let i=1; i<=9; i++) s += parseInt(cpf[i-1]) * (11-i);
+        let r = (s * 10) % 11;
+        if (r === 10 || r === 11) r = 0;
+        if (r !== parseInt(cpf[9])) return false;
+        s = 0;
+        for (let i=1; i<=10; i++) s += parseInt(cpf[i-1]) * (12-i);
+        r = (s * 10) % 11;
+        if (r === 10 || r === 11) r = 0;
+        return r === parseInt(cpf[10]);
+    };
+
+    if (isValidCPF(val)) {
+        res.innerHTML = "STATUS: <span style='color:#0fff92'>INTEGRIDADE CONFIRMADA (CPF)</span>";
+        logTerminal("Documento validado com sucesso.");
+    } else if (val.length === 14) {
+        res.innerHTML = "STATUS: <span style='color:#0fff92'>CNPJ DETECTADO (FORMATO OK)</span>";
     } else {
-        res.innerHTML = "❌ INVÁLIDO";
-        res.style.color = "#ff00d4";
+        res.innerHTML = "STATUS: <span style='color:#ff00d4'>FALHA NA VALIDAÇÃO</span>";
+        logTerminal("Tentativa de validação falhou: Documento inconsistente.");
     }
 }
 
-function gerarBio() {
-    const area = document.getElementById('bioArea').value;
-    const obj = document.getElementById('bioObj').value;
-    const res = document.getElementById('resBio');
-    res.style.display = "block";
-    res.innerHTML = `Explorando o mundo de ${area}. Focado em ${obj}. 🚀 #Tech #Dev`;
-}
-
-function validarSenha() {
+// --- VALIDADOR DE SENHA RÍGIDO ---
+function checkPass() {
     const pass = document.getElementById('passInput').value;
-    const res = document.getElementById('resPass');
-    if(pass.length < 6) res.innerHTML = "🔴 Fraca";
-    else if(pass.length < 10) res.innerHTML = "🟡 Média";
-    else res.innerHTML = "🟢 Forte e Segura!";
+    const bar = document.getElementById('strengthBar');
+    const res = document.getElementById('passRes');
+    let strength = 0;
+
+    if (pass.length > 8) strength += 25;
+    if (/[A-Z]/.test(pass)) strength += 25;
+    if (/[0-9]/.test(pass)) strength += 25;
+    if (/[^A-Za-z0-9]/.test(pass)) strength += 25;
+
+    bar.style.width = strength + "%";
+    const colors = ["#ff00d4", "#ff9900", "#ccff00", "#0fff92"];
+    bar.style.background = colors[Math.floor((strength-1)/25)] || "#333";
+    
+    res.innerText = `ENTROPIA: ${strength}% | REQUISITOS: Maíusc, Minúsc, Num, Símbolo.`;
 }
 
-function sortearPergunta() {
-    const perguntas = [
-        "Quais são seus pontos fortes?",
-        "Onde você se vê em 5 anos?",
-        "Como você lida com prazos apertados?",
-        "Por que você escolheu tecnologia?"
-    ];
-    const sorteada = perguntas[Math.floor(Math.random() * perguntas.length)];
-    document.getElementById('resPerg').innerHTML = "<strong>Pergunta:</strong> " + sorteada;
+// --- GERADOR DE BIO (MUITAS OPÇÕES) ---
+function generateBio() {
+    const area = document.getElementById('bioArea').value || "Tech";
+    const style = document.getElementById('bioStyle').value;
+    const output = document.getElementById('bioOutput');
+    
+    const templates = {
+        minimal: [`${area} Enthusiast. Building the future.`, `Less talk, more code. Specialized in ${area}.`, `Turning caffeine into ${area} solutions.`],
+        exec: [`Senior Specialist in ${area} | Strategy & Growth`, `Driving innovation through ${area} at scale. Contact for partnerships.`, `Focus on High-Performance results in ${area}.`],
+        tech: [`Fullstack ${area} Architect | Cloud Native | 2026`, `Solving complex problems with ${area}. 010101.`, `Deep dive into ${area} and emerging tech.`],
+        creative: [`Crafting digital experiences in ${area} ⚡`, `Obsessed with the intersection of design and ${area}.`, `Breaking the loop with ${area}. Let's create.`]
+    };
+
+    const choice = templates[style][Math.floor(Math.random() * templates[style].length)];
+    output.value = choice;
+    logTerminal("Nova Bio gerada no estilo: " + style);
 }
 
-function gerarCV() {
-    const nome = document.getElementById('cvNome').value;
-    alert("Currículo de " + nome + " gerado com sucesso em PDF (Simulação)!");
+// --- SIMULADOR DE ENTREVISTA REAL ---
+const questions = [
+    "Qual foi o maior desafio técnico que você já resolveu?",
+    "Como você explica um conceito complexo para alguém não técnico?",
+    "Como você reage quando seu código é criticado em um Review?",
+    "Por que devemos te contratar e não outros candidatos?"
+];
+let currentQ = 0;
+
+function handleInterview() {
+    const ans = document.getElementById('answerInput').value;
+    if(!ans) return;
+    
+    logTerminal(`RESPOSTA SALVA: "${ans.substring(0,20)}..."`);
+    document.getElementById('answerInput').value = "";
+    currentQ++;
+    
+    if(currentQ < questions.length) {
+        document.getElementById('questionDisplay').innerText = questions[currentQ];
+    } else {
+        document.getElementById('questionDisplay').innerText = "Simulação concluída. Logs salvos no terminal.";
+        currentQ = 0;
+    }
 }
 
-// O RESTANTE DO SEU JS ORIGINAL (PARTÍCULAS E ABAS)
+// --- GERADOR DE CURRÍCULO (CRIA PÁGINA REAL) ---
+function generateCV() {
+    const nome = document.getElementById('cvName').value;
+    const cargo = document.getElementById('cvRole').value;
+    const exp = document.getElementById('cvExp').value;
+    
+    if(!nome) return alert("Preencha o nome!");
+
+    const win = window.open('', '_blank');
+    win.document.write(`
+        <html><head><title>CV - ${nome}</title>
+        <style>
+            body { font-family: 'Arial'; padding: 50px; color: #333; line-height: 1.6; }
+            h1 { color: #000; border-bottom: 2px solid #333; }
+            .section { margin-top: 20px; }
+            .label { font-weight: bold; color: #555; text-transform: uppercase; font-size: 0.8rem; }
+        </style></head>
+        <body>
+            <h1>${nome.toUpperCase()}</h1>
+            <div class="section"><p class="label">Objetivo</p><p>${cargo}</p></div>
+            <div class="section"><p class="label">Experiência e Habilidades</p><p>${exp}</p></div>
+            <script>window.print();<\/script>
+        </body></html>
+    `);
+    logTerminal("Documento de currículo estruturado e enviado para impressão.");
+}
+
+// PARTICULAS ORIGINAIS (MANTIDAS)
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth; canvas.height=window.innerHeight;
@@ -207,9 +319,8 @@ for(let i=0;i<120;i++){
 function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   particles.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle="#00f0ff"; ctx.fill();
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--accent-color'); ctx.fill();
     p.x+=p.dx; p.y+=p.dy;
     if(p.x<0||p.x>canvas.width)p.dx*=-1;
     if(p.y<0||p.y>canvas.height)p.dy*=-1;
@@ -220,60 +331,15 @@ function animate(){
       let dy=particles[i].y-particles[j].y;
       let dist=Math.sqrt(dx*dx+dy*dy);
       if(dist<120){
-        ctx.strokeStyle="rgba(0,255,255,"+(1-dist/120)+")";
-        ctx.lineWidth=0.5;
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x,particles[i].y);
-        ctx.lineTo(particles[j].x,particles[j].y);
-        ctx.stroke();
+        ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--border-color');
+        ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y); ctx.stroke();
       }
     }
   }
   requestAnimationFrame(animate);
 }
 animate();
-
-const tabs=document.querySelectorAll(".sidebar button[data-tab]");
-const contents=document.querySelectorAll(".tab-content");
-tabs.forEach(tab=>{
-  tab.addEventListener("click",()=>{ contents.forEach(c=>c.classList.remove("active"));
-  document.getElementById(tab.dataset.tab).classList.add("active"); });
-});
-
-function appendTerminal(text){
-  const term=document.getElementById("terminalOutput");
-  term.innerHTML+="<div>> "+text+"</div>";
-  term.scrollTop=term.scrollHeight;
-}
-async function carregarLoginsTxt(){
-  try{
-    const res=await fetch("logins.txt");
-    const txt=await res.text();
-    return txt.split("\n").map(l=>l.trim()).filter(l=>l.length>0);
-  }catch{ appendTerminal("❌ Erro ao carregar logins.txt"); return []; }
-}
-document.getElementById("cmdInput").addEventListener("keydown", async(e)=>{
-  if(e.key==="Enter"){
-    const cmd=e.target.value.trim();
-    appendTerminal(cmd);
-    if(cmd.startsWith("/buscar ")){
-      appendTerminal("🔍 Buscando...");
-      const termo=cmd.replace("/buscar ","").trim();
-      const linhas=await carregarLoginsTxt();
-      const encontrados=[];
-      linhas.forEach(linha=>{
-        const partes=linha.split(":");
-        let url,login,senha;
-        if(partes.length===3)[url,login,senha]=partes;
-        else if(partes.length===4)[,url,login,senha]=partes;
-        if(url && url.toLowerCase().includes(termo.toLowerCase())) encontrados.push(login+":"+senha);
-      });
-      if(!encontrados.length) appendTerminal(`⚠ Nenhum login encontrado`);
-      else { appendTerminal(`✔ ${encontrados.length} resultado(s):`); encontrados.forEach(i=>appendTerminal(i));}
-    }else appendTerminal("❗ Comando inválido — use /buscar <termo>");
-    e.target.value="";
-  }
-});
 </script>
 </body>
 </html>
