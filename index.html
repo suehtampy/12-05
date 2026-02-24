@@ -3,279 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MATHEUS OS | THE ULTIMATE INTERFACE</title>
+<title>MATHEUS OS | INFINITY INTELLIGENCE</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg: #050505; --text: #ffffff; --accent: #3b82f6;
-    --card: rgba(20, 20, 25, 0.8); --sidebar: #0a0a0c;
-    --border: rgba(255, 255, 255, 0.08);
-}
-.light-mode {
-    --bg: #f4f7fa; --text: #0f172a; --accent: #2563eb;
-    --card: #ffffff; --sidebar: #ffffff; --border: #e2e8f0;
+    --bg: #020203; --text: #e2e8f0; --accent: #3b82f6;
+    --card: rgba(15, 23, 42, 0.8); --sidebar: #0a0a0c;
+    --border: rgba(59, 130, 246, 0.2);
+    --glow: 0 0 20px rgba(59, 130, 246, 0.15);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); transition: 0.5s; overflow-x: hidden; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-/* DESIGN HUD */
+/* SIDEBAR */
 .sidebar {
-    position: fixed; left: 20px; top: 20px; bottom: 20px; width: 280px;
-    background: var(--sidebar); border: 1px solid var(--border);
-    border-radius: 24px; padding: 40px 20px; z-index: 1000;
+    position: fixed; left: 0; top: 0; bottom: 0; width: 260px;
+    background: var(--sidebar); border-right: 1px solid var(--border);
+    padding: 30px 15px; z-index: 1000;
 }
-.brand { font-size: 1.8rem; font-weight: 800; margin-bottom: 40px; text-align: center; letter-spacing: -1.5px; }
-
 .nav-item {
-    width: 100%; padding: 15px 20px; margin-bottom: 8px; border-radius: 16px;
+    width: 100%; padding: 14px 18px; margin-bottom: 8px; border-radius: 12px;
     background: transparent; border: none; color: var(--text); text-align: left;
-    font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px; opacity: 0.5;
+    font-weight: 600; cursor: pointer; transition: 0.3s; opacity: 0.6;
 }
-.nav-item.active, .nav-item:hover { background: var(--accent); color: #fff; opacity: 1; transform: translateX(5px); }
+.nav-item.active, .nav-item:hover { background: var(--accent); color: white; opacity: 1; box-shadow: var(--glow); }
 
-.content { margin-left: 320px; padding: 40px 40px 40px 0; max-width: 1300px; }
-.section { display: none; animation: reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+/* MAIN CONTENT */
+.content { margin-left: 260px; padding: 40px; }
+.section { display: none; animation: fadeIn 0.4s ease-out; }
 .section.active { display: block; }
-@keyframes reveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
 .glass-card { 
     background: var(--card); border: 1px solid var(--border);
-    padding: 30px; border-radius: 28px; backdrop-filter: blur(20px);
-    margin-bottom: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    padding: 30px; border-radius: 24px; backdrop-filter: blur(10px);
+    margin-bottom: 25px; position: relative;
 }
 
-h2 { font-size: 2rem; font-weight: 800; margin-bottom: 20px; color: var(--accent); }
+h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; color: var(--accent); }
 
-input, textarea, select {
-    width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--border);
-    background: rgba(0,0,0,0.2); color: var(--text); font-family: inherit; margin-bottom: 15px;
+input {
+    width: 100%; padding: 16px; border-radius: 14px; border: 1px solid var(--border);
+    background: rgba(0,0,0,0.4); color: white; font-family: 'JetBrains Mono'; margin-bottom: 15px;
 }
-
-.btn-elite {
+.btn-scan {
     background: var(--accent); color: white; border: none; padding: 16px;
-    border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s;
+    border-radius: 14px; font-weight: 800; cursor: pointer; width: 100%; text-transform: uppercase;
 }
-.btn-elite:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
 
-/* GRID DE RESULTADOS API */
-.api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-.data-box { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid var(--border); }
-.label { font-size: 0.65rem; text-transform: uppercase; opacity: 0.5; display: block; margin-bottom: 4px; }
-.val { font-family: 'JetBrains Mono'; font-size: 0.85rem; color: var(--accent); word-break: break-all; }
+/* GRID DE DADOS EXTRAÍDOS */
+.data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 25px; }
+.data-box { 
+    background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; 
+    border-left: 3px solid var(--accent); transition: 0.3s;
+}
+.data-box:hover { background: rgba(59, 130, 246, 0.05); }
+.label { font-size: 0.65rem; text-transform: uppercase; color: var(--accent); font-weight: 800; display: block; margin-bottom: 5px; }
+.val { font-family: 'JetBrains Mono'; font-size: 0.9rem; color: #fff; }
 
-#termBox { background: #000; color: #3b82f6; font-family: 'JetBrains Mono'; padding: 20px; border-radius: 15px; height: 300px; overflow-y: auto; }
-.feedback-box { padding: 15px; border-radius: 10px; margin-top: 10px; font-weight: 600; display: none; }
-.good { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-.bad { background: rgba(244, 63, 94, 0.1); color: #f43f5e; }
+#clock { font-size: 4rem; font-weight: 800; color: var(--accent); margin-bottom: 10px; }
 </style>
 </head>
 <body>
 
 <aside class="sidebar">
-    <div class="brand">MATHEUS<span style="color:var(--accent)">OS</span></div>
+    <div style="font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 40px; padding-left: 10px;">MATHEUS<span style="color:var(--accent)">OS</span></div>
     <button class="nav-item active" onclick="tab('home')">Dashboard</button>
-    <button class="nav-item" onclick="tab('apis')">Intelligence Center</button>
-    <button class="nav-item" onclick="tab('entrevista')">Simulador RH</button>
-    <button class="nav-item" onclick="tab('curriculo')">Gerador CV</button>
-    <button class="nav-item" onclick="tab('utilitarios')">Toolkit</button>
-    <button class="nav-item" onclick="tab('terminal')">Terminal /Buscar</button>
-    <button class="nav-item" onclick="document.body.classList.toggle('light-mode')" style="margin-top:auto">Tema 🌓</button>
+    <button class="nav-item" onclick="tab('phone')">Scanner Telefônico</button>
+    <button class="nav-item" onclick="tab('ip')">Rastreador de IP</button>
+    <button class="nav-item" onclick="tab('cv')">Arquiteto de CV</button>
+    <button class="nav-item" onclick="tab('entrevista')">Simulador Sincero</button>
 </aside>
 
 <main class="content">
 
     <section id="home" class="section active">
-        <h1 id="clock" style="font-size: 5rem; font-weight: 800; color:var(--accent)">00:00:00</h1>
-        <h2>Sistema Operacional de Elite</h2>
-        <p style="opacity: 0.5;">Acesso total às ferramentas de inteligência e automação profissional.</p>
+        <div id="clock">00:00:00</div>
+        <h2>Bem-vindo ao Centro de Comando.</h2>
+        <p style="opacity: 0.6;">Sistemas de extração total integrados com IPStack e NumVerify.</p>
     </section>
 
-    <section id="apis" class="section">
-        <h2>Intelligence Center (Full Data)</h2>
+    <section id="phone" class="section">
+        <h2>Extração Total de Telefone</h2>
         <div class="glass-card">
-            <h3>Scanner de Telefone (NumVerify)</h3>
-            <input type="text" id="phoneIn" placeholder="DDI + DDD + Número (ex: 55119...)">
-            <button class="btn-elite" onclick="scanPhone()">EXTRAIR TUDO DO TELEFONE</button>
-            <div id="phoneOut" class="api-grid"></div>
-        </div>
-        <div class="glass-card">
-            <h3>Rastreador de IP (IPStack)</h3>
-            <input type="text" id="ipIn" placeholder="IP Alvo (vazio para seu IP)">
-            <button class="btn-elite" onclick="scanIP()">EXTRAIR TUDO DO IP</button>
-            <div id="ipOut" class="api-grid"></div>
+            <input type="text" id="phoneInput" placeholder="Ex: 14158586273">
+            <button class="btn-scan" onclick="fullPhoneScan()">Executar Varredura</button>
+            <div id="phoneResults" class="data-grid"></div>
         </div>
     </section>
 
-    <section id="entrevista" class="section">
-        <h2>Simulador de Entrevista Pro</h2>
+    <section id="ip" class="section">
+        <h2>Rastreamento de Conexão (Deep IP)</h2>
         <div class="glass-card">
-            <input type="text" id="jobT" placeholder="Vaga Desejada">
-            <button class="btn-elite" onclick="startEnt()">Iniciar Protocolo</button>
-            <div id="entBox" style="display:none; margin-top:20px;">
-                <p id="qText" style="font-size: 1.2rem; font-weight: 700; margin-bottom: 15px;"></p>
-                <textarea id="uAns" placeholder="Sua resposta..."></textarea>
-                <button class="btn-elite" onclick="checkAns()">Avaliar Sinceramente</button>
-                <div id="feed" class="feedback-box"></div>
-            </div>
+            <input type="text" id="ipInput" placeholder="Digite o IP ou deixe vazio para o seu">
+            <button class="btn-scan" onclick="fullIPScan()">Triangular Posição</button>
+            <div id="ipResults" class="data-grid"></div>
         </div>
     </section>
 
-    <section id="curriculo" class="section">
-        <h2>Gerador de Currículo Perfeito</h2>
+    <section id="cv" class="section">
+        <h2>Gerador de Perfil Profissional</h2>
         <div class="glass-card" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
             <div>
-                <input type="text" id="cvN" placeholder="Nome">
-                <input type="text" id="cvC" placeholder="Cargo">
-                <textarea id="cvB" placeholder="Resumo Profissional"></textarea>
+                <input type="text" id="cvName" placeholder="Nome Completo">
+                <input type="text" id="cvRole" placeholder="Cargo Alvo">
+                <textarea id="cvBio" placeholder="Resumo Executivo de Alto Impacto" style="width:100%; height:100px; background:rgba(0,0,0,0.4); border:1px solid var(--border); border-radius:12px; color:white; padding:10px;"></textarea>
             </div>
             <div>
-                <textarea id="cvE" placeholder="Experiências (Resultados)"></textarea>
-                <input type="text" id="cvS" placeholder="Habilidades (Skill1, Skill2)">
-                <button class="btn-elite" onclick="gerarCV()">EXPORTAR PDF PROFISSIONAL</button>
+                <textarea id="cvExp" placeholder="Experiências e Resultados Chave" style="width:100%; height:100px; background:rgba(0,0,0,0.4); border:1px solid var(--border); border-radius:12px; color:white; padding:10px;"></textarea>
+                <input type="text" id="cvSkills" placeholder="Skills (ex: Python, Gestão, AWS)">
+                <button class="btn-scan" onclick="buildEliteCV()">Exportar CV Premium</button>
             </div>
         </div>
-    </section>
-
-    <section id="utilitarios" class="section">
-        <h2>Toolkit Profissional</h2>
-        <div class="api-grid">
-            <div class="glass-card">
-                <h3>Validador de CPF</h3>
-                <input type="text" id="cpfIn">
-                <button class="btn-elite" onclick="valCPF()">Checar</button>
-                <p id="cpfRes"></p>
-            </div>
-            <div class="glass-card">
-                <h3>Gerador de Bio</h3>
-                <button class="btn-elite" onclick="genBio()">Gerar Aleatória</button>
-                <textarea id="bioRes" style="margin-top:10px"></textarea>
-            </div>
-        </div>
-    </section>
-
-    <section id="terminal" class="section">
-        <h2>Terminal de Logs</h2>
-        <div id="termBox"><div>> M_OS ONLINE...</div></div>
-        <input type="text" id="tIn" onkeydown="handleT(event)" placeholder="/buscar termo">
     </section>
 
 </main>
 
 <script>
-// --- CORE ---
-setInterval(()=> { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-function tab(id){
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+// --- GLOBAL ---
+setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+function tab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     event.currentTarget.classList.add('active');
 }
 
-// --- API TELEFONE (TODAS AS INFOS) ---
-async function scanPhone(){
-    const n = document.getElementById('phoneIn').value;
-    const out = document.getElementById('phoneOut');
-    const key = '95c79cb4a8841b8d8c24ed0db133f322';
-    out.innerHTML = "Processando...";
+// --- SCANNER TELEFONE (DATA COMPLETA) ---
+async function fullPhoneScan() {
+    const num = document.getElementById('phoneInput').value;
+    const res = document.getElementById('phoneResults');
+    const key = '37c50a4c4aaf752f098edc2caf52c752';
+    res.innerHTML = "Iniciando Varredura...";
+
     try {
-        const r = await fetch(`https://apilayer.net/api/validate?access_key=${key}&number=${n}`);
-        const d = await r.json();
-        if(d.valid){
-            out.innerHTML = `
-                <div class="data-box"><span class="label">Válido</span><span class="val">${d.valid}</span></div>
-                <div class="data-box"><span class="label">Local</span><span class="val">${d.local_format}</span></div>
-                <div class="data-box"><span class="label">Internacional</span><span class="val">${d.international_format}</span></div>
-                <div class="data-box"><span class="label">DDI</span><span class="val">${d.country_prefix}</span></div>
-                <div class="data-box"><span class="label">País</span><span class="val">${d.country_name}</span></div>
-                <div class="data-box"><span class="label">Cod. País</span><span class="val">${d.country_code}</span></div>
-                <div class="data-box"><span class="label">Localização</span><span class="val">${d.location}</span></div>
-                <div class="data-box"><span class="label">Operadora</span><span class="val">${d.carrier}</span></div>
-                <div class="data-box"><span class="label">Linha</span><span class="val">${d.line_type}</span></div>
-            `;
-        } else { out.innerHTML = "Número Inválido."; }
-    } catch(e){ out.innerHTML = "Erro na API."; }
+        const response = await fetch(`https://apilayer.net/api/validate?access_key=${key}&number=${num}`);
+        const d = await response.json();
+        
+        res.innerHTML = d.valid ? `
+            <div class="data-box"><span class="label">Status</span><span class="val">Válido</span></div>
+            <div class="data-box"><span class="label">Local</span><span class="val">${d.local_format}</span></div>
+            <div class="data-box"><span class="label">Internacional</span><span class="val">${d.international_format}</span></div>
+            <div class="data-box"><span class="label">DDI</span><span class="val">${d.country_prefix}</span></div>
+            <div class="data-box"><span class="label">País</span><span class="val">${d.country_name}</span></div>
+            <div class="data-box"><span class="label">UF/Cidade</span><span class="val">${d.location}</span></div>
+            <div class="data-box"><span class="label">Operadora</span><span class="val">${d.carrier}</span></div>
+            <div class="data-box"><span class="label">Tipo de Linha</span><span class="val">${d.line_type}</span></div>
+        ` : "Número não localizado no banco de dados global.";
+    } catch (e) { res.innerHTML = "Erro na requisição."; }
 }
 
-// --- API IP (TODAS AS INFOS) ---
-async function scanIP(){
-    const ip = document.getElementById('ipIn').value;
-    const out = document.getElementById('ipOut');
-    const key = '945bb139ed97f6995bf7415dbed8d549';
-    out.innerHTML = "Localizando...";
+// --- SCANNER IP (DATA COMPLETA DO SAMPLE) ---
+async function fullIPScan() {
+    const ip = document.getElementById('ipInput').value;
+    const res = document.getElementById('ipResults');
+    const key = 'a9b57e3b51c26e5418baabf34be67947';
+    res.innerHTML = "Localizando Conexão...";
+
     try {
-        const r = await fetch(`http://api.ipstack.com/${ip||'check'}?access_key=${key}`);
-        const d = await r.json();
-        out.innerHTML = `
-            <div class="data-box"><span class="label">IP</span><span class="val">${d.ip}</span></div>
-            <div class="data-box"><span class="label">Tipo</span><span class="val">${d.type}</span></div>
+        const response = await fetch(`http://api.ipstack.com/${ip ? ip : 'check'}?access_key=${key}`);
+        const d = await response.json();
+        
+        // Extraindo tudo o que você mostrou no sample
+        res.innerHTML = `
+            <div class="data-box"><span class="label">IP Alvo</span><span class="val">${d.ip}</span></div>
             <div class="data-box"><span class="label">Continente</span><span class="val">${d.continent_name}</span></div>
             <div class="data-box"><span class="label">País</span><span class="val">${d.country_name} ${d.location.country_flag_emoji}</span></div>
-            <div class="data-box"><span class="label">Cidade/Região</span><span class="val">${d.city} / ${d.region_name}</span></div>
-            <div class="data-box"><span class="label">Latitude</span><span class="val">${d.latitude}</span></div>
-            <div class="data-box"><span class="label">Longitude</span><span class="val">${d.longitude}</span></div>
-            <div class="data-box"><span class="label">Língua</span><span class="val">${d.location.languages[0].name}</span></div>
-            <div class="data-box"><span class="label">CEP</span><span class="val">${d.zip}</span></div>
-            <div class="data-box"><span class="label">Código Chamada</span><span class="val">+${d.location.calling_code}</span></div>
+            <div class="data-box"><span class="label">Cidade / Região</span><span class="val">${d.city}, ${d.region_name}</span></div>
+            <div class="data-box"><span class="label">Coordenadas</span><span class="val">Lat: ${d.latitude}<br>Long: ${d.longitude}</span></div>
+            <div class="data-box"><span class="label">Fuso Horário</span><span class="val">${d.time_zone.id}<br>${d.time_zone.current_time}</span></div>
+            <div class="data-box"><span class="label">Moeda</span><span class="val">${d.currency.name} (${d.currency.symbol})</span></div>
+            <div class="data-box"><span class="label">Provedor (ISP)</span><span class="val">${d.connection.isp}</span></div>
+            <div class="data-box"><span class="label">Tecnologia</span><span class="val">${d.connection_type} / ${d.ip_routing_type}</span></div>
+            <div class="data-box"><span class="label">ASN</span><span class="val">${d.connection.asn}</span></div>
+            <div class="data-box"><span class="label">Capital</span><span class="val">${d.location.capital}</span></div>
+            <div class="data-box"><span class="label">Idioma</span><span class="val">${d.location.languages[0].name}</span></div>
         `;
-    } catch(e){ out.innerHTML = "Erro (IPStack Free exige HTTP)."; }
+    } catch (e) { res.innerHTML = "Erro. Verifique se seu navegador bloqueou o modo HTTP (ipstack free é apenas HTTP)."; }
 }
 
-// --- ENTREVISTA ---
-let qStep = 0;
-const pergs = ["Por que quer ser [J]?", "Como resolve um conflito?", "Qual seu diferencial?"];
-function startEnt(){
-    qStep=0; document.getElementById('entBox').style.display='block';
-    document.getElementById('qText').innerText = pergs[0].replace("[J]", document.getElementById('jobT').value);
-}
-function checkAns(){
-    const a = document.getElementById('uAns').value;
-    const f = document.getElementById('feed'); f.style.display='block';
-    if(a.length < 15) { f.className="feedback-box bad"; f.innerText="Muito curto! Resposta de amador."; }
-    else { f.className="feedback-box good"; f.innerText="Boa! Passou confiança."; qStep++; 
-        if(qStep<pergs.length) document.getElementById('qText').innerText = pergs[qStep].replace("[J]", document.getElementById('jobT').value);
-    }
-}
-
-// --- CURRÍCULO ---
-function gerarCV(){
+// --- GERADOR CV ---
+function buildEliteCV() {
+    const d = {
+        n: document.getElementById('cvName').value,
+        c: document.getElementById('cvRole').value,
+        b: document.getElementById('cvBio').value,
+        e: document.getElementById('cvExp').value,
+        s: document.getElementById('cvSkills').value
+    };
     const win = window.open('','_blank');
-    win.document.write(`<html><body style="font-family:sans-serif; padding:50px">
-        <h1>${document.getElementById('cvN').value}</h1>
-        <h3>${document.getElementById('cvC').value}</h3>
-        <hr><p>${document.getElementById('cvB').value}</p>
-        <h4>Experiência</h4><p>${document.getElementById('cvE').value}</p>
-        <h4>Skills</h4><p>${document.getElementById('cvS').value}</p>
+    win.document.write(`<html><head><style>body{font-family:sans-serif; padding:50px; line-height:1.6} h1{margin:0; border-bottom:3px solid #000} .role{color:#3b82f6; font-weight:bold; font-size:1.2rem; margin-bottom:20px} h2{font-size:1rem; text-transform:uppercase; border-bottom:1px solid #ccc; margin-top:30px} p{white-space:pre-wrap}</style></head><body>
+        <h1>${d.n}</h1><div class="role">${d.c}</div>
+        <h2>Resumo Executivo</h2><p>${d.b}</p>
+        <h2>Experiência Profissional</h2><p>${d.e}</p>
+        <h2>Habilidades Técnicas</h2><p>${d.s}</p>
         <script>window.print()<\/script></body></html>`);
-}
-
-// --- TERMINAL ---
-function handleT(e){
-    if(e.key==="Enter"){
-        const v = e.target.value;
-        const b = document.getElementById('termBox');
-        b.innerHTML += `<div>> ${v}</div>`;
-        if(v.startsWith("/buscar ")){
-            fetch("logins.txt").then(r=>r.text()).then(t=>{
-                t.split("\n").forEach(l=>{
-                    if(l.includes(v.split(" ")[1])){
-                        const p = l.split(":");
-                        b.innerHTML += `<div style="color:#00ff00">${p[p.length-2]}:${p[p.length-1]}</div>`;
-                    }
-                });
-            });
-        }
-        e.target.value=""; b.scrollTop=b.scrollHeight;
-    }
-}
-
-// --- VALIDADOR CPF ---
-function valCPF(){
-    let c = document.getElementById('cpfIn').value.replace(/\D/g,'');
-    document.getElementById('cpfRes').innerText = c.length===11 ? "Válido (Simulado)" : "Inválido";
-}
-function genBio(){
-    document.getElementById('bioRes').value = "Profissional focado em alta performance e resultados exponenciais.";
 }
 </script>
 </body>
