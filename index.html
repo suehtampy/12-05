@@ -3,363 +3,286 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matheus | Hub de Inteligência Profissional</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<title>MATHEUS OS | Elite Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg: #f8f9fa;
-    --text: #1a1d23;
-    --accent: #2563eb; /* Azul Profissional */
-    --accent-hover: #1d4ed8;
-    --card: #ffffff;
-    --sidebar: #1e293b;
-    --border: #e2e8f0;
+    --bg: #ffffff; --text: #0a0a0a; --accent: #2563eb;
+    --card: #ffffff; --sidebar: #f1f5f9; --border: #e2e8f0;
+    --shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
 }
-
 .dark-mode {
-    --bg: #0f172a;
-    --text: #f8f9fa;
-    --card: #1e293b;
-    --border: #334155;
+    --bg: #020617; --text: #f8fafc; --accent: #38bdf8;
+    --card: #0f172a; --sidebar: #020617; --border: #1e293b;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-    font-family: 'Poppins', sans-serif; 
-    background: var(--bg); 
-    color: var(--text); 
-    transition: all 0.3s ease;
-}
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); transition: 0.4s; }
 
 /* SIDEBAR REFINADA */
 .sidebar {
-    position: fixed; left: 0; top: 0; height: 100%; width: 260px;
-    background: var(--sidebar); color: white;
-    padding: 30px 20px; z-index: 1000;
-    transition: transform 0.3s ease;
+    position: fixed; left: 0; top: 0; height: 100%; width: 280px;
+    background: var(--sidebar); border-right: 1px solid var(--border);
+    padding: 40px 20px; z-index: 1000;
 }
-
-.sidebar h2 { font-size: 1.5rem; margin-bottom: 40px; border-left: 4px solid var(--accent); padding-left: 15px; }
-
-.nav-btn {
-    width: 100%; background: none; border: none; color: #94a3b8;
-    padding: 12px 15px; text-align: left; font-size: 1rem;
-    cursor: pointer; transition: 0.3s; border-radius: 8px; margin-bottom: 5px;
+.nav-item {
+    width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 12px;
+    background: none; border: none; color: var(--text); text-align: left;
+    font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px;
 }
-.nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.1); color: white; }
+.nav-item:hover, .nav-item.active { background: var(--card); box-shadow: var(--shadow); color: var(--accent); }
 
-/* LAYOUT PRINCIPAL */
-.main-content { margin-left: 260px; padding: 40px; max-width: 1200px; }
-.section { display: none; animation: fadeIn 0.4s ease; }
+/* MAIN */
+.content { margin-left: 280px; padding: 60px; max-width: 1400px; }
+.section { display: none; animation: fadeIn 0.5s ease; }
 .section.active { display: block; }
-
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* CARDS E GRIDS */
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-.card { 
+/* CARDS GIGANTES */
+.glass-card { 
     background: var(--card); border: 1px solid var(--border);
-    padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    padding: 40px; border-radius: 30px; box-shadow: var(--shadow); margin-bottom: 30px;
 }
 
-h3 { margin-bottom: 20px; font-size: 1.2rem; font-weight: 700; color: var(--accent); }
-
-/* INPUTS E BOTÕES */
+/* INPUTS */
+.input-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; opacity: 0.8; }
 input, select, textarea {
-    width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px;
-    border: 1px solid var(--border); background: var(--bg); color: var(--text);
-    font-family: inherit; font-size: 0.9rem;
+    width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); font-family: inherit; transition: 0.3s;
+}
+input:focus { border-color: var(--accent); outline: none; }
+
+.btn-main {
+    background: var(--accent); color: white; border: none; padding: 16px;
+    border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s;
+}
+.btn-main:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+/* TERMINAL */
+#termBox {
+    background: #000; color: #00ff00; font-family: 'JetBrains Mono';
+    padding: 25px; border-radius: 20px; height: 400px; overflow-y: auto; font-size: 0.85rem;
 }
 
-.btn-primary {
-    background: var(--accent); color: white; border: none;
-    padding: 12px 25px; border-radius: 8px; cursor: pointer;
-    font-weight: 600; transition: 0.3s; width: 100%;
-}
-.btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); }
-
-/* TERMINAL E BUSCA */
-.terminal-output {
-    background: #000; color: #10b981; font-family: 'JetBrains Mono', monospace;
-    padding: 20px; border-radius: 8px; height: 300px; overflow-y: auto; margin-bottom: 10px;
-}
-
-#clock { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
-
-/* RESPONSIVIDADE */
-@media (max-width: 768px) {
-    .sidebar { transform: translateX(-100%); }
-    .main-content { margin-left: 0; }
-}
+#clock { font-size: 4rem; font-weight: 800; color: var(--accent); margin-bottom: 40px; }
 </style>
 </head>
-<body class="dark-mode"> <aside class="sidebar">
-    <h2>MATHEUS.AI</h2>
-    <button class="nav-btn active" onclick="openTab('home')">Início</button>
-    <button class="nav-btn" onclick="openTab('entrevista')">Simulador de Carreira</button>
-    <button class="nav-btn" onclick="openTab('ferramentas')">Ferramentas Pro</button>
-    <button class="nav-btn" onclick="openTab('terminal')">Busca & Dados</button>
-    
-    <div style="position: absolute; bottom: 30px; width: calc(100% - 40px);">
-        <button class="btn-primary" onclick="toggleTheme()" style="background: #334155;">Alternar Tema 🌓</button>
-    </div>
+<body class="dark-mode">
+
+<aside class="sidebar">
+    <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 50px;">MATHEUS<span style="color:var(--accent)">.OS</span></div>
+    <button class="nav-item active" onclick="show('home')">Dashboard</button>
+    <button class="nav-item" onclick="show('entrevista')">Simulador de RH</button>
+    <button class="nav-item" onclick="show('curriculo')">Arquiteto de CV</button>
+    <button class="nav-item" onclick="show('terminal')">Terminal de Busca</button>
+    <button class="nav-item" onclick="toggleT()" style="margin-top: auto;">Trocar Tema 🌓</button>
 </aside>
 
-<main class="main-content">
+<main class="content">
     
     <section id="home" class="section active">
         <div id="clock">00:00:00</div>
-        <h1 style="font-size: 3rem; margin-bottom: 10px;">Olá, Matheus.</h1>
-        <p style="font-size: 1.2rem; opacity: 0.7;">O que vamos construir hoje? Seu sistema está pronto.</p>
-        
-        <div class="grid" style="margin-top: 40px;">
-            <div class="card">
-                <h3>Resumo Profissional</h3>
-                <p>Otimize seu perfil, valide documentos e treine para qualquer entrevista em um só lugar.</p>
-            </div>
-            <div class="card">
-                <h3>Status do Sistema</h3>
-                <p>✨ Modo de Performance Ativo</p>
-                <p>🔒 Proteção de Dados de Ponta</p>
-            </div>
-        </div>
+        <h1 style="font-size: 3.5rem;">Excelência em cada <span style="color:var(--accent)">comando.</span></h1>
+        <p style="margin-top: 15px; font-size: 1.2rem; opacity: 0.6;">Bem-vindo ao sistema de gestão profissional mais avançado da rede.</p>
     </section>
 
     <section id="entrevista" class="section">
-        <h3>Simulador de Entrevista Inteligente</h3>
-        <div class="grid">
-            <div class="card">
-                <label>Qual sua profissão ou área desejada?</label>
-                <input type="text" id="jobTitle" placeholder="Ex: Vendedor, Médico, Advogado, Gamer, etc.">
-                <button class="btn-primary" onclick="startGlobalInterview()">Iniciar Treinamento</button>
-                
-                <div id="qa-area" style="margin-top: 25px; display: none; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <p id="questionText" style="font-weight: 600; margin-bottom: 15px; color: var(--accent);"></p>
-                    <textarea id="userAnswer" placeholder="Digite sua resposta aqui..."></textarea>
-                    <button class="btn-primary" onclick="nextGlobalQuestion()">Enviar Resposta</button>
+        <h2>Simulador de Entrevista de Alta Performance</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+            <div class="glass-card">
+                <div class="input-group">
+                    <label>Área de Atuação</label>
+                    <input type="text" id="jobTitle" placeholder="Ex: Diretor Financeiro, Desenvolvedor, Engenheiro...">
+                </div>
+                <button class="btn-main" onclick="startInterview()">Iniciar Protocolo</button>
+                <div id="qa-container" style="display: none; margin-top: 30px;">
+                    <p id="qText" style="font-size: 1.1rem; font-weight: 600; color: var(--accent); margin-bottom: 15px;"></p>
+                    <textarea id="uAns" placeholder="Sua resposta estratégica..." style="height: 120px;"></textarea>
+                    <button class="btn-main" onclick="nextQ()">Próxima Pergunta</button>
                 </div>
             </div>
-            <div class="card">
-                <label>Histórico da Simulação</label>
-                <div id="interviewHistory" style="font-size: 0.85rem; max-height: 300px; overflow-y: auto;"></div>
+            <div class="glass-card">
+                <label>Feedback de Sessão</label>
+                <div id="logRH" style="font-size: 0.85rem; max-height: 400px; overflow-y: auto;"></div>
             </div>
         </div>
     </section>
 
-    <section id="ferramentas" class="section">
-        <h3>Ferramentas de Utilidade</h3>
-        <div class="grid">
-            <div class="card">
-                <h3>Validador de Identidade</h3>
-                <input type="text" id="docInput" placeholder="CPF ou CNPJ (somente números)">
-                <button class="btn-primary" onclick="validateRealDoc()">Validar Documento</button>
-                <p id="docResult" style="margin-top: 10px; font-weight: 600;"></p>
+    <section id="curriculo" class="section">
+        <h2>Arquiteto de Currículos Elite</h2>
+        <div class="glass-card" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <label>Nome Completo</label><input type="text" id="cvN">
+                <label>Cargo/Título Profissional</label><input type="text" id="cvC" placeholder="Ex: Senior Full Stack Engineer">
+                <label>LinkedIn / Portfólio (URL)</label><input type="text" id="cvL">
+                <label>Resumo de Alto Impacto</label><textarea id="cvR" style="height: 80px;"></textarea>
             </div>
-            <div class="card">
-                <h3>Gerador de Currículo Elite</h3>
-                <input type="text" id="cvName" placeholder="Seu Nome Completo">
-                <input type="text" id="cvGoal" placeholder="Seu Cargo Objetivo">
-                <textarea id="cvSummary" placeholder="Resumo de suas melhores qualidades..."></textarea>
-                <button class="btn-primary" onclick="printCV()">Gerar Currículo PDF</button>
-            </div>
-            <div class="card">
-                <h3>Segurança de Senha</h3>
-                <input type="password" id="passInput" placeholder="Teste sua senha" oninput="checkPassStrength()">
-                <div style="height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
-                    <div id="passFill" style="height: 100%; width: 0%; transition: 0.4s;"></div>
-                </div>
-                <p id="passMsg" style="font-size: 0.8rem; margin-top: 5px;"></p>
+            <div>
+                <label>Principais Experiências (Empresa, Cargo e Resultados)</label><textarea id="cvE" style="height: 100px;" placeholder="Dica: Use verbos de ação. Ex: Liderei equipe de 10 pessoas e aumentei lucro em 20%"></textarea>
+                <label>Formação e Cursos</label><textarea id="cvF" style="height: 60px;"></textarea>
+                <label>Hard Skills & Tecnologias</label><input type="text" id="cvS" placeholder="Separe por vírgulas">
+                <button class="btn-main" onclick="generateKillerCV()">Gerar Currículo de Elite</button>
             </div>
         </div>
     </section>
 
     <section id="terminal" class="section">
-        <h3>Terminal de Busca & Dados</h3>
-        <div class="terminal-output" id="termOut">
-            <div>> Sistema Matheus v3.0 pronto.</div>
-            <div>> Use <b>/buscar [termo]</b> para localizar registros no logins.txt.</div>
+        <h2>Terminal de Deep Search</h2>
+        <div id="termBox">
+            <div>> MATHEUS_OS_CORE v4.0.1</div>
+            <div>> Digite /buscar [termo] para extrair login:senha</div>
         </div>
-        <input type="text" id="termIn" placeholder="Digite seu comando aqui..." onkeydown="handleCommand(event)">
+        <input type="text" id="tIn" style="margin-top: 20px;" placeholder="Aguardando comando..." onkeydown="handleT(event)">
     </section>
 
 </main>
 
 <script>
-// --- RELÓGIO E TEMA ---
-setInterval(() => {
-    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-}, 1000);
-
-function toggleTheme() {
-    document.body.classList.toggle('dark-mode');
-}
-
-function openTab(id) {
+// --- CORE LOGIC ---
+setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+function toggleT() { document.body.classList.toggle('dark-mode'); }
+function show(id) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     event.currentTarget.classList.add('active');
 }
 
-// --- ENTREVISTA PARA QUALQUER PROFISSÃO ---
+// --- ENTREVISTA (BANCO DE DADOS INTEGRADO) ---
+let qIdx = 0;
 let currentJob = "";
-let qStep = 0;
-const genericQuestions = [
-    "Por que você escolheu trabalhar como [JOB]?",
-    "Como você lida com um cliente ou colega difícil na área de [JOB]?",
-    "Quais são suas 3 maiores qualidades para atuar como [JOB]?",
-    "Onde você quer chegar na sua carreira daqui a 2 anos?",
-    "Qual o seu diferencial em relação aos outros profissionais de [JOB]?"
+const questionsDB = [
+    "Como o [JOB] gera valor real para a empresa no dia a dia?",
+    "Quais métricas você usa para medir seu sucesso como [JOB]?",
+    "Descreva uma situação onde você teve que tomar uma decisão impopular como [JOB].",
+    "Qual a tendência tecnológica que mais vai impactar o cargo de [JOB] em 2026?",
+    "Como você lida com a pressão de prazos agressivos na função de [JOB]?",
+    "Conte sobre um erro que você cometeu e como o resolveu tecnicamente.",
+    "Como você promove a colaboração em equipes multidisciplinares?",
+    "Se você tivesse recursos ilimitados, qual projeto implementaria como [JOB]?",
+    "Qual o seu processo para aprender algo novo do zero?",
+    "Por que você é o investimento mais seguro para nossa empresa hoje?"
 ];
 
-function startGlobalInterview() {
+function startInterview() {
     currentJob = document.getElementById('jobTitle').value;
-    if(!currentJob) return alert("Por favor, digite uma profissão.");
-    qStep = 0;
-    document.getElementById('qa-area').style.display = 'block';
-    showQuestion();
+    if(!currentJob) return alert("Defina o cargo!");
+    qIdx = 0;
+    document.getElementById('qa-container').style.display = 'block';
+    nextQ();
 }
 
-function showQuestion() {
-    let q = genericQuestions[qStep].replace("[JOB]", currentJob);
-    document.getElementById('questionText').innerText = q;
-}
-
-function nextGlobalQuestion() {
-    let ans = document.getElementById('userAnswer').value;
-    if(!ans) return;
-
-    let log = document.getElementById('interviewHistory');
-    log.innerHTML += `<p><b>Q:</b> ${genericQuestions[qStep].replace("[JOB]", currentJob)}<br><b>R:</b> ${ans}</p><hr style='margin:10px 0; opacity:0.1;'>`;
-    
-    document.getElementById('userAnswer').value = "";
-    qStep++;
-
-    if(qStep < genericQuestions.length) {
-        showQuestion();
+function nextQ() {
+    const ans = document.getElementById('uAns').value;
+    if(qIdx > 0 && ans) {
+        document.getElementById('logRH').innerHTML += `<p><b>P:</b> ${questionsDB[qIdx-1].replace("[JOB]", currentJob)}<br><b>R:</b> ${ans}</p><hr style="margin:10px 0; opacity:0.1">`;
+    }
+    document.getElementById('uAns').value = "";
+    if(qIdx < questionsDB.length) {
+        document.getElementById('qText').innerText = questionsDB[qIdx].replace("[JOB]", currentJob);
+        qIdx++;
     } else {
-        document.getElementById('qa-area').innerHTML = "<p>✅ Simulação Finalizada! Seu histórico foi salvo acima.</p>";
+        document.getElementById('qa-container').innerHTML = "<h3>Protocolo Concluído. Você está acima da média.</h3>";
     }
 }
 
-// --- O /BUSCAR (RETORNO) ---
-function handleCommand(e) {
-    if(e.key === "Enter") {
-        let val = e.target.value.trim();
-        let out = document.getElementById('termOut');
-        out.innerHTML += `<div><span style="color:#fff">> ${val}</span></div>`;
-        
-        if(val.startsWith("/buscar ")) {
-            let termo = val.replace("/buscar ", "").toLowerCase();
-            out.innerHTML += `<div>Procurando por: ${termo}...</div>`;
-            fetchBusca(termo);
-        } else {
-            out.innerHTML += `<div>Comando desconhecido. Tente /buscar [termo]</div>`;
-        }
-        e.target.value = "";
-        out.scrollTop = out.scrollHeight;
-    }
-}
-
-async function fetchBusca(termo) {
-    const out = document.getElementById('termOut');
-    try {
-        const res = await fetch("logins.txt");
-        const txt = await res.text();
-        const linhas = txt.split("\n");
-        let encontrados = 0;
-        
-        linhas.forEach(linha => {
-            if(linha.toLowerCase().includes(termo)) {
-                out.innerHTML += `<div style="color:#fff">${linha.trim()}</div>`;
-                encontrados++;
-            }
-        });
-        
-        if(encontrados === 0) out.innerHTML += `<div>Nenhum resultado encontrado.</div>`;
-        else out.innerHTML += `<div>${encontrados} resultado(s) encontrados.</div>`;
-    } catch {
-        out.innerHTML += `<div style="color:red">Erro: Arquivo logins.txt não encontrado.</div>`;
-    }
-    out.scrollTop = out.scrollHeight;
-}
-
-// --- VALIDOR DE CPF REAL ---
-function validateRealDoc() {
-    let cpf = document.getElementById('docInput').value.replace(/\D/g,'');
-    let res = document.getElementById('docResult');
-    
-    const validar = (s) => {
-        if(s.length !== 11 || !!s.match(/(\d)\1{10}/)) return false;
-        let d = 0;
-        for(let i=1; i<=9; i++) d += parseInt(s[i-1]) * (11-i);
-        let r = (d * 10) % 11;
-        if(r === 10 || r === 11) r = 0;
-        if(r !== parseInt(s[9])) return false;
-        d = 0;
-        for(let i=1; i<=10; i++) d += parseInt(s[i-1]) * (12-i);
-        r = (d * 10) % 11;
-        if(r === 10 || r === 11) r = 0;
-        return r === parseInt(s[10]);
+// --- GERADOR DE CURRÍCULO PROFISSIONAL MÁXIMO ---
+function generateKillerCV() {
+    const d = {
+        n: document.getElementById('cvN').value,
+        c: document.getElementById('cvC').value,
+        l: document.getElementById('cvL').value,
+        r: document.getElementById('cvR').value,
+        e: document.getElementById('cvE').value,
+        f: document.getElementById('cvF').value,
+        s: document.getElementById('cvS').value
     };
-
-    if(validar(cpf)) {
-        res.innerHTML = "✅ CPF VÁLIDO E AUTÊNTICO";
-        res.style.color = "#10b981";
-    } else {
-        res.innerHTML = "❌ DOCUMENTO INVÁLIDO";
-        res.style.color = "#ef4444";
-    }
-}
-
-// --- CURRICULO ---
-function printCV() {
-    const n = document.getElementById('cvName').value;
-    const g = document.getElementById('cvGoal').value;
-    const s = document.getElementById('cvSummary').value;
-    
-    if(!n) return alert("Preencha ao menos o nome.");
 
     const win = window.open('', '_blank');
     win.document.write(`
-        <html><head><title>CV - ${n}</title>
+        <html><head><title>CV Profissional - ${d.n}</title>
         <style>
-            body { font-family: sans-serif; padding: 40px; line-height: 1.6; }
-            h1 { margin: 0; border-bottom: 2px solid #2563eb; padding-bottom: 10px; }
-            .goal { font-size: 1.2rem; font-weight: bold; color: #666; margin: 10px 0; }
-            .section { margin-top: 30px; }
-            .title { font-weight: bold; text-transform: uppercase; color: #2563eb; border-bottom: 1px solid #eee; }
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+            body { font-family: 'Inter', sans-serif; padding: 50px; color: #1a1a1a; max-width: 850px; margin: auto; line-height: 1.5; }
+            header { border-bottom: 3px solid #000; padding-bottom: 20px; margin-bottom: 30px; }
+            h1 { font-size: 32px; text-transform: uppercase; margin: 0; letter-spacing: -1px; }
+            .subtitle { font-size: 18px; color: #444; font-weight: 700; margin-top: 5px; }
+            .links { font-size: 12px; color: #666; margin-top: 10px; }
+            section { margin-bottom: 25px; }
+            h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px; color: #000; }
+            .content { font-size: 14px; white-space: pre-wrap; color: #333; }
+            .skills { display: flex; flex-wrap: wrap; gap: 8px; }
+            .skill-item { background: #f0f0f0; padding: 4px 10px; font-size: 12px; font-weight: 700; border-radius: 4px; }
         </style></head>
         <body>
-            <h1>${n}</h1>
-            <div class="goal">${g}</div>
-            <div class="section">
-                <div class="title">Resumo e Qualificações</div>
-                <p>${s}</p>
-            </div>
-            <div class="section">
-                <div class="title">Histórico Profissional</div>
-                <p><i>[Preencha aqui suas experiências anteriores]</i></p>
-            </div>
+            <header>
+                <h1>${d.n}</h1>
+                <div class="subtitle">${d.c}</div>
+                <div class="links">${d.l}</div>
+            </header>
+            <section>
+                <h2>Perfil Executivo</h2>
+                <div class="content">${d.r}</div>
+            </section>
+            <section>
+                <h2>Experiência Profissional e Resultados</h2>
+                <div class="content">${d.e}</div>
+            </section>
+            <section>
+                <h2>Formação Acadêmica</h2>
+                <div class="content">${d.f}</div>
+            </section>
+            <section>
+                <h2>Competências Técnicas</h2>
+                <div class="skills">${d.s.split(',').map(s => `<span class="skill-item">${s.trim()}</span>`).join('')}</div>
+            </section>
             <script>window.print();<\/script>
         </body></html>
     `);
 }
 
-// --- FORÇA DE SENHA ---
-function checkPassStrength() {
-    let p = document.getElementById('passInput').value;
-    let fill = document.getElementById('passFill');
-    let msg = document.getElementById('passMsg');
-    let s = 0;
-    if(p.length > 7) s += 25;
-    if(/[A-Z]/.test(p)) s += 25;
-    if(/[0-9]/.test(p)) s += 25;
-    if(/[^A-Za-z0-9]/.test(p)) s += 25;
-    
-    fill.style.width = s + "%";
-    fill.style.background = s < 50 ? "#ef4444" : (s < 100 ? "#f59e0b" : "#10b981");
-    msg.innerText = s === 100 ? "Senha de Elite!" : "Fortaleça sua senha.";
+// --- TERMINAL /BUSCAR (CORRIGIDO: URL REMOVIDA) ---
+function handleT(e) {
+    if(e.key === "Enter") {
+        const val = e.target.value.trim();
+        const box = document.getElementById('termBox');
+        box.innerHTML += `<div><span style="color:#fff">> ${val}</span></div>`;
+        
+        if(val.startsWith("/buscar ")) {
+            const t = val.replace("/buscar ", "").toLowerCase();
+            buscarDados(t);
+        } else {
+            box.innerHTML += `<div>Comando não reconhecido.</div>`;
+        }
+        e.target.value = "";
+        box.scrollTop = box.scrollHeight;
+    }
+}
+
+async function buscarDados(t) {
+    const box = document.getElementById('termBox');
+    try {
+        const resp = await fetch("logins.txt");
+        const text = await resp.text();
+        const linhas = text.split("\n");
+        let count = 0;
+        
+        linhas.forEach(l => {
+            if(l.toLowerCase().includes(t)) {
+                // Lógica para pegar apenas login:senha (os dois últimos blocos após os ":")
+                const partes = l.trim().split(":");
+                if(partes.length >= 2) {
+                    const pass = partes.pop();
+                    const login = partes.pop();
+                    box.innerHTML += `<div style="color:#00ff00">${login}:${pass}</div>`;
+                    count++;
+                }
+            }
+        });
+        if(count === 0) box.innerHTML += `<div>Nenhum dado encontrado.</div>`;
+    } catch { box.innerHTML += `<div style="color:red">Erro: logins.txt não encontrado.</div>`; }
+    box.scrollTop = box.scrollHeight;
 }
 </script>
 </body>
