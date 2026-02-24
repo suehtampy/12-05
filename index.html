@@ -3,343 +3,392 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matheus | OS Interface</title>
+<title>MATHEUS OS | Central de Comando</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg-color: #05050d;
-    --sidebar-color: rgba(10, 10, 25, 0.9);
-    --accent-color: #00f0ff;
-    --secondary-accent: #ff00d4;
-    --text-color: #ffffff;
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --border-color: rgba(0, 240, 255, 0.3);
+    --bg: #030308;
+    --side: rgba(5, 5, 15, 0.95);
+    --accent: #00f0ff;
+    --accent-glow: rgba(0, 240, 255, 0.4);
+    --secondary: #ff00d4;
+    --text: #e0e0e0;
+    --card: rgba(15, 15, 30, 0.6);
+    --border: rgba(0, 240, 255, 0.2);
 }
 
 .light-mode {
-    --bg-color: #f4f7f6;
-    --sidebar-color: rgba(230, 230, 240, 0.9);
-    --accent-color: #0072ff;
-    --secondary-accent: #e91e63;
-    --text-color: #1a1a1a;
-    --card-bg: rgba(0, 0, 0, 0.05);
-    --border-color: rgba(0, 114, 255, 0.3);
+    --bg: #f0f2f5;
+    --side: rgba(255, 255, 255, 0.9);
+    --accent: #0066ff;
+    --accent-glow: rgba(0, 102, 255, 0.2);
+    --secondary: #d400ff;
+    --text: #1a1a1a;
+    --card: #ffffff;
+    --border: rgba(0, 102, 255, 0.2);
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Poppins',sans-serif; background: var(--bg-color); color: var(--text-color); overflow-x:hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);}
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+body { 
+    font-family: 'Poppins', sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    overflow-x: hidden; 
+    transition: background 0.5s, color 0.5s;
+}
 
-canvas#particles{position:fixed;top:0;left:0;z-index:-1; opacity: 0.6;}
+canvas#particles { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
 
-/* SIDEBAR REFORMULADA */
-.sidebar{position:fixed;left:0;top:0;height:100%;width:80px;background: var(--sidebar-color); backdrop-filter:blur(15px); display:flex; flex-direction:column; align-items:center; padding: 30px 0; transition:0.4s; border-right:1px solid var(--border-color); z-index: 100;}
-.sidebar:hover{width:220px;}
-.sidebar button{background:none; border:none; color: var(--text-color); margin:15px 0; padding:12px 20px; font-size:0.9rem; text-align:left; width: 100%; cursor:pointer; transition:0.3s; font-family:'Orbitron',sans-serif; opacity: 0.6; display: flex; align-items: center; gap: 15px;}
-.sidebar button:hover, .sidebar button.active{opacity: 1; color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color);}
-.sidebar .btn-text { display: none; }
-.sidebar:hover .btn-text { display: inline; }
+/* NAVEGAÇÃO LATERAL - ULTRA FUTURISTA */
+.sidebar {
+    position: fixed; left: 0; top: 0; height: 100%; width: 70px;
+    background: var(--side); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
+    backdrop-filter: blur(20px);
+}
+.sidebar:hover { width: 240px; }
+.sidebar .logo { margin: 30px 0; font-family: 'Orbitron'; color: var(--accent); font-size: 1.5rem; }
+.sidebar button {
+    width: 100%; border: none; background: none; color: var(--text);
+    padding: 20px; display: flex; align-items: center; gap: 20px;
+    font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 1px;
+    transition: 0.3s; opacity: 0.5; overflow: hidden;
+}
+.sidebar button:hover { opacity: 1; background: rgba(0, 240, 255, 0.05); color: var(--accent); }
+.sidebar .label { white-space: nowrap; display: none; }
+.sidebar:hover .label { display: block; }
 
-/* CONTEÚDO */
-.tab-content{display:none; padding:80px 8%; max-width:1400px; margin-left:80px; animation: fadeIn 0.6s ease forwards;}
-.tab-content.active{display:block;}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+/* CONTEÚDO PRINCIPAL */
+.main-content { margin-left: 70px; padding: 40px; transition: 0.5s; }
+.section { display: none; animation: slideUp 0.6s ease-out; }
+.section.active { display: block; }
 
-h2{font-family:'Orbitron',sans-serif; font-size:2.5rem; letter-spacing: 2px; margin-bottom:40px; border-bottom: 2px solid var(--accent-color); display: inline-block;}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-/* GRID DE FERRAMENTAS PROFISSIONAL */
-.tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
-.tool-card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 25px; border-radius: 12px; transition: 0.3s; }
-.tool-card:hover { border-color: var(--accent-color); box-shadow: 0 0 20px rgba(0, 240, 255, 0.15); }
+/* CARDS E GRIDS */
+.grid-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
+.glass-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 35px; border-radius: 20px; position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden;
+}
+.glass-card::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
 
-label { display: block; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600; color: var(--accent-color); text-transform: uppercase; }
-input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 6px; font-family: 'JetBrains Mono', monospace; }
-.btn-main { background: var(--accent-color); color: #000; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: bold; width: 100%; transition: 0.3s; }
-.btn-main:hover { filter: brightness(1.2); transform: scale(1.02); }
+/* FORMULÁRIOS PROFISSIONAIS */
+label { display: block; margin-bottom: 10px; font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); }
+input, select, textarea {
+    width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+    color: var(--text); padding: 15px; border-radius: 8px; margin-bottom: 20px;
+    font-family: 'JetBrains Mono'; outline: none; transition: 0.3s;
+}
+input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
 
-/* STATUS DE SENHA */
-.password-strength { height: 4px; background: #333; margin-top: -10px; margin-bottom: 15px; border-radius: 2px; position: relative; }
-.strength-bar { height: 100%; width: 0%; transition: 0.5s; border-radius: 2px; }
+.btn-cyber {
+    background: var(--accent); color: #000; border: none; padding: 15px 30px;
+    font-family: 'Orbitron'; font-weight: bold; border-radius: 5px; cursor: pointer;
+    transition: 0.4s; width: 100%; text-transform: uppercase;
+}
+.btn-cyber:hover { transform: translateY(-3px); box-shadow: 0 0 25px var(--accent); background: #fff; }
 
-/* RELÓGIO E TERMINAL */
-#clock { font-family: 'Orbitron'; font-size: 1.2rem; color: var(--accent-color); margin-bottom: 10px; }
-#terminalOutput { height: 300px; background: #01010a; padding: 15px; color: #0fff92; font-family: 'JetBrains Mono'; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; }
+/* TERMINAL HACKER */
+.terminal-container {
+    background: #010208; border-radius: 10px; border: 1px solid var(--secondary);
+    padding: 20px; font-family: 'JetBrains Mono'; color: #0fff92;
+    height: 400px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(15, 255, 146, 0.1);
+}
 
-footer { margin-top: 100px; text-align: center; font-size: 0.8rem; opacity: 0.4; padding-bottom: 30px;}
+/* RELÓGIO DASHBOARD */
+#digital-clock { font-family: 'Orbitron'; font-size: 4rem; text-align: right; opacity: 0.8; margin-bottom: 50px; }
 
-/* MODO CLARO AJUSTE */
-.light-mode input { background: #fff; color: #111; }
+footer { margin-top: 100px; text-align: center; opacity: 0.3; padding: 40px; font-size: 0.7rem; }
+
 </style>
 </head>
-<body class="dark-mode">
+<body>
 
 <canvas id="particles"></canvas>
 
-<div class="sidebar">
-    <div id="clock">00:00</div>
-    <button data-tab="home" class="active"><span class="btn-text">DASHBOARD</span></button>
-    <button data-tab="ferramentas"><span class="btn-text">LAB TOOLS</span></button>
-    <button data-tab="scripts"><span class="btn-text">TERMINAL</span></button>
-    <button data-tab="contato"><span class="btn-text">CONTATO</span></button>
-    <button onclick="toggleTheme()" style="margin-top: auto;"><span class="btn-text">THEME SWITCH</span></button>
-</div>
+<aside class="sidebar">
+    <div class="logo">M</div>
+    <button onclick="showTab('home')" class="nav-btn active"><span class="label">DASHBOARD</span></button>
+    <button onclick="showTab('entrevista')"><span class="label">SIMULADOR RH</span></button>
+    <button onclick="showTab('curriculo')"><span class="label">CARREIRA ELITE</span></button>
+    <button onclick="showTab('seguranca')"><span class="label">CRIPTO & ID</span></button>
+    <button onclick="showTab('terminal')"><span class="label">CORE TERMINAL</span></button>
+    <button onclick="toggleTheme()" style="margin-top: auto;"><span class="label">ALTERNAR TEMA</span></button>
+</aside>
 
-<section id="home" class="tab-content active">
-    <div style="margin-top: 15vh;">
-        <h1 style="font-family:'Orbitron'; font-size: 5rem; line-height: 1;">MATHEUS</h1>
-        <p style="font-size: 1.5rem; letter-spacing: 5px;">SISTEMA OPERACIONAL V.2.0</p>
-        <div id="status-msg" style="margin-top: 20px; color: var(--accent-color); font-family: monospace;">> Todos os sistemas operacionais...</div>
-    </div>
-</section>
-
-<section id="ferramentas" class="tab-content">
-    <h2>Core Modules</h2>
-    <div class="tool-grid">
-        
-        <div class="tool-card">
-            <label>Security / ID Validator</label>
-            <input type="text" id="docInput" placeholder="CPF ou CNPJ (somente números)" maxlength="14">
-            <button class="btn-main" onclick="validateDocument()">VERIFICAR INTEGRIDADE</button>
-            <p id="docRes" style="margin-top:10px; font-family: monospace;"></p>
-        </div>
-
-        <div class="tool-card">
-            <label>Encryption Strength</label>
-            <input type="password" id="passInput" placeholder="Analise sua chave" oninput="checkPass()">
-            <div class="password-strength"><div id="strengthBar" class="strength-bar"></div></div>
-            <p id="passRes" style="font-size: 0.7rem; font-family: monospace;"></p>
-        </div>
-
-        <div class="tool-card">
-            <label>Social Engineering (Bio)</label>
-            <input type="text" id="bioArea" placeholder="Sua Expertise (ex: Cybersecurity)">
-            <select id="bioStyle">
-                <option value="minimal">Minimalista & Dark</option>
-                <option value="exec">Executivo / High-End</option>
-                <option value="tech">Tech Evangelist</option>
-                <option value="creative">Criativo & Ousado</option>
-            </select>
-            <button class="btn-main" onclick="generateBio()">GERAR MATRIZ DE TEXTO</button>
-            <textarea id="bioOutput" style="margin-top:10px; height: 100px; font-size: 0.8rem;" readonly></textarea>
-        </div>
-
-        <div class="tool-card">
-            <label>AI Interview Simulator</label>
-            <div id="interviewBox" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; margin-bottom: 10px; min-height: 60px;">
-                <p id="questionDisplay" style="font-size: 0.9rem;">Pronto para iniciar a simulação?</p>
+<main class="main-content">
+    
+    <section id="home" class="section active">
+        <div id="digital-clock">00:00:00</div>
+        <h1 style="font-family:'Orbitron'; font-size: 5rem; letter-spacing: -2px;">SISTEMA <span style="color:var(--accent)">MATHEUS</span></h1>
+        <p style="font-size: 1.2rem; max-width: 600px; margin-top: 20px; opacity: 0.7;">
+            Interface de alto desempenho para desenvolvimento, segurança e gestão de carreira. 
+            Protocolos v.3.0 ativos.
+        </p>
+        <div class="grid-tools" style="margin-top: 50px;">
+            <div class="glass-card">
+                <h3>STATUS DO SISTEMA</h3>
+                <p style="color:#0fff92; margin-top: 10px;">> Latência: 2ms</p>
+                <p style="color:#0fff92;">> Núcleos: Ativos</p>
+                <p style="color:#0fff92;">> Segurança: Nível Militar</p>
             </div>
-            <input type="text" id="answerInput" placeholder="Sua resposta...">
-            <button class="btn-main" onclick="handleInterview()">ENVIAR RESPOSTA</button>
         </div>
+    </section>
 
-        <div class="tool-card">
-            <label>Career Architect (CV)</label>
-            <input type="text" id="cvName" placeholder="Nome Completo">
-            <input type="text" id="cvRole" placeholder="Cargo Desejado">
-            <textarea id="cvExp" placeholder="Resumo de Experiências..."></textarea>
-            <button class="btn-main" onclick="generateCV()">GERAR DOCUMENTO OFICIAL</button>
+    <section id="entrevista" class="section">
+        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">TREINAMENTO DE ELITE (RH)</h2>
+        <div class="grid-tools">
+            <div class="glass-card">
+                <label>Selecione sua Área de Atuação</label>
+                <select id="areaSet" onchange="resetInterview()">
+                    <option value="front">Desenvolvimento Front-end</option>
+                    <option value="back">Arquitetura Back-end</option>
+                    <option value="cyber">Cyber Security Analyst</option>
+                    <option value="ai">Engenheiro de IA</option>
+                </select>
+                <div id="qa-box" style="margin: 20px 0; min-height: 100px; padding: 20px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--accent);">
+                    <p id="question">Aguardando início do protocolo...</p>
+                </div>
+                <input type="text" id="ansInput" placeholder="Sua resposta estratégica...">
+                <button class="btn-cyber" onclick="nextQuestion()">PROCESSAR RESPOSTA</button>
+            </div>
+            <div class="glass-card">
+                <h3>LOGS DA SESSÃO</h3>
+                <div id="interview-logs" style="font-family:'JetBrains Mono'; font-size: 0.8rem; height: 200px; overflow-y: auto;"></div>
+            </div>
         </div>
+    </section>
 
-    </div>
-</section>
+    <section id="curriculo" class="section">
+        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">ARQUITETO DE CARREIRA</h2>
+        <div class="grid-tools">
+            <div class="glass-card">
+                <label>DADOS PESSOAIS</label>
+                <input type="text" id="cv-nome" placeholder="Nome Completo">
+                <input type="text" id="cv-cargo" placeholder="Ex: Lead Software Engineer">
+                <label>SOBRE VOCÊ (O QUE TE FAZ ÚNICO?)</label>
+                <textarea id="cv-bio" style="height: 100px;" placeholder="Descreva seus resultados mais impactantes..."></textarea>
+                <label>HARD SKILLS (SEPARE POR VÍRGULA)</label>
+                <input type="text" id="cv-skills" placeholder="Ex: React, Go, Docker, AWS, SIEM">
+            </div>
+            <div class="glass-card">
+                <label>EXPERIÊNCIA RELEVANTE</label>
+                <textarea id="cv-exp" style="height: 250px;" placeholder="Empresa - Cargo - Descrição do impacto causado..."></textarea>
+                <button class="btn-cyber" onclick="exportCV()">GERAR CURRÍCULO DE ELITE</button>
+            </div>
+        </div>
+    </section>
 
-<section id="scripts" class="tab-content">
-    <h2>System Terminal</h2>
-    <div id="terminalOutput">
-        <div>[SYSTEM] Kernel iniciado...</div>
-        <div>[INFO] Aguardando comandos via /buscar ou logs de ferramentas...</div>
-    </div>
-    <input type="text" id="cmdInput" style="margin-top: 10px;" placeholder="Execute um comando ou apenas digite...">
-</section>
+    <section id="seguranca" class="section">
+        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">MÓDULO DE SEGURANÇA</h2>
+        <div class="grid-tools">
+            <div class="glass-card">
+                <label>VALIDADOR RÍGIDO DE SENHAS</label>
+                <input type="password" id="passChecker" oninput="analyzePass()" placeholder="Insira sua senha mestre">
+                <div id="pass-meter" style="height: 5px; background: #222; margin-top: -10px; margin-bottom: 20px;">
+                    <div id="pass-fill" style="height: 100%; width: 0%; transition: 0.5s;"></div>
+                </div>
+                <p id="pass-feedback" style="font-size: 0.7rem; font-family: monospace;"></p>
+            </div>
+            <div class="glass-card">
+                <label>VERIFICADOR DE IDENTIDADE (CPF/CNPJ)</label>
+                <input type="text" id="docChecker" placeholder="Digite apenas números">
+                <button class="btn-cyber" onclick="validateDoc()">AUTENTICAR DOCUMENTO</button>
+                <p id="doc-res" style="margin-top: 15px; font-family: 'JetBrains Mono';"></p>
+            </div>
+        </div>
+    </section>
 
-<section id="contato" class="tab-content">
-    <h2>Protocolo de Contato</h2>
-    <div class="tool-card" style="max-width: 500px;">
-        <p>> ENCRYPTED EMAIL: theusxzmattos@email.com</p>
-        <p>> SECURE LINE: +55 (16) 99640-6039</p>
-        <p>> SOURCE CODE: github.com/suehtampy</p>
-    </div>
-</section>
+    <section id="terminal" class="section">
+        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">TERMINAL DE NÚCLEO</h2>
+        <div class="terminal-container" id="terminalLog">
+            <div>[SISTEMA] Aguardando entrada de dados...</div>
+        </div>
+        <input type="text" id="terminalInput" style="margin-top: 20px;" placeholder="digite /ajuda para comandos">
+    </section>
 
-<footer>&copy; 2026 MATHEUS OS | ENCRYPTED INTERFACE</footer>
+</main>
+
+<footer>© 2026 MATHEUS OS | UNSTOPPABLE INTERFACE | DESENVOLVIDO PARA LIDERAR</footer>
 
 <script>
-// --- LÓGICA DE INTERFACE ---
-function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-    logTerminal("Tema alterado pelo usuário.");
+// --- MOTOR DE INTERFACE ---
+function showTab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    addTerminalLog(`Navegando para o módulo: ${id.toUpperCase()}`);
 }
 
-const tabs = document.querySelectorAll('.sidebar button[data-tab]');
-tabs.forEach(t => {
-    t.addEventListener('click', () => {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        tabs.forEach(btn => btn.classList.remove('active'));
-        document.getElementById(t.dataset.tab).classList.add('active');
-        t.classList.add('active');
-    });
-});
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    addTerminalLog("Protocolo visual alterado.");
+}
 
-function logTerminal(msg) {
-    const out = document.getElementById('terminalOutput');
-    out.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>`;
-    out.scrollTop = out.scrollHeight;
+function addTerminalLog(msg) {
+    const log = document.getElementById('terminalLog');
+    const time = new Date().toLocaleTimeString();
+    log.innerHTML += `<div><span style="color:var(--secondary)">[${time}]</span> ${msg}</div>`;
+    log.scrollTop = log.scrollHeight;
 }
 
 setInterval(() => {
-    document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+    document.getElementById('digital-clock').innerText = new Date().toLocaleTimeString();
 }, 1000);
 
-// --- VALIDOR DE DOCUMENTO REAL (Algoritmo de verdade) ---
-function validateDocument() {
-    let val = document.getElementById('docInput').value.replace(/\D/g,'');
-    let res = document.getElementById('docRes');
-    
-    const isValidCPF = (cpf) => {
-        if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
-        let s = 0;
-        for (let i=1; i<=9; i++) s += parseInt(cpf[i-1]) * (11-i);
-        let r = (s * 10) % 11;
-        if (r === 10 || r === 11) r = 0;
-        if (r !== parseInt(cpf[9])) return false;
-        s = 0;
-        for (let i=1; i<=10; i++) s += parseInt(cpf[i-1]) * (12-i);
-        r = (s * 10) % 11;
-        if (r === 10 || r === 11) r = 0;
-        return r === parseInt(cpf[10]);
-    };
+// --- SIMULADOR DE ENTREVISTA POR ÁREA ---
+const bancoPerguntas = {
+    front: ["Como você otimiza a performance de uma aplicação React?", "Diferença entre Virtual DOM e Shadow DOM?", "Como lidaria com uma API instável no Front?", "SASS ou CSS puro? Por que?"],
+    back: ["Como projetaria um sistema para 1 milhão de acessos simultâneos?", "Explique a diferença entre gRPC e REST.", "Quando usar NoSQL em vez de Relacional?", "Como garantir a consistência eventual em microserviços?"],
+    cyber: ["Como você mitigaria um ataque de Injeção de SQL?", "O que é o modelo OSI e como ele se aplica à segurança?", "Explique o processo de um ataque Man-in-the-middle.", "Como configurar um Firewall de forma restritiva?"],
+    ai: ["Diferença entre Supervised e Unsupervised Learning?", "Como lidar com Overfitting em um modelo?", "O que é uma Rede Neural Convolucional?", "Explique o conceito de Backpropagation."]
+};
 
-    if (isValidCPF(val)) {
-        res.innerHTML = "STATUS: <span style='color:#0fff92'>INTEGRIDADE CONFIRMADA (CPF)</span>";
-        logTerminal("Documento validado com sucesso.");
-    } else if (val.length === 14) {
-        res.innerHTML = "STATUS: <span style='color:#0fff92'>CNPJ DETECTADO (FORMATO OK)</span>";
-    } else {
-        res.innerHTML = "STATUS: <span style='color:#ff00d4'>FALHA NA VALIDAÇÃO</span>";
-        logTerminal("Tentativa de validação falhou: Documento inconsistente.");
-    }
+let qIndex = 0;
+function resetInterview() {
+    qIndex = 0;
+    const area = document.getElementById('areaSet').value;
+    document.getElementById('question').innerText = bancoPerguntas[area][0];
+    document.getElementById('interview-logs').innerHTML = "Sessão reiniciada...";
 }
 
-// --- VALIDADOR DE SENHA RÍGIDO ---
-function checkPass() {
-    const pass = document.getElementById('passInput').value;
-    const bar = document.getElementById('strengthBar');
-    const res = document.getElementById('passRes');
-    let strength = 0;
-
-    if (pass.length > 8) strength += 25;
-    if (/[A-Z]/.test(pass)) strength += 25;
-    if (/[0-9]/.test(pass)) strength += 25;
-    if (/[^A-Za-z0-9]/.test(pass)) strength += 25;
-
-    bar.style.width = strength + "%";
-    const colors = ["#ff00d4", "#ff9900", "#ccff00", "#0fff92"];
-    bar.style.background = colors[Math.floor((strength-1)/25)] || "#333";
-    
-    res.innerText = `ENTROPIA: ${strength}% | REQUISITOS: Maíusc, Minúsc, Num, Símbolo.`;
-}
-
-// --- GERADOR DE BIO (MUITAS OPÇÕES) ---
-function generateBio() {
-    const area = document.getElementById('bioArea').value || "Tech";
-    const style = document.getElementById('bioStyle').value;
-    const output = document.getElementById('bioOutput');
-    
-    const templates = {
-        minimal: [`${area} Enthusiast. Building the future.`, `Less talk, more code. Specialized in ${area}.`, `Turning caffeine into ${area} solutions.`],
-        exec: [`Senior Specialist in ${area} | Strategy & Growth`, `Driving innovation through ${area} at scale. Contact for partnerships.`, `Focus on High-Performance results in ${area}.`],
-        tech: [`Fullstack ${area} Architect | Cloud Native | 2026`, `Solving complex problems with ${area}. 010101.`, `Deep dive into ${area} and emerging tech.`],
-        creative: [`Crafting digital experiences in ${area} ⚡`, `Obsessed with the intersection of design and ${area}.`, `Breaking the loop with ${area}. Let's create.`]
-    };
-
-    const choice = templates[style][Math.floor(Math.random() * templates[style].length)];
-    output.value = choice;
-    logTerminal("Nova Bio gerada no estilo: " + style);
-}
-
-// --- SIMULADOR DE ENTREVISTA REAL ---
-const questions = [
-    "Qual foi o maior desafio técnico que você já resolveu?",
-    "Como você explica um conceito complexo para alguém não técnico?",
-    "Como você reage quando seu código é criticado em um Review?",
-    "Por que devemos te contratar e não outros candidatos?"
-];
-let currentQ = 0;
-
-function handleInterview() {
-    const ans = document.getElementById('answerInput').value;
+function nextQuestion() {
+    const area = document.getElementById('areaSet').value;
+    const ans = document.getElementById('ansInput').value;
     if(!ans) return;
+
+    document.getElementById('interview-logs').innerHTML += `<div><strong>P:</strong> ${bancoPerguntas[area][qIndex]}<br><strong>R:</strong> ${ans}</div><hr style='opacity:0.1'>`;
+    document.getElementById('ansInput').value = "";
     
-    logTerminal(`RESPOSTA SALVA: "${ans.substring(0,20)}..."`);
-    document.getElementById('answerInput').value = "";
-    currentQ++;
-    
-    if(currentQ < questions.length) {
-        document.getElementById('questionDisplay').innerText = questions[currentQ];
+    qIndex++;
+    if(qIndex < bancoPerguntas[area].length) {
+        document.getElementById('question').innerText = bancoPerguntas[area][qIndex];
     } else {
-        document.getElementById('questionDisplay').innerText = "Simulação concluída. Logs salvos no terminal.";
-        currentQ = 0;
+        document.getElementById('question').innerText = "Simulação completa. Você está pronto para o mercado.";
     }
 }
 
-// --- GERADOR DE CURRÍCULO (CRIA PÁGINA REAL) ---
-function generateCV() {
-    const nome = document.getElementById('cvName').value;
-    const cargo = document.getElementById('cvRole').value;
-    const exp = document.getElementById('cvExp').value;
-    
-    if(!nome) return alert("Preencha o nome!");
+// --- GERADOR DE CURRÍCULO DE ELITE ---
+function exportCV() {
+    const d = {
+        nome: document.getElementById('cv-nome').value,
+        cargo: document.getElementById('cv-cargo').value,
+        bio: document.getElementById('cv-bio').value,
+        skills: document.getElementById('cv-skills').value,
+        exp: document.getElementById('cv-exp').value
+    };
 
     const win = window.open('', '_blank');
     win.document.write(`
-        <html><head><title>CV - ${nome}</title>
+        <html><head><title>Currículo Elite - ${d.nome}</title>
         <style>
-            body { font-family: 'Arial'; padding: 50px; color: #333; line-height: 1.6; }
-            h1 { color: #000; border-bottom: 2px solid #333; }
-            .section { margin-top: 20px; }
-            .label { font-weight: bold; color: #555; text-transform: uppercase; font-size: 0.8rem; }
+            body { font-family: 'Helvetica'; padding: 50px; background: #fff; color: #1a1a1a; }
+            h1 { font-size: 3rem; margin: 0; color: #000; border-bottom: 4px solid #000; }
+            h2 { text-transform: uppercase; font-size: 1rem; letter-spacing: 2px; margin-top: 30px; border-bottom: 1px solid #ccc; }
+            .cargo { font-size: 1.5rem; color: #666; margin-bottom: 20px; }
+            .content { margin-top: 20px; white-space: pre-wrap; }
+            .skills { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+            .skill-tag { background: #000; color: #fff; padding: 5px 12px; font-size: 0.8rem; border-radius: 3px; }
         </style></head>
         <body>
-            <h1>${nome.toUpperCase()}</h1>
-            <div class="section"><p class="label">Objetivo</p><p>${cargo}</p></div>
-            <div class="section"><p class="label">Experiência e Habilidades</p><p>${exp}</p></div>
+            <h1>${d.nome}</h1>
+            <div class="cargo">${d.cargo}</div>
+            <h2>Perfil Profissional</h2>
+            <div class="content">${d.bio}</div>
+            <h2>Especialidades Técnicas</h2>
+            <div class="skills">${d.skills.split(',').map(s => `<span class="skill-tag">${s.trim()}</span>`).join('')}</div>
+            <h2>Experiência de Impacto</h2>
+            <div class="content">${d.exp}</div>
             <script>window.print();<\/script>
         </body></html>
     `);
-    logTerminal("Documento de currículo estruturado e enviado para impressão.");
 }
 
-// PARTICULAS ORIGINAIS (MANTIDAS)
-const canvas=document.getElementById("particles");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-let particles=[];
-for(let i=0;i<120;i++){
-  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.8,dy:(Math.random()-0.5)*0.8});
+// --- SEGURANÇA AVANÇADA ---
+function analyzePass() {
+    const p = document.getElementById('passChecker').value;
+    const fill = document.getElementById('pass-fill');
+    const feedback = document.getElementById('pass-feedback');
+    let strength = 0;
+
+    if(p.length > 10) strength += 25;
+    if(/[A-Z]/.test(p)) strength += 25;
+    if(/[0-9]/.test(p)) strength += 25;
+    if(/[^A-Za-z0-9]/.test(p)) strength += 25;
+
+    fill.style.width = strength + "%";
+    fill.style.background = strength < 50 ? "#ff00d4" : (strength < 100 ? "#ff9900" : "#0fff92");
+    feedback.innerText = `NÍVEL DE CRIPTOGRAFIA: ${strength}%`;
 }
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{
-    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--accent-color'); ctx.fill();
-    p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>canvas.width)p.dx*=-1;
-    if(p.y<0||p.y>canvas.height)p.dy*=-1;
-  });
-  for(let i=0;i<particles.length;i++){
-    for(let j=i+1;j<particles.length;j++){
-      let dx=particles[i].x-particles[j].x;
-      let dy=particles[i].y-particles[j].y;
-      let dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<120){
-        ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--border-color');
-        ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y);
-        ctx.lineTo(particles[j].x,particles[j].y); ctx.stroke();
-      }
+
+function validateDoc() {
+    const doc = document.getElementById('docChecker').value.replace(/\D/g,'');
+    const res = document.getElementById('doc-res');
+    
+    // Algoritmo Real de CPF
+    const calc = (s) => {
+        if(s.length !== 11 || !!s.match(/(\d)\1{10}/)) return false;
+        let d = 0;
+        for(let i=1; i<=9; i++) d += parseInt(s[i-1]) * (11-i);
+        let r = (d * 10) % 11;
+        if(r === 10 || r === 11) r = 0;
+        if(r !== parseInt(s[9])) return false;
+        d = 0;
+        for(let i=1; i<=10; i++) d += parseInt(s[i-1]) * (12-i);
+        r = (d * 10) % 11;
+        if(r === 10 || r === 11) r = 0;
+        return r === parseInt(s[10]);
+    };
+
+    if(calc(doc)) {
+        res.innerHTML = "STATUS: <span style='color:#0fff92'>AUTÊNTICO</span>";
+    } else {
+        res.innerHTML = "STATUS: <span style='color:var(--secondary)'>FALSIFICADO/INVÁLIDO</span>";
     }
-  }
-  requestAnimationFrame(animate);
 }
-animate();
+
+// --- PARTÍCULAS ---
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let particles = [];
+
+function init() {
+    for(let i=0; i<150; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2,
+            speedX: (Math.random() - 0.5) * 1,
+            speedY: (Math.random() - 0.5) * 1
+        });
+    }
+}
+
+function draw() {
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    particles.forEach(p => {
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+        ctx.fill();
+        p.x += p.speedX; p.y += p.speedY;
+        if(p.x > canvas.width) p.x = 0; if(p.x < 0) p.x = canvas.width;
+        if(p.y > canvas.height) p.y = 0; if(p.y < 0) p.y = canvas.height;
+    });
+    requestAnimationFrame(draw);
+}
+init(); draw();
 </script>
 </body>
 </html>
