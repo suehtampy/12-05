@@ -3,150 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATHEUS OS v10 | FULL SYSTEM</title>
+    <title>MATHEUS OS | SISTEMA ATUALIZADO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #030305; --card: rgba(10, 10, 18, 0.95);
-            --accent: #3b82f6; --text: #f1f5f9; --border: rgba(59, 130, 246, 0.2);
+            --bg: #050508; --card: #0c0c14; --accent: #3b82f6;
+            --text: #f1f5f9; --border: rgba(59, 130, 246, 0.2);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
 
         /* SIDEBAR ORIGINAL */
         .sidebar {
-            width: 260px; height: 100vh; background: #07070a; border-right: 1px solid var(--border);
-            padding: 30px 15px; position: fixed; z-index: 100;
+            width: 260px; background: #08080c; border-right: 1px solid var(--border);
+            padding: 30px 15px; display: flex; flex-direction: column;
         }
         .nav-item {
-            width: 100%; padding: 12px 15px; margin-bottom: 8px; border-radius: 12px;
+            width: 100%; padding: 14px 18px; margin-bottom: 10px; border-radius: 12px;
             background: transparent; border: none; color: var(--text); text-align: left;
-            font-weight: 600; cursor: pointer; transition: 0.3s; opacity: 0.5;
+            font-weight: 600; cursor: pointer; transition: 0.3s; opacity: 0.6;
         }
-        .nav-item.active, .nav-item:hover { background: var(--accent); opacity: 1; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+        .nav-item.active, .nav-item:hover { background: var(--accent); opacity: 1; color: white; box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
 
-        /* CONTEÚDO */
-        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); height: 100vh; overflow-y: auto; }
-        .section { display: none; animation: fadeIn 0.4s ease; }
+        /* CONTEÚDO PRINCIPAL */
+        .main { flex: 1; padding: 40px; overflow-y: auto; }
+        .section { display: none; animation: fadeIn 0.3s ease; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* DESIGN DAS TOOLS */
-        .tools-menu { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
-        .tool-card {
-            background: var(--card); border: 1px solid var(--border); padding: 20px;
-            border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s;
+        /* TELA DE BUSCA (TOOLS) */
+        .search-container {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 30px; max-width: 800px; margin-top: 20px;
         }
-        .tool-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        
-        .search-area { 
-            background: rgba(255,255,255,0.02); border: 1px dashed var(--border);
-            border-radius: 20px; padding: 30px; display: none; margin-top: 20px;
-        }
-        .search-area.active { display: block; }
-
         input {
-            width: 100%; padding: 15px; border-radius: 10px; border: 1px solid var(--border);
-            background: #000; color: #fff; font-family: 'JetBrains Mono'; margin-bottom: 15px;
+            width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border);
+            background: #000; color: #fff; font-family: 'JetBrains Mono'; font-size: 1rem; margin-bottom: 20px;
         }
-        .btn-exec {
-            background: var(--accent); color: white; border: none; padding: 15px 30px;
-            border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%;
+        .btn-run {
+            background: var(--accent); color: white; border: none; padding: 16px;
+            border-radius: 12px; width: 100%; font-weight: 800; cursor: pointer; font-size: 1rem;
         }
 
-        /* GRID DE RESULTADOS EXTRAÍDOS */
-        .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 20px; }
-        .data-box { background: #0a0a0f; padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent); }
-        .label { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; }
-        .val { font-family: 'JetBrains Mono'; font-size: 0.85rem; display: block; }
+        /* GRID DE RESULTADOS */
+        .res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 25px; }
+        .res-item { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .res-label { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 4px; }
+        .res-val { font-family: 'JetBrains Mono'; font-size: 0.9rem; }
 
-        /* ORIGINAL ELEMENTS */
-        .hero { margin-bottom: 50px; }
-        #clock { font-size: 3.5rem; font-weight: 800; color: var(--accent); }
+        #clock { font-size: 4rem; font-weight: 900; color: var(--accent); margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<aside class="sidebar">
-    <h2 style="margin-bottom: 40px; letter-spacing: -1px;">MATHEUS<span style="color:var(--accent)">.OS</span></h2>
-    <button class="nav-item active" onclick="tab('home')">Início</button>
-    <button class="nav-item" onclick="tab('tools')">Tools (Central Intel)</button>
-    <button class="nav-item" onclick="tab('about')">Currículo / Sobre</button>
-</aside>
+<nav class="sidebar">
+    <h2 style="margin-bottom: 40px;">MATHEUS<span style="color:var(--accent)">.OS</span></h2>
+    <button class="nav-item active" onclick="tab('dash')">Painel Inicial</button>
+    <button class="nav-item" onclick="tab('tools')">Tools (Numverify)</button>
+</nav>
 
-<main class="main-content">
+<main class="main">
     
-    <section id="home" class="section active">
+    <section id="dash" class="section active">
         <div id="clock">00:00:00</div>
-        <div class="hero">
-            <h1>Bem-vindo de volta, Matheus.</h1>
-            <p style="opacity:0.6">Sistemas operacionais e APIs de inteligência carregados.</p>
-        </div>
+        <h1>Sistema Online.</h1>
+        <p style="opacity:0.5">Aguardando comandos do operador...</p>
     </section>
 
     <section id="tools" class="section">
-        <h2>Central de Ferramentas</h2>
-        <p style="margin-bottom: 20px; opacity:0.5;">Selecione uma API para iniciar a extração de dados.</p>
+        <h2>Inteligência Telefônica</h2>
+        <p style="opacity:0.5; margin-bottom: 20px;">Validação e rastreio de operadora via Numverify API.</p>
         
-        <div class="tools-menu">
-            <div class="tool-card" onclick="openTool('tool-ip')">📍 Geoloc. IP</div>
-            <div class="tool-card" onclick="openTool('tool-phone')">📞 Numverify</div>
-            <div class="tool-card" onclick="openTool('tool-crypto')">💰 Coinlayer</div>
-            <div class="tool-card" onclick="openTool('tool-weather')">☁️ Weather</div>
-            <div class="tool-card" onclick="openTool('tool-lang')">🔤 Idiomas</div>
-            <div class="tool-card" onclick="openTool('tool-plane')">✈️ Aviação</div>
-        </div>
+        <div class="search-container">
+            <input type="text" id="phoneInput" placeholder="Ex: 5511999999999">
+            <button class="btn-run" onclick="runNumverify()">SCANNER DE NÚMERO</button>
 
-        <div id="tool-ip" class="search-area">
-            <h3>Rastrear Endereço de IP</h3>
-            <input type="text" id="ipIn" placeholder="Ex: 8.8.8.8 (deixe vazio para o seu)">
-            <button class="btn-exec" onclick="apiIP()">EXECUTAR SCAN DE IP</button>
-            <div id="ipOut" class="res-grid"></div>
-        </div>
-
-        <div id="tool-phone" class="search-area">
-            <h3>Validação de Telefone (Numverify)</h3>
-            <input type="text" id="phoneIn" placeholder="Ex: 5511999999999">
-            <button class="btn-exec" onclick="apiPhone()">SCANNER TELEFÔNICO</button>
-            <div id="phoneOut" class="res-grid"></div>
-        </div>
-
-        <div id="tool-crypto" class="search-area">
-            <h3>Câmbio Cripto (Coinlayer)</h3>
-            <input type="text" id="coinIn" placeholder="Ex: BTC, ETH, SOL">
-            <button class="btn-exec" onclick="apiCoin()">OBTER PREÇO REAL-TIME</button>
-            <div id="coinOut" class="res-grid"></div>
-        </div>
-
-        <div id="tool-weather" class="search-area">
-            <h3>Clima & Astronomia (Weatherstack)</h3>
-            <input type="text" id="weatherIn" placeholder="Cidade (Ex: São Paulo)">
-            <button class="btn-exec" onclick="apiWeather()">EXTRAIR DADOS CLIMÁTICOS</button>
-            <div id="weatherOut" class="res-grid"></div>
-        </div>
-
-    </section>
-
-    <section id="about" class="section">
-        <h2>Matheus | Desenvolvedor Full Stack</h2>
-        <div class="data-box" style="margin-top:20px;">
-            <p>Especialista em integração de APIs e interfaces futuristas.</p>
+            <div id="numResult" class="res-grid">
+                </div>
         </div>
     </section>
 
 </main>
 
 <script>
-    // CHAVES SALVAS NO COFRE
-    const KEYS = {
-        ip: 'a9b57e3b51c26e5418baabf34be67947',
-        phone: '37c50a4c4aaf752f098edc2caf52c752',
-        weather: '0d594e7f43e48ecc64cf2c4a792ef36e',
-        coin: '49a4c82a024139de90b2bb2c457a6b75',
-        lang: 'a90535700eface3cd7c611ecd26fc85e'
-    };
+    // Configurações
+    const PROXY = "https://api.allorigins.win/raw?url=";
+    const NUM_KEY = '37c50a4c4aaf752f098edc2caf52c752';
 
-    // NAVEGAÇÃO
+    // Relógio
+    setInterval(() => { 
+        document.getElementById('clock').innerText = new Date().toLocaleTimeString(); 
+    }, 1000);
+
+    // Navegação entre abas
     function tab(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -154,59 +103,44 @@
         event.currentTarget.classList.add('active');
     }
 
-    function openTool(toolId) {
-        document.querySelectorAll('.search-area').forEach(a => a.classList.remove('active'));
-        document.getElementById(toolId).classList.add('active');
-    }
+    // Função de renderizar resultado
+    const render = (label, val) => `
+        <div class="res-item">
+            <span class="res-label">${label}</span>
+            <span class="res-val">${val || '---'}</span>
+        </div>`;
 
-    setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+    // Chamada da API Numverify
+    async function runNumverify() {
+        const phone = document.getElementById('phoneInput').value;
+        const display = document.getElementById('numResult');
+        
+        if(!phone) return alert("Digite um número!");
 
-    // FUNÇÕES DE EXTRAÇÃO (LÓGICA CORRIGIDA)
-    const box = (l, v) => `<div class="data-box"><span class="label">${l}</span><span class="val">${v || '---'}</span></div>`;
+        display.innerHTML = "<p>Consultando banco de dados...</p>";
 
-    async function apiIP() {
-        const val = document.getElementById('ipIn').value || 'check';
-        const out = document.getElementById('ipOut');
-        out.innerHTML = "Iniciando requisição...";
         try {
-            const r = await fetch(`http://api.ipstack.com/${val}?access_key=${KEYS.ip}&hostname=1&security=1`);
-            const d = await r.json();
-            out.innerHTML = box('País', d.country_name) + box('Cidade', d.city) + box('ISP', d.connection.isp) + 
-                            box('Moeda', d.currency.name) + box('Tipo IP', d.type) + box('Região', d.region_name);
-        } catch(e) { out.innerHTML = "<p style='color:red'>ERRO: Ative 'Conteúdo não seguro' no cadeado do navegador.</p>"; }
-    }
+            const apiUrl = `http://apilayer.net/api/validate?access_key=${NUM_KEY}&number=${phone}`;
+            const response = await fetch(PROXY + encodeURIComponent(apiUrl));
+            const data = await response.json();
 
-    async function apiPhone() {
-        const val = document.getElementById('phoneIn').value;
-        const out = document.getElementById('phoneOut');
-        try {
-            const r = await fetch(`http://apilayer.net/api/validate?access_key=${KEYS.phone}&number=${val}`);
-            const d = await r.json();
-            out.innerHTML = box('Válido', d.valid) + box('Operadora', d.carrier) + box('Local', d.location) + box('Linha', d.line_type);
-        } catch(e) { out.innerHTML = "Erro na conexão."; }
-    }
-
-    async function apiWeather() {
-        const val = document.getElementById('weatherIn').value;
-        const out = document.getElementById('weatherOut');
-        try {
-            const r = await fetch(`http://api.weatherstack.com/current?access_key=${KEYS.weather}&query=${val}`);
-            const d = await r.json();
-            out.innerHTML = box('Temp', d.current.temperature + '°') + box('Sensação', d.current.feelslike + '°') +
-                            box('Vento', d.current.wind_speed + 'km/h') + box('Humidade', d.current.humidity + '%') +
-                            box('Hora Local', d.location.localtime);
-        } catch(e) { out.innerHTML = "Erro na conexão."; }
-    }
-
-    async function apiCoin() {
-        const val = document.getElementById('coinIn').value.toUpperCase();
-        const out = document.getElementById('coinOut');
-        try {
-            const r = await fetch(`http://api.coinlayer.com/api/live?access_key=${KEYS.coin}&symbols=${val}`);
-            const d = await r.json();
-            out.innerHTML = box('Símbolo', val) + box('Valor (USD)', d.rates[val]) + box('Data', new Date().toLocaleDateString());
-        } catch(e) { out.innerHTML = "Erro na conexão."; }
+            if(data.valid === false) {
+                display.innerHTML = "<p style='color:#ff4444'>Número inválido ou não encontrado.</p>";
+            } else {
+                display.innerHTML = 
+                    render('Válido', data.valid ? 'SIM' : 'NÃO') +
+                    render('Operadora', data.carrier) +
+                    render('Localização', data.location) +
+                    render('País', data.country_name) +
+                    render('Tipo de Linha', data.line_type) +
+                    render('Código País', data.country_prefix);
+            }
+        } catch (error) {
+            display.innerHTML = "<p style='color:red'>Erro de conexão com o servidor.</p>";
+            console.error(error);
+        }
     }
 </script>
+
 </body>
 </html>
