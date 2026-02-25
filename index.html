@@ -3,339 +3,293 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MATHEUS OS | Central de Comando</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Matheus | Hub de Inteligência Profissional</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg: #030308;
-    --side: rgba(5, 5, 15, 0.95);
-    --accent: #00f0ff;
-    --accent-glow: rgba(0, 240, 255, 0.4);
-    --secondary: #ff00d4;
-    --text: #e0e0e0;
-    --card: rgba(15, 15, 30, 0.6);
-    --border: rgba(0, 240, 255, 0.2);
-}
-
-.light-mode {
-    --bg: #f0f2f5;
-    --side: rgba(255, 255, 255, 0.9);
-    --accent: #0066ff;
-    --accent-glow: rgba(0, 102, 255, 0.2);
-    --secondary: #d400ff;
-    --text: #1a1a1a;
+    --bg: #f8f9fa;
+    --text: #1a1d23;
+    --accent: #2563eb; /* Azul Profissional */
+    --accent-hover: #1d4ed8;
     --card: #ffffff;
-    --border: rgba(0, 102, 255, 0.2);
+    --sidebar: #1e293b;
+    --border: #e2e8f0;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+.dark-mode {
+    --bg: #0f172a;
+    --text: #f8f9fa;
+    --card: #1e293b;
+    --border: #334155;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body { 
     font-family: 'Poppins', sans-serif; 
     background: var(--bg); 
     color: var(--text); 
-    overflow-x: hidden; 
-    transition: background 0.5s, color 0.5s;
+    transition: all 0.3s ease;
 }
 
-canvas#particles { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
-
-/* NAVEGAÇÃO LATERAL - ULTRA FUTURISTA */
+/* SIDEBAR REFINADA */
 .sidebar {
-    position: fixed; left: 0; top: 0; height: 100%; width: 70px;
-    background: var(--side); border-right: 1px solid var(--border);
-    display: flex; flex-direction: column; align-items: center;
-    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
-    backdrop-filter: blur(20px);
+    position: fixed; left: 0; top: 0; height: 100%; width: 260px;
+    background: var(--sidebar); color: white;
+    padding: 30px 20px; z-index: 1000;
+    transition: transform 0.3s ease;
 }
-.sidebar:hover { width: 240px; }
-.sidebar .logo { margin: 30px 0; font-family: 'Orbitron'; color: var(--accent); font-size: 1.5rem; }
-.sidebar button {
-    width: 100%; border: none; background: none; color: var(--text);
-    padding: 20px; display: flex; align-items: center; gap: 20px;
-    font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 1px;
-    transition: 0.3s; opacity: 0.5; overflow: hidden;
-}
-.sidebar button:hover { opacity: 1; background: rgba(0, 240, 255, 0.05); color: var(--accent); }
-.sidebar .label { white-space: nowrap; display: none; }
-.sidebar:hover .label { display: block; }
 
-/* CONTEÚDO PRINCIPAL */
-.main-content { margin-left: 70px; padding: 40px; transition: 0.5s; }
-.section { display: none; animation: slideUp 0.6s ease-out; }
+.sidebar h2 { font-size: 1.5rem; margin-bottom: 40px; border-left: 4px solid var(--accent); padding-left: 15px; }
+
+.nav-btn {
+    width: 100%; background: none; border: none; color: #94a3b8;
+    padding: 12px 15px; text-align: left; font-size: 1rem;
+    cursor: pointer; transition: 0.3s; border-radius: 8px; margin-bottom: 5px;
+}
+.nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.1); color: white; }
+
+/* LAYOUT PRINCIPAL */
+.main-content { margin-left: 260px; padding: 40px; max-width: 1200px; }
+.section { display: none; animation: fadeIn 0.4s ease; }
 .section.active { display: block; }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(40px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* CARDS E GRIDS */
-.grid-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
-.glass-card {
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.card { 
     background: var(--card); border: 1px solid var(--border);
-    padding: 35px; border-radius: 20px; position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden;
-}
-.glass-card::before {
-    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
 }
 
-/* FORMULÁRIOS PROFISSIONAIS */
-label { display: block; margin-bottom: 10px; font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); }
+h3 { margin-bottom: 20px; font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+
+/* INPUTS E BOTÕES */
 input, select, textarea {
-    width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
-    color: var(--text); padding: 15px; border-radius: 8px; margin-bottom: 20px;
-    font-family: 'JetBrains Mono'; outline: none; transition: 0.3s;
-}
-input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
-
-.btn-cyber {
-    background: var(--accent); color: #000; border: none; padding: 15px 30px;
-    font-family: 'Orbitron'; font-weight: bold; border-radius: 5px; cursor: pointer;
-    transition: 0.4s; width: 100%; text-transform: uppercase;
-}
-.btn-cyber:hover { transform: translateY(-3px); box-shadow: 0 0 25px var(--accent); background: #fff; }
-
-/* TERMINAL HACKER */
-.terminal-container {
-    background: #010208; border-radius: 10px; border: 1px solid var(--secondary);
-    padding: 20px; font-family: 'JetBrains Mono'; color: #0fff92;
-    height: 400px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(15, 255, 146, 0.1);
+    width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
+    font-family: inherit; font-size: 0.9rem;
 }
 
-/* RELÓGIO DASHBOARD */
-#digital-clock { font-family: 'Orbitron'; font-size: 4rem; text-align: right; opacity: 0.8; margin-bottom: 50px; }
+.btn-primary {
+    background: var(--accent); color: white; border: none;
+    padding: 12px 25px; border-radius: 8px; cursor: pointer;
+    font-weight: 600; transition: 0.3s; width: 100%;
+}
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); }
 
-footer { margin-top: 100px; text-align: center; opacity: 0.3; padding: 40px; font-size: 0.7rem; }
+/* TERMINAL E BUSCA */
+.terminal-output {
+    background: #000; color: #10b981; font-family: 'JetBrains Mono', monospace;
+    padding: 20px; border-radius: 8px; height: 300px; overflow-y: auto; margin-bottom: 10px;
+}
 
+#clock { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .main-content { margin-left: 0; }
+}
 </style>
 </head>
-<body>
-
-<canvas id="particles"></canvas>
-
-<aside class="sidebar">
-    <div class="logo">M</div>
-    <button onclick="showTab('home')" class="nav-btn active"><span class="label">DASHBOARD</span></button>
-    <button onclick="showTab('entrevista')"><span class="label">SIMULADOR RH</span></button>
-    <button onclick="showTab('curriculo')"><span class="label">CARREIRA ELITE</span></button>
-    <button onclick="showTab('seguranca')"><span class="label">CRIPTO & ID</span></button>
-    <button onclick="showTab('terminal')"><span class="label">CORE TERMINAL</span></button>
-    <button onclick="toggleTheme()" style="margin-top: auto;"><span class="label">ALTERNAR TEMA</span></button>
+<body class="dark-mode"> <aside class="sidebar">
+    <h2>MATHEUS.AI</h2>
+    <button class="nav-btn active" onclick="openTab('home')">Início</button>
+    <button class="nav-btn" onclick="openTab('entrevista')">Simulador de Carreira</button>
+    <button class="nav-btn" onclick="openTab('ferramentas')">Ferramentas Pro</button>
+    <button class="nav-btn" onclick="openTab('terminal')">Busca & Dados</button>
+    
+    <div style="position: absolute; bottom: 30px; width: calc(100% - 40px);">
+        <button class="btn-primary" onclick="toggleTheme()" style="background: #334155;">Alternar Tema 🌓</button>
+    </div>
 </aside>
 
 <main class="main-content">
     
     <section id="home" class="section active">
-        <div id="digital-clock">00:00:00</div>
-        <h1 style="font-family:'Orbitron'; font-size: 5rem; letter-spacing: -2px;">SISTEMA <span style="color:var(--accent)">MATHEUS</span></h1>
-        <p style="font-size: 1.2rem; max-width: 600px; margin-top: 20px; opacity: 0.7;">
-            Interface de alto desempenho para desenvolvimento, segurança e gestão de carreira. 
-            Protocolos v.3.0 ativos.
-        </p>
-        <div class="grid-tools" style="margin-top: 50px;">
-            <div class="glass-card">
-                <h3>STATUS DO SISTEMA</h3>
-                <p style="color:#0fff92; margin-top: 10px;">> Latência: 2ms</p>
-                <p style="color:#0fff92;">> Núcleos: Ativos</p>
-                <p style="color:#0fff92;">> Segurança: Nível Militar</p>
+        <div id="clock">00:00:00</div>
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">Olá, Matheus.</h1>
+        <p style="font-size: 1.2rem; opacity: 0.7;">O que vamos construir hoje? Seu sistema está pronto.</p>
+        
+        <div class="grid" style="margin-top: 40px;">
+            <div class="card">
+                <h3>Resumo Profissional</h3>
+                <p>Otimize seu perfil, valide documentos e treine para qualquer entrevista em um só lugar.</p>
+            </div>
+            <div class="card">
+                <h3>Status do Sistema</h3>
+                <p>✨ Modo de Performance Ativo</p>
+                <p>🔒 Proteção de Dados de Ponta</p>
             </div>
         </div>
     </section>
 
     <section id="entrevista" class="section">
-        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">TREINAMENTO DE ELITE (RH)</h2>
-        <div class="grid-tools">
-            <div class="glass-card">
-                <label>Selecione sua Área de Atuação</label>
-                <select id="areaSet" onchange="resetInterview()">
-                    <option value="front">Desenvolvimento Front-end</option>
-                    <option value="back">Arquitetura Back-end</option>
-                    <option value="cyber">Cyber Security Analyst</option>
-                    <option value="ai">Engenheiro de IA</option>
-                </select>
-                <div id="qa-box" style="margin: 20px 0; min-height: 100px; padding: 20px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--accent);">
-                    <p id="question">Aguardando início do protocolo...</p>
+        <h3>Simulador de Entrevista Inteligente</h3>
+        <div class="grid">
+            <div class="card">
+                <label>Qual sua profissão ou área desejada?</label>
+                <input type="text" id="jobTitle" placeholder="Ex: Vendedor, Médico, Advogado, Gamer, etc.">
+                <button class="btn-primary" onclick="startGlobalInterview()">Iniciar Treinamento</button>
+                
+                <div id="qa-area" style="margin-top: 25px; display: none; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <p id="questionText" style="font-weight: 600; margin-bottom: 15px; color: var(--accent);"></p>
+                    <textarea id="userAnswer" placeholder="Digite sua resposta aqui..."></textarea>
+                    <button class="btn-primary" onclick="nextGlobalQuestion()">Enviar Resposta</button>
                 </div>
-                <input type="text" id="ansInput" placeholder="Sua resposta estratégica...">
-                <button class="btn-cyber" onclick="nextQuestion()">PROCESSAR RESPOSTA</button>
             </div>
-            <div class="glass-card">
-                <h3>LOGS DA SESSÃO</h3>
-                <div id="interview-logs" style="font-family:'JetBrains Mono'; font-size: 0.8rem; height: 200px; overflow-y: auto;"></div>
+            <div class="card">
+                <label>Histórico da Simulação</label>
+                <div id="interviewHistory" style="font-size: 0.85rem; max-height: 300px; overflow-y: auto;"></div>
             </div>
         </div>
     </section>
 
-    <section id="curriculo" class="section">
-        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">ARQUITETO DE CARREIRA</h2>
-        <div class="grid-tools">
-            <div class="glass-card">
-                <label>DADOS PESSOAIS</label>
-                <input type="text" id="cv-nome" placeholder="Nome Completo">
-                <input type="text" id="cv-cargo" placeholder="Ex: Lead Software Engineer">
-                <label>SOBRE VOCÊ (O QUE TE FAZ ÚNICO?)</label>
-                <textarea id="cv-bio" style="height: 100px;" placeholder="Descreva seus resultados mais impactantes..."></textarea>
-                <label>HARD SKILLS (SEPARE POR VÍRGULA)</label>
-                <input type="text" id="cv-skills" placeholder="Ex: React, Go, Docker, AWS, SIEM">
+    <section id="ferramentas" class="section">
+        <h3>Ferramentas de Utilidade</h3>
+        <div class="grid">
+            <div class="card">
+                <h3>Validador de Identidade</h3>
+                <input type="text" id="docInput" placeholder="CPF ou CNPJ (somente números)">
+                <button class="btn-primary" onclick="validateRealDoc()">Validar Documento</button>
+                <p id="docResult" style="margin-top: 10px; font-weight: 600;"></p>
             </div>
-            <div class="glass-card">
-                <label>EXPERIÊNCIA RELEVANTE</label>
-                <textarea id="cv-exp" style="height: 250px;" placeholder="Empresa - Cargo - Descrição do impacto causado..."></textarea>
-                <button class="btn-cyber" onclick="exportCV()">GERAR CURRÍCULO DE ELITE</button>
+            <div class="card">
+                <h3>Gerador de Currículo Elite</h3>
+                <input type="text" id="cvName" placeholder="Seu Nome Completo">
+                <input type="text" id="cvGoal" placeholder="Seu Cargo Objetivo">
+                <textarea id="cvSummary" placeholder="Resumo de suas melhores qualidades..."></textarea>
+                <button class="btn-primary" onclick="printCV()">Gerar Currículo PDF</button>
             </div>
-        </div>
-    </section>
-
-    <section id="seguranca" class="section">
-        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">MÓDULO DE SEGURANÇA</h2>
-        <div class="grid-tools">
-            <div class="glass-card">
-                <label>VALIDADOR RÍGIDO DE SENHAS</label>
-                <input type="password" id="passChecker" oninput="analyzePass()" placeholder="Insira sua senha mestre">
-                <div id="pass-meter" style="height: 5px; background: #222; margin-top: -10px; margin-bottom: 20px;">
-                    <div id="pass-fill" style="height: 100%; width: 0%; transition: 0.5s;"></div>
+            <div class="card">
+                <h3>Segurança de Senha</h3>
+                <input type="password" id="passInput" placeholder="Teste sua senha" oninput="checkPassStrength()">
+                <div style="height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                    <div id="passFill" style="height: 100%; width: 0%; transition: 0.4s;"></div>
                 </div>
-                <p id="pass-feedback" style="font-size: 0.7rem; font-family: monospace;"></p>
-            </div>
-            <div class="glass-card">
-                <label>VERIFICADOR DE IDENTIDADE (CPF/CNPJ)</label>
-                <input type="text" id="docChecker" placeholder="Digite apenas números">
-                <button class="btn-cyber" onclick="validateDoc()">AUTENTICAR DOCUMENTO</button>
-                <p id="doc-res" style="margin-top: 15px; font-family: 'JetBrains Mono';"></p>
+                <p id="passMsg" style="font-size: 0.8rem; margin-top: 5px;"></p>
             </div>
         </div>
     </section>
 
     <section id="terminal" class="section">
-        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">TERMINAL DE NÚCLEO</h2>
-        <div class="terminal-container" id="terminalLog">
-            <div>[SISTEMA] Aguardando entrada de dados...</div>
+        <h3>Terminal de Busca & Dados</h3>
+        <div class="terminal-output" id="termOut">
+            <div>> Sistema Matheus v3.0 pronto.</div>
+            <div>> Use <b>/buscar [termo]</b> para localizar registros no logins.txt.</div>
         </div>
-        <input type="text" id="terminalInput" style="margin-top: 20px;" placeholder="digite /ajuda para comandos">
+        <input type="text" id="termIn" placeholder="Digite seu comando aqui..." onkeydown="handleCommand(event)">
     </section>
 
 </main>
 
-<footer>© 2026 MATHEUS OS | UNSTOPPABLE INTERFACE | DESENVOLVIDO PARA LIDERAR</footer>
-
 <script>
-// --- MOTOR DE INTERFACE ---
-function showTab(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    addTerminalLog(`Navegando para o módulo: ${id.toUpperCase()}`);
-}
-
-function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-    addTerminalLog("Protocolo visual alterado.");
-}
-
-function addTerminalLog(msg) {
-    const log = document.getElementById('terminalLog');
-    const time = new Date().toLocaleTimeString();
-    log.innerHTML += `<div><span style="color:var(--secondary)">[${time}]</span> ${msg}</div>`;
-    log.scrollTop = log.scrollHeight;
-}
-
+// --- RELÓGIO E TEMA ---
 setInterval(() => {
-    document.getElementById('digital-clock').innerText = new Date().toLocaleTimeString();
+    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
 }, 1000);
 
-// --- SIMULADOR DE ENTREVISTA POR ÁREA ---
-const bancoPerguntas = {
-    front: ["Como você otimiza a performance de uma aplicação React?", "Diferença entre Virtual DOM e Shadow DOM?", "Como lidaria com uma API instável no Front?", "SASS ou CSS puro? Por que?"],
-    back: ["Como projetaria um sistema para 1 milhão de acessos simultâneos?", "Explique a diferença entre gRPC e REST.", "Quando usar NoSQL em vez de Relacional?", "Como garantir a consistência eventual em microserviços?"],
-    cyber: ["Como você mitigaria um ataque de Injeção de SQL?", "O que é o modelo OSI e como ele se aplica à segurança?", "Explique o processo de um ataque Man-in-the-middle.", "Como configurar um Firewall de forma restritiva?"],
-    ai: ["Diferença entre Supervised e Unsupervised Learning?", "Como lidar com Overfitting em um modelo?", "O que é uma Rede Neural Convolucional?", "Explique o conceito de Backpropagation."]
-};
-
-let qIndex = 0;
-function resetInterview() {
-    qIndex = 0;
-    const area = document.getElementById('areaSet').value;
-    document.getElementById('question').innerText = bancoPerguntas[area][0];
-    document.getElementById('interview-logs').innerHTML = "Sessão reiniciada...";
+function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
 }
 
-function nextQuestion() {
-    const area = document.getElementById('areaSet').value;
-    const ans = document.getElementById('ansInput').value;
+function openTab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+
+// --- ENTREVISTA PARA QUALQUER PROFISSÃO ---
+let currentJob = "";
+let qStep = 0;
+const genericQuestions = [
+    "Por que você escolheu trabalhar como [JOB]?",
+    "Como você lida com um cliente ou colega difícil na área de [JOB]?",
+    "Quais são suas 3 maiores qualidades para atuar como [JOB]?",
+    "Onde você quer chegar na sua carreira daqui a 2 anos?",
+    "Qual o seu diferencial em relação aos outros profissionais de [JOB]?"
+];
+
+function startGlobalInterview() {
+    currentJob = document.getElementById('jobTitle').value;
+    if(!currentJob) return alert("Por favor, digite uma profissão.");
+    qStep = 0;
+    document.getElementById('qa-area').style.display = 'block';
+    showQuestion();
+}
+
+function showQuestion() {
+    let q = genericQuestions[qStep].replace("[JOB]", currentJob);
+    document.getElementById('questionText').innerText = q;
+}
+
+function nextGlobalQuestion() {
+    let ans = document.getElementById('userAnswer').value;
     if(!ans) return;
 
-    document.getElementById('interview-logs').innerHTML += `<div><strong>P:</strong> ${bancoPerguntas[area][qIndex]}<br><strong>R:</strong> ${ans}</div><hr style='opacity:0.1'>`;
-    document.getElementById('ansInput').value = "";
+    let log = document.getElementById('interviewHistory');
+    log.innerHTML += `<p><b>Q:</b> ${genericQuestions[qStep].replace("[JOB]", currentJob)}<br><b>R:</b> ${ans}</p><hr style='margin:10px 0; opacity:0.1;'>`;
     
-    qIndex++;
-    if(qIndex < bancoPerguntas[area].length) {
-        document.getElementById('question').innerText = bancoPerguntas[area][qIndex];
+    document.getElementById('userAnswer').value = "";
+    qStep++;
+
+    if(qStep < genericQuestions.length) {
+        showQuestion();
     } else {
-        document.getElementById('question').innerText = "Simulação completa. Você está pronto para o mercado.";
+        document.getElementById('qa-area').innerHTML = "<p>✅ Simulação Finalizada! Seu histórico foi salvo acima.</p>";
     }
 }
 
-// --- GERADOR DE CURRÍCULO DE ELITE ---
-function exportCV() {
-    const d = {
-        nome: document.getElementById('cv-nome').value,
-        cargo: document.getElementById('cv-cargo').value,
-        bio: document.getElementById('cv-bio').value,
-        skills: document.getElementById('cv-skills').value,
-        exp: document.getElementById('cv-exp').value
-    };
-
-    const win = window.open('', '_blank');
-    win.document.write(`
-        <html><head><title>Currículo Elite - ${d.nome}</title>
-        <style>
-            body { font-family: 'Helvetica'; padding: 50px; background: #fff; color: #1a1a1a; }
-            h1 { font-size: 3rem; margin: 0; color: #000; border-bottom: 4px solid #000; }
-            h2 { text-transform: uppercase; font-size: 1rem; letter-spacing: 2px; margin-top: 30px; border-bottom: 1px solid #ccc; }
-            .cargo { font-size: 1.5rem; color: #666; margin-bottom: 20px; }
-            .content { margin-top: 20px; white-space: pre-wrap; }
-            .skills { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
-            .skill-tag { background: #000; color: #fff; padding: 5px 12px; font-size: 0.8rem; border-radius: 3px; }
-        </style></head>
-        <body>
-            <h1>${d.nome}</h1>
-            <div class="cargo">${d.cargo}</div>
-            <h2>Perfil Profissional</h2>
-            <div class="content">${d.bio}</div>
-            <h2>Especialidades Técnicas</h2>
-            <div class="skills">${d.skills.split(',').map(s => `<span class="skill-tag">${s.trim()}</span>`).join('')}</div>
-            <h2>Experiência de Impacto</h2>
-            <div class="content">${d.exp}</div>
-            <script>window.print();<\/script>
-        </body></html>
-    `);
+// --- O /BUSCAR (RETORNO) ---
+function handleCommand(e) {
+    if(e.key === "Enter") {
+        let val = e.target.value.trim();
+        let out = document.getElementById('termOut');
+        out.innerHTML += `<div><span style="color:#fff">> ${val}</span></div>`;
+        
+        if(val.startsWith("/buscar ")) {
+            let termo = val.replace("/buscar ", "").toLowerCase();
+            out.innerHTML += `<div>Procurando por: ${termo}...</div>`;
+            fetchBusca(termo);
+        } else {
+            out.innerHTML += `<div>Comando desconhecido. Tente /buscar [termo]</div>`;
+        }
+        e.target.value = "";
+        out.scrollTop = out.scrollHeight;
+    }
 }
 
-// --- SEGURANÇA AVANÇADA ---
-function analyzePass() {
-    const p = document.getElementById('passChecker').value;
-    const fill = document.getElementById('pass-fill');
-    const feedback = document.getElementById('pass-feedback');
-    let strength = 0;
-
-    if(p.length > 10) strength += 25;
-    if(/[A-Z]/.test(p)) strength += 25;
-    if(/[0-9]/.test(p)) strength += 25;
-    if(/[^A-Za-z0-9]/.test(p)) strength += 25;
-
-    fill.style.width = strength + "%";
-    fill.style.background = strength < 50 ? "#ff00d4" : (strength < 100 ? "#ff9900" : "#0fff92");
-    feedback.innerText = `NÍVEL DE CRIPTOGRAFIA: ${strength}%`;
+async function fetchBusca(termo) {
+    const out = document.getElementById('termOut');
+    try {
+        const res = await fetch("logins.txt");
+        const txt = await res.text();
+        const linhas = txt.split("\n");
+        let encontrados = 0;
+        
+        linhas.forEach(linha => {
+            if(linha.toLowerCase().includes(termo)) {
+                out.innerHTML += `<div style="color:#fff">${linha.trim()}</div>`;
+                encontrados++;
+            }
+        });
+        
+        if(encontrados === 0) out.innerHTML += `<div>Nenhum resultado encontrado.</div>`;
+        else out.innerHTML += `<div>${encontrados} resultado(s) encontrados.</div>`;
+    } catch {
+        out.innerHTML += `<div style="color:red">Erro: Arquivo logins.txt não encontrado.</div>`;
+    }
+    out.scrollTop = out.scrollHeight;
 }
 
-function validateDoc() {
-    const doc = document.getElementById('docChecker').value.replace(/\D/g,'');
-    const res = document.getElementById('doc-res');
+// --- VALIDOR DE CPF REAL ---
+function validateRealDoc() {
+    let cpf = document.getElementById('docInput').value.replace(/\D/g,'');
+    let res = document.getElementById('docResult');
     
-    // Algoritmo Real de CPF
-    const calc = (s) => {
+    const validar = (s) => {
         if(s.length !== 11 || !!s.match(/(\d)\1{10}/)) return false;
         let d = 0;
         for(let i=1; i<=9; i++) d += parseInt(s[i-1]) * (11-i);
@@ -349,46 +303,64 @@ function validateDoc() {
         return r === parseInt(s[10]);
     };
 
-    if(calc(doc)) {
-        res.innerHTML = "STATUS: <span style='color:#0fff92'>AUTÊNTICO</span>";
+    if(validar(cpf)) {
+        res.innerHTML = "✅ CPF VÁLIDO E AUTÊNTICO";
+        res.style.color = "#10b981";
     } else {
-        res.innerHTML = "STATUS: <span style='color:var(--secondary)'>FALSIFICADO/INVÁLIDO</span>";
+        res.innerHTML = "❌ DOCUMENTO INVÁLIDO";
+        res.style.color = "#ef4444";
     }
 }
 
-// --- PARTÍCULAS ---
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-let particles = [];
+// --- CURRICULO ---
+function printCV() {
+    const n = document.getElementById('cvName').value;
+    const g = document.getElementById('cvGoal').value;
+    const s = document.getElementById('cvSummary').value;
+    
+    if(!n) return alert("Preencha ao menos o nome.");
 
-function init() {
-    for(let i=0; i<150; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            size: Math.random() * 2,
-            speedX: (Math.random() - 0.5) * 1,
-            speedY: (Math.random() - 0.5) * 1
-        });
-    }
+    const win = window.open('', '_blank');
+    win.document.write(`
+        <html><head><title>CV - ${n}</title>
+        <style>
+            body { font-family: sans-serif; padding: 40px; line-height: 1.6; }
+            h1 { margin: 0; border-bottom: 2px solid #2563eb; padding-bottom: 10px; }
+            .goal { font-size: 1.2rem; font-weight: bold; color: #666; margin: 10px 0; }
+            .section { margin-top: 30px; }
+            .title { font-weight: bold; text-transform: uppercase; color: #2563eb; border-bottom: 1px solid #eee; }
+        </style></head>
+        <body>
+            <h1>${n}</h1>
+            <div class="goal">${g}</div>
+            <div class="section">
+                <div class="title">Resumo e Qualificações</div>
+                <p>${s}</p>
+            </div>
+            <div class="section">
+                <div class="title">Histórico Profissional</div>
+                <p><i>[Preencha aqui suas experiências anteriores]</i></p>
+            </div>
+            <script>window.print();<\/script>
+        </body></html>
+    `);
 }
 
-function draw() {
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-    particles.forEach(p => {
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-        ctx.fill();
-        p.x += p.speedX; p.y += p.speedY;
-        if(p.x > canvas.width) p.x = 0; if(p.x < 0) p.x = canvas.width;
-        if(p.y > canvas.height) p.y = 0; if(p.y < 0) p.y = canvas.height;
-    });
-    requestAnimationFrame(draw);
+// --- FORÇA DE SENHA ---
+function checkPassStrength() {
+    let p = document.getElementById('passInput').value;
+    let fill = document.getElementById('passFill');
+    let msg = document.getElementById('passMsg');
+    let s = 0;
+    if(p.length > 7) s += 25;
+    if(/[A-Z]/.test(p)) s += 25;
+    if(/[0-9]/.test(p)) s += 25;
+    if(/[^A-Za-z0-9]/.test(p)) s += 25;
+    
+    fill.style.width = s + "%";
+    fill.style.background = s < 50 ? "#ef4444" : (s < 100 ? "#f59e0b" : "#10b981");
+    msg.innerText = s === 100 ? "Senha de Elite!" : "Fortaleça sua senha.";
 }
-init(); draw();
 </script>
 </body>
 </html>
