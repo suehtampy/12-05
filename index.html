@@ -1,146 +1,394 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATHEUS OS | SISTEMA ATUALIZADO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #050508; --card: #0c0c14; --accent: #3b82f6;
-            --text: #f1f5f9; --border: rgba(59, 130, 246, 0.2);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATHEUS OS | Central de Comando</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #030308;
+    --side: rgba(5, 5, 15, 0.95);
+    --accent: #00f0ff;
+    --accent-glow: rgba(0, 240, 255, 0.4);
+    --secondary: #ff00d4;
+    --text: #e0e0e0;
+    --card: rgba(15, 15, 30, 0.6);
+    --border: rgba(0, 240, 255, 0.2);
+}
 
-        /* SIDEBAR ORIGINAL */
-        .sidebar {
-            width: 260px; background: #08080c; border-right: 1px solid var(--border);
-            padding: 30px 15px; display: flex; flex-direction: column;
-        }
-        .nav-item {
-            width: 100%; padding: 14px 18px; margin-bottom: 10px; border-radius: 12px;
-            background: transparent; border: none; color: var(--text); text-align: left;
-            font-weight: 600; cursor: pointer; transition: 0.3s; opacity: 0.6;
-        }
-        .nav-item.active, .nav-item:hover { background: var(--accent); opacity: 1; color: white; box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+.light-mode {
+    --bg: #f0f2f5;
+    --side: rgba(255, 255, 255, 0.9);
+    --accent: #0066ff;
+    --accent-glow: rgba(0, 102, 255, 0.2);
+    --secondary: #d400ff;
+    --text: #1a1a1a;
+    --card: #ffffff;
+    --border: rgba(0, 102, 255, 0.2);
+}
 
-        /* CONTEÚDO PRINCIPAL */
-        .main { flex: 1; padding: 40px; overflow-y: auto; }
-        .section { display: none; animation: fadeIn 0.3s ease; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+body { 
+    font-family: 'Poppins', sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    overflow-x: hidden; 
+    transition: background 0.5s, color 0.5s;
+}
 
-        /* TELA DE BUSCA (TOOLS) */
-        .search-container {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 30px; max-width: 800px; margin-top: 20px;
-        }
-        input {
-            width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border);
-            background: #000; color: #fff; font-family: 'JetBrains Mono'; font-size: 1rem; margin-bottom: 20px;
-        }
-        .btn-run {
-            background: var(--accent); color: white; border: none; padding: 16px;
-            border-radius: 12px; width: 100%; font-weight: 800; cursor: pointer; font-size: 1rem;
-        }
+canvas#particles { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
 
-        /* GRID DE RESULTADOS */
-        .res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 25px; }
-        .res-item { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
-        .res-label { font-size: 0.65rem; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 4px; }
-        .res-val { font-family: 'JetBrains Mono'; font-size: 0.9rem; }
+/* NAVEGAÇÃO LATERAL - ULTRA FUTURISTA */
+.sidebar {
+    position: fixed; left: 0; top: 0; height: 100%; width: 70px;
+    background: var(--side); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
+    backdrop-filter: blur(20px);
+}
+.sidebar:hover { width: 240px; }
+.sidebar .logo { margin: 30px 0; font-family: 'Orbitron'; color: var(--accent); font-size: 1.5rem; }
+.sidebar button {
+    width: 100%; border: none; background: none; color: var(--text);
+    padding: 20px; display: flex; align-items: center; gap: 20px;
+    font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 1px;
+    transition: 0.3s; opacity: 0.5; overflow: hidden;
+}
+.sidebar button:hover { opacity: 1; background: rgba(0, 240, 255, 0.05); color: var(--accent); }
+.sidebar .label { white-space: nowrap; display: none; }
+.sidebar:hover .label { display: block; }
 
-        #clock { font-size: 4rem; font-weight: 900; color: var(--accent); margin-bottom: 10px; }
-    </style>
+/* CONTEÚDO PRINCIPAL */
+.main-content { margin-left: 70px; padding: 40px; transition: 0.5s; }
+.section { display: none; animation: slideUp 0.6s ease-out; }
+.section.active { display: block; }
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* CARDS E GRIDS */
+.grid-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
+.glass-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 35px; border-radius: 20px; position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden;
+}
+.glass-card::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+/* FORMULÁRIOS PROFISSIONAIS */
+label { display: block; margin-bottom: 10px; font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); }
+input, select, textarea {
+    width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+    color: var(--text); padding: 15px; border-radius: 8px; margin-bottom: 20px;
+    font-family: 'JetBrains Mono'; outline: none; transition: 0.3s;
+}
+input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+
+.btn-cyber {
+    background: var(--accent); color: #000; border: none; padding: 15px 30px;
+    font-family: 'Orbitron'; font-weight: bold; border-radius: 5px; cursor: pointer;
+    transition: 0.4s; width: 100%; text-transform: uppercase;
+}
+.btn-cyber:hover { transform: translateY(-3px); box-shadow: 0 0 25px var(--accent); background: #fff; }
+
+/* TERMINAL HACKER */
+.terminal-container {
+    background: #010208; border-radius: 10px; border: 1px solid var(--secondary);
+    padding: 20px; font-family: 'JetBrains Mono'; color: #0fff92;
+    height: 400px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(15, 255, 146, 0.1);
+}
+
+/* RELÓGIO DASHBOARD */
+#digital-clock { font-family: 'Orbitron'; font-size: 4rem; text-align: right; opacity: 0.8; margin-bottom: 50px; }
+
+footer { margin-top: 100px; text-align: center; opacity: 0.3; padding: 40px; font-size: 0.7rem; }
+
+</style>
 </head>
 <body>
 
-<nav class="sidebar">
-    <h2 style="margin-bottom: 40px;">MATHEUS<span style="color:var(--accent)">.OS</span></h2>
-    <button class="nav-item active" onclick="tab('dash')">Painel Inicial</button>
-    <button class="nav-item" onclick="tab('tools')">Tools (Numverify)</button>
-</nav>
+<canvas id="particles"></canvas>
 
-<main class="main">
+<aside class="sidebar">
+    <div class="logo">M</div>
+    <button onclick="showTab('home')" class="nav-btn active"><span class="label">DASHBOARD</span></button>
+    <button onclick="showTab('entrevista')"><span class="label">SIMULADOR RH</span></button>
+    <button onclick="showTab('curriculo')"><span class="label">CARREIRA ELITE</span></button>
+    <button onclick="showTab('seguranca')"><span class="label">CRIPTO & ID</span></button>
+    <button onclick="showTab('terminal')"><span class="label">CORE TERMINAL</span></button>
+    <button onclick="toggleTheme()" style="margin-top: auto;"><span class="label">ALTERNAR TEMA</span></button>
+</aside>
+
+<main class="main-content">
     
-    <section id="dash" class="section active">
-        <div id="clock">00:00:00</div>
-        <h1>Sistema Online.</h1>
-        <p style="opacity:0.5">Aguardando comandos do operador...</p>
+    <section id="home" class="section active">
+        <div id="digital-clock">00:00:00</div>
+        <h1 style="font-family:'Orbitron'; font-size: 5rem; letter-spacing: -2px;">SISTEMA <span style="color:var(--accent)">MATHEUS</span></h1>
+        <p style="font-size: 1.2rem; max-width: 600px; margin-top: 20px; opacity: 0.7;">
+            Interface de alto desempenho para desenvolvimento, segurança e gestão de carreira. 
+            Protocolos v.3.0 ativos.
+        </p>
+        <div class="grid-tools" style="margin-top: 50px;">
+            <div class="glass-card">
+                <h3>STATUS DO SISTEMA</h3>
+                <p style="color:#0fff92; margin-top: 10px;">> Latência: 2ms</p>
+                <p style="color:#0fff92;">> Núcleos: Ativos</p>
+                <p style="color:#0fff92;">> Segurança: Nível Militar</p>
+            </div>
+        </div>
     </section>
 
-    <section id="tools" class="section">
-        <h2>Inteligência Telefônica</h2>
-        <p style="opacity:0.5; margin-bottom: 20px;">Validação e rastreio de operadora via Numverify API.</p>
-        
-        <div class="search-container">
-            <input type="text" id="phoneInput" placeholder="Ex: 5511999999999">
-            <button class="btn-run" onclick="runNumverify()">SCANNER DE NÚMERO</button>
-
-            <div id="numResult" class="res-grid">
+    <section id="entrevista" class="section">
+        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">TREINAMENTO DE ELITE (RH)</h2>
+        <div class="grid-tools">
+            <div class="glass-card">
+                <label>Selecione sua Área de Atuação</label>
+                <select id="areaSet" onchange="resetInterview()">
+                    <option value="front">Desenvolvimento Front-end</option>
+                    <option value="back">Arquitetura Back-end</option>
+                    <option value="cyber">Cyber Security Analyst</option>
+                    <option value="ai">Engenheiro de IA</option>
+                </select>
+                <div id="qa-box" style="margin: 20px 0; min-height: 100px; padding: 20px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--accent);">
+                    <p id="question">Aguardando início do protocolo...</p>
                 </div>
+                <input type="text" id="ansInput" placeholder="Sua resposta estratégica...">
+                <button class="btn-cyber" onclick="nextQuestion()">PROCESSAR RESPOSTA</button>
+            </div>
+            <div class="glass-card">
+                <h3>LOGS DA SESSÃO</h3>
+                <div id="interview-logs" style="font-family:'JetBrains Mono'; font-size: 0.8rem; height: 200px; overflow-y: auto;"></div>
+            </div>
         </div>
+    </section>
+
+    <section id="curriculo" class="section">
+        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">ARQUITETO DE CARREIRA</h2>
+        <div class="grid-tools">
+            <div class="glass-card">
+                <label>DADOS PESSOAIS</label>
+                <input type="text" id="cv-nome" placeholder="Nome Completo">
+                <input type="text" id="cv-cargo" placeholder="Ex: Lead Software Engineer">
+                <label>SOBRE VOCÊ (O QUE TE FAZ ÚNICO?)</label>
+                <textarea id="cv-bio" style="height: 100px;" placeholder="Descreva seus resultados mais impactantes..."></textarea>
+                <label>HARD SKILLS (SEPARE POR VÍRGULA)</label>
+                <input type="text" id="cv-skills" placeholder="Ex: React, Go, Docker, AWS, SIEM">
+            </div>
+            <div class="glass-card">
+                <label>EXPERIÊNCIA RELEVANTE</label>
+                <textarea id="cv-exp" style="height: 250px;" placeholder="Empresa - Cargo - Descrição do impacto causado..."></textarea>
+                <button class="btn-cyber" onclick="exportCV()">GERAR CURRÍCULO DE ELITE</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="seguranca" class="section">
+        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">MÓDULO DE SEGURANÇA</h2>
+        <div class="grid-tools">
+            <div class="glass-card">
+                <label>VALIDADOR RÍGIDO DE SENHAS</label>
+                <input type="password" id="passChecker" oninput="analyzePass()" placeholder="Insira sua senha mestre">
+                <div id="pass-meter" style="height: 5px; background: #222; margin-top: -10px; margin-bottom: 20px;">
+                    <div id="pass-fill" style="height: 100%; width: 0%; transition: 0.5s;"></div>
+                </div>
+                <p id="pass-feedback" style="font-size: 0.7rem; font-family: monospace;"></p>
+            </div>
+            <div class="glass-card">
+                <label>VERIFICADOR DE IDENTIDADE (CPF/CNPJ)</label>
+                <input type="text" id="docChecker" placeholder="Digite apenas números">
+                <button class="btn-cyber" onclick="validateDoc()">AUTENTICAR DOCUMENTO</button>
+                <p id="doc-res" style="margin-top: 15px; font-family: 'JetBrains Mono';"></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="terminal" class="section">
+        <h2 style="font-family:'Orbitron'; margin-bottom: 30px;">TERMINAL DE NÚCLEO</h2>
+        <div class="terminal-container" id="terminalLog">
+            <div>[SISTEMA] Aguardando entrada de dados...</div>
+        </div>
+        <input type="text" id="terminalInput" style="margin-top: 20px;" placeholder="digite /ajuda para comandos">
     </section>
 
 </main>
 
+<footer>© 2026 MATHEUS OS | UNSTOPPABLE INTERFACE | DESENVOLVIDO PARA LIDERAR</footer>
+
 <script>
-    // Configurações
-    const PROXY = "https://api.allorigins.win/raw?url=";
-    const NUM_KEY = '37c50a4c4aaf752f098edc2caf52c752';
+// --- MOTOR DE INTERFACE ---
+function showTab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    addTerminalLog(`Navegando para o módulo: ${id.toUpperCase()}`);
+}
 
-    // Relógio
-    setInterval(() => { 
-        document.getElementById('clock').innerText = new Date().toLocaleTimeString(); 
-    }, 1000);
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    addTerminalLog("Protocolo visual alterado.");
+}
 
-    // Navegação entre abas
-    function tab(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        event.currentTarget.classList.add('active');
+function addTerminalLog(msg) {
+    const log = document.getElementById('terminalLog');
+    const time = new Date().toLocaleTimeString();
+    log.innerHTML += `<div><span style="color:var(--secondary)">[${time}]</span> ${msg}</div>`;
+    log.scrollTop = log.scrollHeight;
+}
+
+setInterval(() => {
+    document.getElementById('digital-clock').innerText = new Date().toLocaleTimeString();
+}, 1000);
+
+// --- SIMULADOR DE ENTREVISTA POR ÁREA ---
+const bancoPerguntas = {
+    front: ["Como você otimiza a performance de uma aplicação React?", "Diferença entre Virtual DOM e Shadow DOM?", "Como lidaria com uma API instável no Front?", "SASS ou CSS puro? Por que?"],
+    back: ["Como projetaria um sistema para 1 milhão de acessos simultâneos?", "Explique a diferença entre gRPC e REST.", "Quando usar NoSQL em vez de Relacional?", "Como garantir a consistência eventual em microserviços?"],
+    cyber: ["Como você mitigaria um ataque de Injeção de SQL?", "O que é o modelo OSI e como ele se aplica à segurança?", "Explique o processo de um ataque Man-in-the-middle.", "Como configurar um Firewall de forma restritiva?"],
+    ai: ["Diferença entre Supervised e Unsupervised Learning?", "Como lidar com Overfitting em um modelo?", "O que é uma Rede Neural Convolucional?", "Explique o conceito de Backpropagation."]
+};
+
+let qIndex = 0;
+function resetInterview() {
+    qIndex = 0;
+    const area = document.getElementById('areaSet').value;
+    document.getElementById('question').innerText = bancoPerguntas[area][0];
+    document.getElementById('interview-logs').innerHTML = "Sessão reiniciada...";
+}
+
+function nextQuestion() {
+    const area = document.getElementById('areaSet').value;
+    const ans = document.getElementById('ansInput').value;
+    if(!ans) return;
+
+    document.getElementById('interview-logs').innerHTML += `<div><strong>P:</strong> ${bancoPerguntas[area][qIndex]}<br><strong>R:</strong> ${ans}</div><hr style='opacity:0.1'>`;
+    document.getElementById('ansInput').value = "";
+    
+    qIndex++;
+    if(qIndex < bancoPerguntas[area].length) {
+        document.getElementById('question').innerText = bancoPerguntas[area][qIndex];
+    } else {
+        document.getElementById('question').innerText = "Simulação completa. Você está pronto para o mercado.";
     }
+}
 
-    // Função de renderizar resultado
-    const render = (label, val) => `
-        <div class="res-item">
-            <span class="res-label">${label}</span>
-            <span class="res-val">${val || '---'}</span>
-        </div>`;
+// --- GERADOR DE CURRÍCULO DE ELITE ---
+function exportCV() {
+    const d = {
+        nome: document.getElementById('cv-nome').value,
+        cargo: document.getElementById('cv-cargo').value,
+        bio: document.getElementById('cv-bio').value,
+        skills: document.getElementById('cv-skills').value,
+        exp: document.getElementById('cv-exp').value
+    };
 
-    // Chamada da API Numverify
-    async function runNumverify() {
-        const phone = document.getElementById('phoneInput').value;
-        const display = document.getElementById('numResult');
-        
-        if(!phone) return alert("Digite um número!");
+    const win = window.open('', '_blank');
+    win.document.write(`
+        <html><head><title>Currículo Elite - ${d.nome}</title>
+        <style>
+            body { font-family: 'Helvetica'; padding: 50px; background: #fff; color: #1a1a1a; }
+            h1 { font-size: 3rem; margin: 0; color: #000; border-bottom: 4px solid #000; }
+            h2 { text-transform: uppercase; font-size: 1rem; letter-spacing: 2px; margin-top: 30px; border-bottom: 1px solid #ccc; }
+            .cargo { font-size: 1.5rem; color: #666; margin-bottom: 20px; }
+            .content { margin-top: 20px; white-space: pre-wrap; }
+            .skills { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+            .skill-tag { background: #000; color: #fff; padding: 5px 12px; font-size: 0.8rem; border-radius: 3px; }
+        </style></head>
+        <body>
+            <h1>${d.nome}</h1>
+            <div class="cargo">${d.cargo}</div>
+            <h2>Perfil Profissional</h2>
+            <div class="content">${d.bio}</div>
+            <h2>Especialidades Técnicas</h2>
+            <div class="skills">${d.skills.split(',').map(s => `<span class="skill-tag">${s.trim()}</span>`).join('')}</div>
+            <h2>Experiência de Impacto</h2>
+            <div class="content">${d.exp}</div>
+            <script>window.print();<\/script>
+        </body></html>
+    `);
+}
 
-        display.innerHTML = "<p>Consultando banco de dados...</p>";
+// --- SEGURANÇA AVANÇADA ---
+function analyzePass() {
+    const p = document.getElementById('passChecker').value;
+    const fill = document.getElementById('pass-fill');
+    const feedback = document.getElementById('pass-feedback');
+    let strength = 0;
 
-        try {
-            const apiUrl = `http://apilayer.net/api/validate?access_key=${NUM_KEY}&number=${phone}`;
-            const response = await fetch(PROXY + encodeURIComponent(apiUrl));
-            const data = await response.json();
+    if(p.length > 10) strength += 25;
+    if(/[A-Z]/.test(p)) strength += 25;
+    if(/[0-9]/.test(p)) strength += 25;
+    if(/[^A-Za-z0-9]/.test(p)) strength += 25;
 
-            if(data.valid === false) {
-                display.innerHTML = "<p style='color:#ff4444'>Número inválido ou não encontrado.</p>";
-            } else {
-                display.innerHTML = 
-                    render('Válido', data.valid ? 'SIM' : 'NÃO') +
-                    render('Operadora', data.carrier) +
-                    render('Localização', data.location) +
-                    render('País', data.country_name) +
-                    render('Tipo de Linha', data.line_type) +
-                    render('Código País', data.country_prefix);
-            }
-        } catch (error) {
-            display.innerHTML = "<p style='color:red'>Erro de conexão com o servidor.</p>";
-            console.error(error);
-        }
+    fill.style.width = strength + "%";
+    fill.style.background = strength < 50 ? "#ff00d4" : (strength < 100 ? "#ff9900" : "#0fff92");
+    feedback.innerText = `NÍVEL DE CRIPTOGRAFIA: ${strength}%`;
+}
+
+function validateDoc() {
+    const doc = document.getElementById('docChecker').value.replace(/\D/g,'');
+    const res = document.getElementById('doc-res');
+    
+    // Algoritmo Real de CPF
+    const calc = (s) => {
+        if(s.length !== 11 || !!s.match(/(\d)\1{10}/)) return false;
+        let d = 0;
+        for(let i=1; i<=9; i++) d += parseInt(s[i-1]) * (11-i);
+        let r = (d * 10) % 11;
+        if(r === 10 || r === 11) r = 0;
+        if(r !== parseInt(s[9])) return false;
+        d = 0;
+        for(let i=1; i<=10; i++) d += parseInt(s[i-1]) * (12-i);
+        r = (d * 10) % 11;
+        if(r === 10 || r === 11) r = 0;
+        return r === parseInt(s[10]);
+    };
+
+    if(calc(doc)) {
+        res.innerHTML = "STATUS: <span style='color:#0fff92'>AUTÊNTICO</span>";
+    } else {
+        res.innerHTML = "STATUS: <span style='color:var(--secondary)'>FALSIFICADO/INVÁLIDO</span>";
     }
+}
+
+// --- PARTÍCULAS ---
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let particles = [];
+
+function init() {
+    for(let i=0; i<150; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2,
+            speedX: (Math.random() - 0.5) * 1,
+            speedY: (Math.random() - 0.5) * 1
+        });
+    }
+}
+
+function draw() {
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    particles.forEach(p => {
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+        ctx.fill();
+        p.x += p.speedX; p.y += p.speedY;
+        if(p.x > canvas.width) p.x = 0; if(p.x < 0) p.x = canvas.width;
+        if(p.y > canvas.height) p.y = 0; if(p.y < 0) p.y = canvas.height;
+    });
+    requestAnimationFrame(draw);
+}
+init(); draw();
 </script>
-
 </body>
 </html>
